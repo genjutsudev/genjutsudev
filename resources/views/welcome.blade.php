@@ -48,8 +48,36 @@
                         @endif
                     </header>
 
-                    <main class="mt-6 text-center">
-                        <h1>Hello, World!</h1>
+                    <main class="mt-6 container">
+                        <h1 class="text-center">Hello, World!</h1>
+
+                        <x-ui.subheadline :label="__('test - default')" />
+                        <x-ui.subheadline :label="__('test - default (blue)')" class="blue" />
+                        <x-ui.subheadline :label="__('test - default (azure)')" class="azure" />
+                        <x-ui.subheadline :label="__('test - default (indigo)')" class="indigo" />
+                        <x-ui.subheadline :label="__('test - default (purple)')" class="purple" />
+                        <x-ui.subheadline :label="__('test - default (pink)')" class="pink" />
+                        <x-ui.subheadline :label="__('test - default (red)')" class="red" />
+                        <x-ui.subheadline :label="__('test - default (orange)')" class="orange" />
+                        <x-ui.subheadline :label="__('test - default (yellow)')" class="yellow" />
+                        <x-ui.subheadline :label="__('test - default (green)')" class="green" />
+                        <x-ui.subheadline :label="__('test - default (teal)')" class="teal" />
+                        <x-ui.subheadline :label="__('test - default (cyan)')" class="cyan" />
+                        <x-ui.subheadline :label="__('test - default - link')" :href="__('/')" />
+                        <div class="block">
+                            <x-ui.subheadline :label="__('test - default - options')">
+                                <x-slot:options>
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Library</li>
+                                        </ol>
+                                    </nav>
+                                </x-slot:options>
+                                slot
+                            </x-ui.subheadline>
+                        </div>
+
                     </main>
 
                     <footer class="py-16 text-center text-sm text-black dark:text-white/70">
