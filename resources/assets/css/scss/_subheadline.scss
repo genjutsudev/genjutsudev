@@ -10,7 +10,7 @@
 
     a {
         &:hover {
-            color: inherit;
+            color: red!important;
         }
     }
 
@@ -38,9 +38,9 @@
             a {
                 color: rgb(list.nth($color-rgb, 1), list.nth($color-rgb, 2), list.nth($color-rgb, 3));
 
-                &:hover {
-                    color: rgba(list.nth($color-rgb, 1), list.nth($color-rgb, 2), list.nth($color-rgb, 3), 0.8);
-                }
+                // &:hover {
+                //     color: rgba(list.nth($color-rgb, 1), list.nth($color-rgb, 2), list.nth($color-rgb, 3), 0.8);
+                // }
             }
         }
     }

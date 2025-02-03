@@ -15,8 +15,12 @@
             'text-uppercase',
         ])
     >
-        {{ $label }}
-        <i class="fa-solid fa-caret-up fa-rotate-90"></i>
+        <div class="flex-grow-1">
+            {{ $label }}
+        </div>
+        <div>
+            <i class="fa-solid fa-caret-up fa-rotate-90"></i>
+        </div>
     </a>
     @else
     <div class="d-flex">
