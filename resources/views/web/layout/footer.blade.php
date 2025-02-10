@@ -13,10 +13,10 @@
             </div>
             <div class="col-12 col-lg-auto mt-3 mt-lg-0">
                 <ul class="list-inline list-inline-dots mb-0">
-                    @foreach($routes as $name => $russian)
+                    @foreach($routes as $routeName => $routeTitle)
                     <li class="list-inline-item">
-                        <a href="{{-- {{ route($name) }} --}}?ref=footer" class="link-secondary">
-                            {{ $russian }}
+                        <a href="{{ route($routeName) }}?ref=footer" class="link-secondary">
+                            {{ $routeTitle }}
                         </a>
                     </li>
                     @endforeach
