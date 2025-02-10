@@ -127,7 +127,14 @@
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                 >
                     <i class="fas fa-sign-out-alt" style="font-size: 30px;"></i>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
+                    <form
+                        id="logout-form"
+                        action="{{ route('logout') }}"
+                        method="POST"
+                        class="d-none"
+                    >
+                        @csrf
+                    </form>
                 </a>
             </div>
             @endguest
@@ -157,7 +164,11 @@
                         </div>
                         <div class="mt-3">
                             <a href="#" class="disabled btn rounded w-100">
-                                <img src="{{ asset('static/media/brands/shikimori.svg') }}" class="me-2" width="20" alt="Shikimori">
+                                <img
+                                    src="{{ asset('static/media/brands/shikimori.svg') }}"
+                                    class="me-2" width="20"
+                                    alt="Shikimori"
+                                >
                                 Shikimori
                             </a>
                         </div>
@@ -168,18 +179,50 @@
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label class="form-label d-none" for="email">Email</label>
-                                <input class="form-control" id="email" type="email" name="email" placeholder="Логин (Адрес эл. почты)" required="required" autocomplete="off">
+                                <input
+                                    class="form-control"
+                                    id="email"
+                                    type="email"
+                                    name="email"
+                                    placeholder="Логин (Адрес эл. почты)"
+                                    required="required"
+                                    autocomplete="off"
+                                >
                             </div>
                             <div class="mb-3">
                                 <label class="form-label d-none" for="password">Password</label>
                                 <div class="input-group input-group-flat">
-                                    <input class="form-control" id="password" type="password" name="password" placeholder="Пароль" required="required" autocomplete="new-password">
+                                    <input
+                                        class="form-control"
+                                        id="password"
+                                        type="password"
+                                        name="password"
+                                        placeholder="Пароль"
+                                        required="required"
+                                        autocomplete="new-password"
+                                    >
                                     <span class="input-group-text">
-                                        <a href="#" class="link-secondary disabled" data-bs-toggle="tooltip" aria-label="Show password" data-bs-original-title="Show password">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path></svg>
+                                        <a
+                                            href="#"
+                                            class="link-secondary disabled"
+                                            data-bs-toggle="tooltip"
+                                            aria-label="Show password"
+                                            data-bs-original-title="Show password"
+                                        >
+                                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                                <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
+                                            </svg> --}}
                                         </a>
                                     </span>
-                                    <a href="{{-- {{ route('password.request') }} --}}" class="btn p-2" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Забыли пароль?">
+                                    <a
+                                        href="{{-- {{ route('password.request') }} --}}"
+                                        class="btn p-2"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="left"
+                                        data-bs-title="Забыли пароль?"
+                                    >
                                         <i class="far fa-question-circle" style="font-size: 20px"></i>
                                     </a>
                                 </div>
