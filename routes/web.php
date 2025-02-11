@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Services\UserService;
 use Illuminate\Support\Facades\Route;
+
+require __DIR__ . '/users/web.php';
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,3 +19,5 @@ Route::get('/rules', fn() => response()->view('web.sections.rules'))->name('rule
 Route::get('/animes', function () {
     return view('web.sections.animes.index');
 })->name('animes');
+
+Route::get('/test', fn(UserService $user) => $user->createUser());

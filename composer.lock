@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c2add9f85c3cab994b57b6b8ff1eb72",
+    "content-hash": "499bad67bd0a66b020feb41d064e0103",
     "packages": [
         {
             "name": "brick/math",
@@ -3359,6 +3359,58 @@
                 }
             ],
             "time": "2024-04-27T21:32:50+00:00"
+        },
+        {
+            "name": "sajya/client",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sajya/client.git",
+                "reference": "25eccad47d6ab28fa0537c6b963c01870ab33e7a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sajya/client/zipball/25eccad47d6ab28fa0537c6b963c01870ab33e7a",
+                "reference": "25eccad47d6ab28fa0537c6b963c01870ab33e7a",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.4",
+                "illuminate/http": "^8.0|^9.0|^10.0|^11.0",
+                "illuminate/support": "8.0|^9.0|^10.0|^11.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^7.0|^8.0|^9.0",
+                "sajya/server": "^5.2|^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sajya\\Client\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "tabuna",
+                    "email": "bliz48rus@gmail.com"
+                }
+            ],
+            "description": "HTTP client and server for JSON-RPC 2.0",
+            "homepage": "https://sajya.github.io",
+            "keywords": [
+                "api",
+                "json-prc",
+                "rpc"
+            ],
+            "support": {
+                "issues": "https://github.com/sajya/client/issues",
+                "source": "https://github.com/sajya/client/tree/1.2.0"
+            },
+            "time": "2024-03-15T23:46:58+00:00"
         },
         {
             "name": "symfony/clock",
