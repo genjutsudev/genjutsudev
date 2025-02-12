@@ -247,7 +247,7 @@
                                         </button>
                                     </div>
                                     <div class="col">
-                                        <a href="{{-- {{ route('register') }} --}}" class="btn w-100">
+                                        <a href="{{ route('register') }}" class="btn w-100">
                                             Регистрация
                                         </a>
                                     </div>

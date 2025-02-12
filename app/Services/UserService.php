@@ -16,7 +16,7 @@ class UserService
 
     public function createUser()
     {
-        $res = $this->rpc->execute('user@list');
+        $res = $this->rpc->execute('user@list', ['limit' => 3]);
         dd($res);
     }
 }

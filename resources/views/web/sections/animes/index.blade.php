@@ -2,6 +2,9 @@
 
 <x-layouts::main>
     <div class="container">
+                <x-ui.form.label text="Адрес эл. почты (Логин)" hidden=true>
+                    <x-ui.form.input-email/>
+                </x-ui.form.label>
         <div class="block">
             <x-ui.subheadline
                 :label="__('Аниме :seasonName сезона')"
