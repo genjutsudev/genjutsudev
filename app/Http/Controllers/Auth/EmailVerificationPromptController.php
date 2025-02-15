@@ -17,7 +17,7 @@ class EmailVerificationPromptController extends Controller
     public function __invoke(Request $request): RedirectResponse|View
     {
         if ($request->user()->hasVerifiedEmail()) {
-            self::info('Адрес эл. почты уже подтвержден.'); // TODO: Moved to file lang
+            self::info('Адрес эл. почты уже подтвержден.'); // @todo Something
             return redirect()->intended(route('animes', absolute: false));
         }
 

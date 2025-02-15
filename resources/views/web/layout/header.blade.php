@@ -98,7 +98,7 @@
             </div>
             <div class="nav-item me-4">
                 <a
-                    href="{{ route('users.show', [$user->uid, $user->profilelink]) }}"
+                    href="{{-- {{ route('users.show', [$user->uid, $user->profilelink]) }} --}}"
                     class="nav-link lh-1 text-reset p-0"
                 >
                     <span class="avatar avatar-sm" style="background-image: url(https://www.gravatar.com/avatar/9dcc550d0691ed1c0d52bf46ff7cb967?s=32&d=identicon&r=g)"></span>
@@ -106,9 +106,9 @@
                         <div
                             @class([
                                 'fw-bold',
-                                'text-azure' => Route::isWith([
+                                'text-azure' => false/* Route::isWith([
                                     'users.show', [$user->uid, $user->profilelink]
-                                ])
+                                ]) */
                             ])
                         >
                             {{ urldecode($user->profilename ?? $user->profilelink) }}
@@ -141,20 +141,19 @@
         </div>
         {{-- TODO: Modal --}}
         <x-ui.block
-            :disabled="Auth::check()"
-            class="modal modal-blur fade"
             id="modal-users-sing-in"
-            tabindex="-1"
+            class="modal modal-blur fade"
             style="display: none;"
+            tabindex="-1"
             aria-hidden="true"
             data-bs-backdrop="static"
+            :disabled="Auth::check()"
         >
             <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     <div class="modal-status bg-success"></div>
                     <div class="modal-body text-center py-4">
-                        {{-- <i class="fas fa-sign-in-alt me-2" style="font-size: 20px"></i> --}}
                         <div class="text-uppercase">
                             <div class="h1">
                                 Вход
@@ -175,14 +174,14 @@
                         </div>
                     </div>
                     <div class="hr-text m-2">или</div>
-                    <form method="post" action="{{-- {{ route('login.store') }} --}}">
+                    <form method="post" action="{{ route('login.store') }}">
                         @csrf
                         <div class="modal-body">
                             <x-ui.form.email class="mb-3"/>
                             <x-ui.form.password class="mb-3">
                                 <div class="col-12 text-end">
                                     <a
-                                        href="{{-- {{ route('password.request') }} --}}"
+                                        href="{{ route('password.request') }}"
                                         class="btn btn-sm btn-ghost-info"
                                     >
                                         Забыли пароль?

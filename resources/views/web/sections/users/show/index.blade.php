@@ -45,7 +45,7 @@
                         'Рецензии' => ['href' => '#', 'icon' => '<i class="fa fa-paint-brush"></i>'],
                         'Заявки' => ['href' => '#', 'icon' => '<i class="fa fa-ticket"></i>'],
                         'Жалобы' => ['href' => '#', 'icon' => '<i class="fa fa-warning"></i>'],
-                        'Настройки' => ['href' => route('users.show.edit.account', [$user->uid, $user->profilelink]), 'icon' => '<i class="fas fa-user-cog"></i>'],
+                        'Настройки' => ['href' => '/'/* route('users.show.edit.account', [$user->uid, $user->profilelink]) */, 'icon' => '<i class="fas fa-user-cog"></i>'],
                     ] as $title => $item)
                     <a
                         href="{{ $item['href'] }}"

@@ -7,11 +7,11 @@
         @foreach($users->items() as $user)
         <div>
             <a
-                href="{{ route('users.show', [$user->uid, $user->profilelink]) }}"
+                href="{{-- {{ route('users.show', [$user->uid, $user->profilelink]) }} --}}"
                 class="fw-bold"
             >
                 {{ urldecode($user->profilename ?? $user->profilelink) }}
-            </a>{{-- TODO: components/ui --}}
+            </a>
             <small class="text-lowercase">{{ $user->lastActivity() }}</small>
         </div>
         @endforeach

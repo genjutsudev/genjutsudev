@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Middleware\Authenticate;
-use App\Http\Middleware\UserUpdateLastActivityAt;
+use App\Http\Middleware\UserUpdateActivityAt;
 use App\Http\Middleware\UserEnsureEditOnlySelfAccount;
 use App\Http\Middleware\UserEnsureCorrectRedirect;
 use Illuminate\Foundation\Application;
@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->appendToGroup('web', UserUpdateLastActivityAt::class);
+        $middleware->appendToGroup('web', UserUpdateActivityAt::class);
         $middleware->appendToGroup('auth', Authenticate::class);
         $middleware->alias([
             'access.edit' => UserEnsureEditOnlySelfAccount::class,

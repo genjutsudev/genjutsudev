@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Core\Model\User\Entity\User as EntityUser;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
@@ -13,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserUpdateLastActivityAt
+class UserUpdateActivityAt
 {
     /**
      * Handle an incoming request.
@@ -36,8 +35,8 @@ class UserUpdateLastActivityAt
 
         Cache::store('redis')->put($keyCache, true, $ttlCache);
 
-        if ($user->last_activity_at->lt($expiresAt)) {
-            $user->last_activity_at = $now;
+        if ($user->activity_at->lt($expiresAt)) {
+            $user->activity_at = $now;
             $user->timestamps = false;
             $user->save();
         }

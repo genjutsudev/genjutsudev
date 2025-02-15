@@ -20,7 +20,7 @@ class AuthenticatedSessionController extends Controller
     public function create() //: View
     {
         //return view('auth.login');
-        return abort(401); // TODO
+        return abort(401); // @todo Something
     }
 
     /**
