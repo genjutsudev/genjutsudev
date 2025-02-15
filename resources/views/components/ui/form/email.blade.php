@@ -9,9 +9,11 @@
     <x-ui.input
         id="email"
         name="email"
+        type="email"
         :placeholder="$label"
         autocomplete="off"
         required
         :error="$errors->has('email')"
     />
+    {{ $slot ?? '' }}
 </div>
