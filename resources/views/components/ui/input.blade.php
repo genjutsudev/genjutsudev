@@ -12,6 +12,6 @@
     {{ $type ? "type=$type" : "" }}
     {{ $value ? "value=$value" : "" }}
     {{ $attributes->merge([
-        'class' => 'form-control' . ($error ? ' is-invalid' : ''),
+        'class' => $error ? 'is-invalid' : '',
     ]) }}
 />

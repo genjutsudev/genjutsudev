@@ -5,11 +5,12 @@
         'class' => 'form-group'
     ]) }}
 >
-    <x-ui.label for="email" :label="$label" class="d-none"/>
+    <x-ui.label for="email" class="d-none form-label" :label="$label"/>
     <x-ui.input
         id="email"
         name="email"
         type="email"
+        class="form-control"
         :placeholder="$label"
         autocomplete="off"
         required

@@ -1,9 +1,7 @@
-@props(['label'])
+@props(['label' => ''])
 
 <label
-    {{ $attributes->merge([
-        'class' => 'form-label'
-    ]) }}
+    {{ $attributes->merge([]) }}
 >
     {{ $label }}
     {{ $slot ?? '' }}

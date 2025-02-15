@@ -188,15 +188,7 @@
                                     </a>
                                 </div>
                             </x-ui.form.password>
-                            <div class="mb1-2">
-                                <label class="form-check m-0">
-                                    <input type="checkbox" name="remember" class="form-check-input">
-                                    <span class="form-check-label">
-                                        {{-- Remember me on this device --}}
-                                        Запомнить меня
-                                    </span>
-                                </label>
-                            </div>
+                            <x-ui.form.remember/>
                         </div>
                         <div class="modal-footer">
                             <div class="w-100">
