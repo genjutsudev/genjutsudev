@@ -147,7 +147,8 @@
             tabindex="-1"
             style="display: none;"
             aria-hidden="true"
-            data-bs-backdrop="static">
+            data-bs-backdrop="static"
+        >
             <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
