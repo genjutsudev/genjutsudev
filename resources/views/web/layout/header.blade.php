@@ -177,18 +177,7 @@
                     <form method="post" action="{{-- {{ route('login.store') }} --}}">
                         @csrf
                         <div class="modal-body">
-                            <div class="mb-3">
-                                <label class="form-label d-none" for="email">Email</label>
-                                <input
-                                    class="form-control"
-                                    id="email"
-                                    type="email"
-                                    name="email"
-                                    placeholder="Логин (Адрес эл. почты)"
-                                    required="required"
-                                    autocomplete="off"
-                                >
-                            </div>
+                            <x-ui.form.email class="mb-3"/>
                             <div class="mb-3">
                                 <label class="form-label d-none" for="password">Password</label>
                                 <div class="input-group input-group-flat">

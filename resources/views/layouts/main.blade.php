@@ -4,7 +4,7 @@
 <body data-bs-theme="light">
 <div class="page">
     @include('web.layout.header')
-    <x-navbar.navbar-component />
+    <x-navbar.navbar/>
     <div class="page-wrapper">
         {{-- <div class="page-header">page-header</div> --}}
         <div class="page-body">

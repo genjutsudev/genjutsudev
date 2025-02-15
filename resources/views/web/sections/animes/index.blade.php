@@ -2,13 +2,10 @@
 
 <x-layouts::main>
     <div class="container">
-                <x-ui.form.label text="Адрес эл. почты (Логин)" hidden=true>
-                    <x-ui.form.input-email/>
-                </x-ui.form.label>
         <div class="block">
             <x-ui.subheadline
-                :label="__('Аниме :seasonName сезона')"
-                :href="__('/animes/season/2021-spring')">
+                label="Аниме :seasonTitle сезона"
+                href="/animes/season/2021-spring">
                 <section id="ongoings"></section>
             </x-ui.subheadline>
         </div>
