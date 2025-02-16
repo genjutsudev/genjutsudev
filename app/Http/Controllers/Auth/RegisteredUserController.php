@@ -36,13 +36,13 @@ class RegisteredUserController extends Controller
         try {
             $user = $this->userService->createUser($request->all());
         } catch (\Throwable $th) {
-            throw new \Exception($th->getMessage());
+            self::danger('Системная ошибка. Повторите запрос позже.');
+            return redirect(route('register', absolute: false));
         }
 
         Auth::login($user);
 
-        self::success('Ура! Ура! Ура!');
-
+        self::success('Регистрация прошла успешно! Добро пожаловать!');
         return redirect(route('animes', absolute: false));
     }
 }

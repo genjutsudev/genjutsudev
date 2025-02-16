@@ -18,7 +18,7 @@ class UserService
         $res = $this->rpc->execute('user@create', $data);
 
         if ($res->error()) {
-            throw new \Exception('Что-то пошло не так. Попробуйте позже.');
+            throw new \Exception('Что-то пошло не так. Попробуйте перезагрузить страницу.');
         }
 
         $user = $res->result();
