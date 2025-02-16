@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 
+require __DIR__ . '/users/web.php';
+
 Route::get('/', function () {
     return view('welcome');
 });

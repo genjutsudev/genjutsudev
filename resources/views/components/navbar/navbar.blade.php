@@ -15,7 +15,7 @@
                                     style="height:52px;"
                                     alt="Донат"
                                     class="bg-light"
-                                    src="https://yagames.noilty.com/static/media/boosty-noilty-donate.svg"
+                                    src="{{ asset('https://yagames.noilty.com/static/media/boosty-noilty-donate.svg') }}"
                                 >
                             </div>
                         </div>
@@ -25,4 +25,4 @@
         </div>
     </div>
 </header>
-{{-- <x-session-flash-messages class="container pt-4" /> --}}
+<x-session-flash-messages class="container mb-0 my-4"/>

@@ -4,8 +4,8 @@
     <div class="container">
         <div class="block">
             <x-ui.subheadline
-                :label="__('Аниме :seasonName сезона')"
-                :href="__('/animes/season/2021-spring')">
+                label="Аниме :seasonTitle сезона"
+                href="/animes/season/2021-spring">
                 <section id="ongoings"></section>
             </x-ui.subheadline>
         </div>
