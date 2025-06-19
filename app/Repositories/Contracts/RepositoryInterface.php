@@ -10,16 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 interface RepositoryInterface
 {
     public function getOne($id): Model;
-
     public function getOneBy(array $params): Model;
-
     public function findOne($id): ?Model;
-
     public function findOneBy(array $params): ?Model;
-
     public function getMany(array $ids, bool $preserveOrder = false): Collection;
-
     public function getAll(): Collection;
-
     public function findFirstWhere(...$params): ?Model;
 }
