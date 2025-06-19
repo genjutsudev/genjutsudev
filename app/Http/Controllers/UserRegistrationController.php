@@ -32,7 +32,7 @@ class UserRegistrationController extends Controller
     public function store(UserStoreRequest $request): RedirectResponse
     {
         try {
-            Auth::login($this->userService->createUser($request->all()));
+            Auth::login($this->userService->createUser(...$request->except(['_token', 'password_confirmation'])));
         } catch (\Throwable $th) {
             self::danger('Системная ошибка. Повторите запрос позже.');
             return redirect(route('register', false));

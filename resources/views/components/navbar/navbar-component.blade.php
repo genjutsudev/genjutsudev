@@ -28,4 +28,4 @@
         </div>
     </div>
 </header>
-{{--<x-session-flash-messages class="container pt-4" />--}}
+<x-session-flash-messages class="container mt-4 mb-0"/>

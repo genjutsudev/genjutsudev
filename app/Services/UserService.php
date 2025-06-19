@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -15,7 +16,12 @@ class UserService
     {
     }
 
-    public function createUser(): User
+    public function createUser(string $email, string $password): User
     {
+        return User::create([
+            'name' => uniqid(),
+            'email' => $email,
+            'password' => $password_hash = Hash::make($password),
+        ]);
     }
 }

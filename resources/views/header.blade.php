@@ -79,7 +79,7 @@
             @else
                 @php($user = auth()->user())
                 <div class="nav-item me-4 d-none d-md-flex">
-                    <div class="btn-list justify-content-between" style="width: 80px;">
+                    <div class="btn-list justify-content-between">
                         @foreach([
                             ['label' => 'Мои уведомления', 'icon' => 'fa fa-bell'],
                             ['label' => 'Мои сообщения', 'icon' => 'fa fa-envelope'],
@@ -101,8 +101,8 @@
                 </div>
                 <div class="nav-item me-4">
                     <a
-                        href="{{ route('users.show', [$user->uid, $user->profilelink]) }}"
-                        class="nav-link lh-1 text-reset p-0"
+                        href="{{--{{ route('users.show', [$user->uid, $user->profilelink]) }}--}}"
+                        class="nav-link lh-1 p-2"
                     >
                         <span class="avatar avatar-sm" style="background-image: url(https://www.gravatar.com/avatar/9dcc550d0691ed1c0d52bf46ff7cb967?s=32&d=identicon&r=g);"></span>
                         <div class="d-none d-sm-block ps-2">
@@ -114,7 +114,7 @@
                                     ])*/
                                 ])
                             >
-                                {{ urldecode($user->profilename ?? $user->profilelink) }}
+                                {{ $user->name }}
                             </div>{{-- TODO: components/ui --}}
                             <div class="mt-1 small text-muted text-uppercase">Профиль</div>
                         </div>
@@ -122,7 +122,7 @@
                 </div>
                 <div class="nav-item">
                     <a
-                        href="{{ route('logout') }}"
+                        href="{{--{{ route('logout') }}--}}"
                         class="nav-link px-0"
                         title="Выйти"
                         data-bs-toggle="tooltip"
@@ -132,7 +132,7 @@
                         <i class="fas fa-sign-out-alt" style="font-size: 30px;"></i>
                         <form
                             id="logout-form"
-                            action="{{ route('logout') }}"
+                            action="{{--{{ route('logout') }}--}}"
                             method="POST"
                             class="d-none"
                         >
