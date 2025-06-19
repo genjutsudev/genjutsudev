@@ -3,9 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 // @deprecated
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', fn() => 'Hello, World!');
 
 Route::get('/terms', fn() => response()->view('sections.terms'))->name('terms');
 Route::get('/privacy', fn() => response()->view('sections.privacy'))->name('privacy');
