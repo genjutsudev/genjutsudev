@@ -11,8 +11,8 @@
             {!! $dropdownItem['svg'] !!}
         @endif
         <span>
-        {{ $dropdownItem['title'] }}
-    </span>
+            {{ $dropdownItem['title'] }}
+        </span>
     </a>
 @else
     <div class="dropdown-divider my-1"></div>
