@@ -9,10 +9,9 @@
     <div class="h1 m-0">
         {{ $h1 }}
     </div>
-    <x-ui.block
-        :disabled="! $desc"
-        @class(['h5', 'm-0'])
-    >
-        {{ $desc }}
-    </x-ui.block>
+    @if($desc)
+        <div class="h5 m-0">
+            {{ $desc }}
+        </div>
+    @endif
 </x-ui.block>
