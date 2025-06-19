@@ -4,7 +4,7 @@
             <div class="container">
                 <div class="d-flex justify-content-between flex-fill">
                     <x-navbar.navbar-nav />
-                    @if($boosty_url_donate = env('BOOSTY_URL'))
+                    @if($boosty_url_donate = env('BOOSTY_URL_DONATE'))
                     <div class="d-none d-lg-block w-25">
                         <div class="d-flex align-items-center justify-content-end">
                             <div class="text-end fw-bold text-uppercase me-2">
