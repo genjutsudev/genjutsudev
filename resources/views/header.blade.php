@@ -121,9 +121,9 @@
                     </a>
                 </div>
                 <div class="nav-item">
-                    <a
-                        href="{{--{{ route('logout') }}--}}"
-                        class="nav-link px-0"
+                    {{--<a
+                        href="{{ route('logout') }}"
+                        class="nav-link"
                         title="Выйти"
                         data-bs-toggle="tooltip"
                         data-bs-placement="bottom"
@@ -132,13 +132,25 @@
                         <i class="fas fa-sign-out-alt" style="font-size: 30px;"></i>
                         <form
                             id="logout-form"
-                            action="{{--{{ route('logout') }}--}}"
+                            action="{{ route('logout') }}"
                             method="POST"
                             class="d-none"
                         >
                             @csrf
                         </form>
-                    </a>
+                    </a>--}}
+                    <form action="{{ route('logout') }}" method="post">
+                        @csrf
+                        <button
+                            type="submit"
+                            class="nav-link p-2"
+                            title="Выйти"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                        >
+                            <i class="fas fa-sign-out-alt" style="font-size: 30px;"></i>
+                        </button>
+                    </form>
                 </div>
             @endguest
         </div>
@@ -177,7 +189,7 @@
                         </div>
                     </div>
                     <div class="hr-text m-2">или</div>
-                    <form method="post" action="{{-- {{ route('login.store') }} --}}">
+                    <form method="post" action="{{ route('login.store') }}">
                         @csrf
                         <div class="modal-body">
                             <x-ui.form.email class="mb-3"/>

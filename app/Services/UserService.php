@@ -33,10 +33,10 @@ class UserService
         return User::create([
             'referrer_nid' => $referrer_nid,
             'type' => $type,
-            'profilelink' => $default_name = Str::ulid(new \DateTime()),
+            'profilelink' => Str::ulid(new \DateTime()),
             'email' => $email,
-            'password' => $password_hash = self::hash($password),
-            'profilename' => $default_name,
+            'password' => self::hash($password),
+            'profilename' => uniqid(),
             'registration_ip_hash' => self::hash(request()->ip(), ['memory' => 1024, 'time' => 2, 'threads' => 2]),
             'registration_country' => 'Russian', // @todo
             'token' => $token,
