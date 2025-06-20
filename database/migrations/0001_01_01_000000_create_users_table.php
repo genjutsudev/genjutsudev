@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('user_users', function (Blueprint $table) {
             $table->uuid('id')->comment('user_uuid');
             $table->id('nid')->comment('user_id');
             $table->unsignedBigInteger('referrer_nid')->nullable()->comment('referrer_user_id');
@@ -34,11 +34,11 @@ return new class extends Migration
             $table->string('token', 32)->nullable();
             $table->string('api_key', 64)->nullable();
             $table->rememberToken();
-            $table->dateTime('activity_at');
+            $table->dateTime('activity_at')->nullable();
             $table->timestamps();
         });
 
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('user_users', function (Blueprint $table) {
             $table->unique('id', 'unq_user_users_on_id');
             $table->index('referrer_nid', 'idx_user_users_on_referrer_nid');
             $table->index('type', 'idx_user_users_on_type');
@@ -68,7 +68,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('user_users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }

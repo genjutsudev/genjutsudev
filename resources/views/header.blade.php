@@ -114,7 +114,7 @@
                                     ])*/
                                 ])
                             >
-                                {{ $user->name }}
+                                {{ $user->profilename }}
                             </div>{{-- TODO: components/ui --}}
                             <div class="mt-1 small text-muted text-uppercase">Профиль</div>
                         </div>

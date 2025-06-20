@@ -8,8 +8,7 @@ use App\Enums\UserTypeEnum;
 use App\Models\User\User;
 use App\Repositories\UserRepository;
 use App\Traits\HasherTrait;
-use http\Exception\InvalidArgumentException;
-use Illuminate\Support\Facades\Hash;
+use App\Values\UserTypeValue as Type;
 use Illuminate\Support\Str;
 
 class UserService
@@ -23,7 +22,7 @@ class UserService
     }
 
     private function createUser(
-        string $type,
+        Type $type,
         ?int $referrer_nid = null,
         ?string $email = null,
         ?string $password = null,
@@ -31,10 +30,6 @@ class UserService
         ?string $api_key = null,
     ) : User
     {
-        if (! in_array($type, UserTypeEnum::values())) {
-            throw new InvalidArgumentException("user type \"$type\" is nope found"); // @todo i18n
-        }
-
         return User::create([
             'referrer_nid' => $referrer_nid,
             'type' => $type,
@@ -53,10 +48,10 @@ class UserService
         ?int $referrer_nid = null,
         ?string $email = null,
         ?string $password = null,
-    ): User
+    ) : User
     {
         return self::createUser(
-            type: $type = 'regular',
+            type: $type = new Type(UserTypeEnum::REGULAR),
             referrer_nid: $referrer_nid,
             email: $email,
             password: $password,
@@ -67,7 +62,7 @@ class UserService
     public function createUserApi(): User
     {
         return self::createUser(
-            type: $type = 'api',
+            type: $type = new Type(UserTypeEnum::API),
             api_key: hash('sha256', $type . time()), // @todo
         );
     }

@@ -19,4 +19,19 @@ enum UserTypeEnum: string
     {
         return array_column(self::cases(), 'name');
     }
+
+    public function isRegular(): bool
+    {
+        return $this === self::REGULAR;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this === self::ADMIN;
+    }
+
+    public function isApi(): bool
+    {
+        return $this === self::API;
+    }
 }

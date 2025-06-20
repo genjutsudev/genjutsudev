@@ -49,14 +49,25 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'referrer_nid',
+        'type',
+        'profilelink',
+        'email',
+        'password',
+        'profilename',
+        'registration_ip_hash',
+        'registration_country',
+        'token',
+        'api_key',
+    ];
 
     /**
      * The attributes that cannot be mass assigned.
      *
      * @var array
      */
-    protected $guarded = ['id', 'nid', 'created_at'];
+    protected $guarded = ['id', 'nid', 'referrer_nid', 'created_at'];
 
     /**
      * The attributes that should be hidden for serialization.

@@ -13,5 +13,8 @@ Route::get('/copyright', fn() => response()->view('sections.copyright'))->name('
 Route::get('/rules', fn() => response()->view('sections.rules'))->name('rules');
 
 Route::get('/animes', function () {
+    /*$user = \Illuminate\Support\Facades\Auth::user();
+    $type = new \App\Values\UserTypeValue(\App\Enums\UserTypeEnum::from($user->type));
+    dd($type->isRegular());*/
     return view('sections.animes.index');
 })->name('animes');
