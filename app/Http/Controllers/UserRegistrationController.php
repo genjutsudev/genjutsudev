@@ -36,13 +36,13 @@ class UserRegistrationController extends Controller
         try {
             $user = $this->userService->createUserRegular(...$data);
         } catch (\Throwable $th) {
-            self::danger('Системная ошибка. Повторите запрос позже.');
+            self::danger('Что-то пошло не так, попробуйте ещё раз.'); // @todo i18n
             return redirect(route('register', false));
         }
 
         Auth::login($user, true);
 
-        self::success('Регистрация прошла успешно! Добро пожаловать!');
+        self::success('Успешная регистрация — открыт доступ к лучшим аниме-тайтлам, обсуждениям и манге.'); // @todo i18n
         return redirect(route('animes', false));
     }
 }

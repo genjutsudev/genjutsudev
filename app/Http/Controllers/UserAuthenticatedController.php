@@ -31,7 +31,9 @@ class UserAuthenticatedController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
-        self::success('Вошли! Вошли! Вошли!'); // @todo
+        $user = Auth::user();
+
+        self::success('С возвращением, <b>' . $user->profilename . '</b>!'); // @todo i18n
         return redirect()->intended(route('animes', false));
     }
 
@@ -40,12 +42,14 @@ class UserAuthenticatedController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = Auth::user();
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        self::info('Вышли! Вышли! Вышли!'); // @todo
+        self::info('До скорой встречи, <b>' . $user->profilename . '</b>!'); // @todo i18n
         return redirect(route('animes'));
     }
 }

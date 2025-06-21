@@ -99,7 +99,7 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="nav-item me-4">
+                <div class="nav-item me-3">
                     <a
                         href="{{--{{ route('users.show', [$user->uid, $user->profilelink]) }}--}}"
                         class="nav-link lh-1 p-2"
