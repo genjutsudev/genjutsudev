@@ -121,24 +121,6 @@
                     </a>
                 </div>
                 <div class="nav-item">
-                    {{--<a
-                        href="{{ route('logout') }}"
-                        class="nav-link"
-                        title="Выйти"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="bottom"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                    >
-                        <i class="fas fa-sign-out-alt" style="font-size: 30px;"></i>
-                        <form
-                            id="logout-form"
-                            action="{{ route('logout') }}"
-                            method="POST"
-                            class="d-none"
-                        >
-                            @csrf
-                        </form>
-                    </a>--}}
                     <form action="{{ route('logout') }}" method="post">
                         @csrf
                         <button
