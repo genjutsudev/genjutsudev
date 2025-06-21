@@ -34,4 +34,9 @@ enum UserTypeEnum: string
     {
         return $this === self::API;
     }
+
+    public function equals(self $other): bool
+    {
+        return $this === $other;
+    }
 }
