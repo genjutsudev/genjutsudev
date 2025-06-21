@@ -49,7 +49,7 @@ final readonly class UserTypeValue
 
     public function equals(UserTypeValue $other): bool
     {
-        return $this->type === $other->getType();
+        return $this->type->equals($other->getType());
     }
 
     public function __toString()
