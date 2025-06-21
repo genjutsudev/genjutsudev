@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\UserTypeEnum;
+use App\Exceptions\UserAlreadyExistException;
 use App\Models\User\User;
 use App\Repositories\UserRepository;
 use App\Traits\HasherTrait;
@@ -30,6 +31,10 @@ class UserService
         ?string $api_key = null,
     ) : User
     {
+        if (! $type->isApi()) {
+            throw_if($this->repository->findOneByEmail($email), new UserAlreadyExistException());
+        }
+
         return User::create([
             'referrer_nid' => $referrer_nid,
             'type' => $type,
