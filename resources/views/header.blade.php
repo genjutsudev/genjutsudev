@@ -58,7 +58,7 @@
                 data-bs-original-title="Канал в Telegram"
             >
                 <img
-                    style="margin:5px;"
+                    style="margin: 5px;"
                     src="{{ asset('static/media/brands/telegram.svg') }}"
                     width="26"
                     alt="Telegram"
@@ -73,13 +73,13 @@
                     data-bs-toggle="modal"
                     data-bs-target="#modal-users-sing-in"
                 >
-                    <i class="fas fa-sign-in-alt me-2" style="font-size: 20px"></i>
+                    <i class="fas fa-sign-in-alt me-2" style="font-size: 20px;"></i>
                     Войти
                 </a>
             @else
                 @php($user = auth()->user())
                 <div class="nav-item me-4 d-none d-md-flex">
-                    <div class="btn-list justify-content-between" style="width: 80px;">
+                    <div class="btn-list justify-content-between">
                         @foreach([
                             ['label' => 'Мои уведомления', 'icon' => 'fa fa-bell'],
                             ['label' => 'Мои сообщения', 'icon' => 'fa fa-envelope'],
@@ -99,46 +99,40 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="nav-item me-4">
+                <div class="nav-item me-3">
                     <a
-                        href="{{ route('users.show', [$user->uid, $user->profilelink]) }}"
-                        class="nav-link lh-1 text-reset p-0"
+                        href="{{--{{ route('users.show', [$user->uid, $user->profilelink]) }}--}}"
+                        class="nav-link lh-1 p-2"
                     >
-                        <span class="avatar avatar-sm" style="background-image: url(https://www.gravatar.com/avatar/9dcc550d0691ed1c0d52bf46ff7cb967?s=32&d=identicon&r=g)"></span>
+                        <span class="avatar avatar-sm" style="background-image: url(https://www.gravatar.com/avatar/9dcc550d0691ed1c0d52bf46ff7cb967?s=32&d=identicon&r=g);"></span>
                         <div class="d-none d-sm-block ps-2">
                             <div
                                 @class([
                                     'fw-bold',
-                                    'text-azure' => false/* Route::isWith([
+                                    'text-azure' => false/*Route::isWith([
                                         'users.show', [$user->uid, $user->profilelink]
-                                    ]) */
+                                    ])*/
                                 ])
                             >
-                                {{ urldecode($user->profilename ?? $user->profilelink) }}
+                                {{ $user->profilename }}
                             </div>{{-- TODO: components/ui --}}
                             <div class="mt-1 small text-muted text-uppercase">Профиль</div>
                         </div>
                     </a>
                 </div>
                 <div class="nav-item">
-                    <a
-                        href="{{ route('logout') }}"
-                        class="nav-link px-0"
-                        title="Выйти"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="bottom"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                    >
-                        <i class="fas fa-sign-out-alt" style="font-size: 30px;"></i>
-                        <form
-                            id="logout-form"
-                            action="{{ route('logout') }}"
-                            method="POST"
-                            class="d-none"
+                    <form action="{{ route('logout') }}" method="post">
+                        @csrf
+                        <button
+                            type="submit"
+                            class="nav-link p-2"
+                            title="Выйти"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
                         >
-                            @csrf
-                        </form>
-                    </a>
+                            <i class="fas fa-sign-out-alt" style="font-size: 30px;"></i>
+                        </button>
+                    </form>
                 </div>
             @endguest
         </div>
@@ -177,14 +171,14 @@
                         </div>
                     </div>
                     <div class="hr-text m-2">или</div>
-                    <form method="post" action="{{-- {{ route('login.store') }} --}}">
+                    <form method="post" action="{{ route('login.store') }}">
                         @csrf
                         <div class="modal-body">
                             <x-ui.form.email class="mb-3"/>
                             <x-ui.form.password class="mb-3">
                                 <div class="col-12 text-end">
                                     <a
-                                        href="{{-- {{ route('password.request') }} --}}"
+                                        href="{{-- {{ route('password.request') }}--}}"
                                         class="btn btn-sm btn-ghost-info"
                                     >
                                         Забыли пароль?
@@ -198,12 +192,12 @@
                                 <div class="row">
                                     <div class="col-auto">
                                         <button type="submit" class="btn btn-success">
-                                            <i class="fas fa-sign-in-alt me-2" style="font-size: 20px"></i>
+                                            <i class="fas fa-sign-in-alt me-2" style="font-size: 20px;"></i>
                                             Войти
                                         </button>
                                     </div>
                                     <div class="col text-uppercase">
-                                        <a href="{{-- {{ route('register') }} --}}" class="btn w-100">
+                                        <a href=" {{ route('register') }}" class="btn w-100">
                                             Новый аккаунт
                                         </a>
                                     </div>

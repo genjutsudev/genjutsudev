@@ -11,6 +11,7 @@
                 'alert-' . $alert['level'],
                 'alert-dismissible',
                 'mb-0',
+                'mt-4',
             ])
             role="alert"
         >
