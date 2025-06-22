@@ -176,9 +176,9 @@
                         <div class="modal-body">
                             <x-ui.form.email class="mb-3"/>
                             <x-ui.form.password class="mb-3">
-                                <div class="col-12 text-end">
+                                <div class="col-12 text-end mt-2">
                                     <a
-                                        href="{{-- {{ route('password.request') }}--}}"
+                                        href="{{ route('password.request') }}"
                                         class="btn btn-sm btn-ghost-info"
                                     >
                                         Забыли пароль?
