@@ -21,7 +21,7 @@
 
                 <!-- Email Address -->
                 <div class="form-group">
-                    <x-ui.form.email :label="__('Email')"/>
+                    <x-ui.form.email :label="__('Эл. почта')"/>
                     <x-ui.input-errors :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
@@ -37,6 +37,7 @@
             </form>
         </div>
     </div>
+
     <div class="text-center text-secondary mt-3">
         <span>Забудьте об этом, <a href="{{ route('login') }}">верните меня</a> на экран входа.</span>
     </div>
