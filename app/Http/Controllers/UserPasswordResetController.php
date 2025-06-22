@@ -47,7 +47,9 @@ class UserPasswordResetController extends Controller
         );
 
         if ($status == Password::PASSWORD_RESET) {
-            return redirect()->route('animes')->with('status', __($status));
+            return redirect()->route('animes')->with('messages', [
+                ['level' => 'success', 'message' => __($status)]
+            ]);
         }
 
         return back()->withInput($request->only('email'))->withErrors(['email' => __($status)]);
