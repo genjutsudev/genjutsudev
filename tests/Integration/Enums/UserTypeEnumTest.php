@@ -11,7 +11,7 @@ use Tests\TestCase;
 class UserTypeEnumTest extends TestCase
 {
     #[Test]
-    public function it_has_correct_cases()
+    public function testItHasCorrectCases()
     {
         $fn = function (UserTypeEnum $type): string {
             return $type->value;
@@ -23,21 +23,21 @@ class UserTypeEnumTest extends TestCase
     }
 
     #[Test]
-    public function it_returns_correct_values()
+    public function testItReturnsCorrectValues()
     {
         $expected = ['regular', 'admin', 'api'];
         $this->assertSame($expected, UserTypeEnum::values());
     }
 
     #[Test]
-    public function it_returns_correct_names()
+    public function testItReturnsCorrectNames()
     {
         $expected = ['REGULAR', 'ADMIN', 'API'];
         $this->assertSame($expected, UserTypeEnum::names());
     }
 
     #[Test]
-    public function isRegular_returns_true_only_for_regular_case()
+    public function testIsRegularReturnsTrueOnlyForRegularCase()
     {
         $this->assertTrue(UserTypeEnum::REGULAR->isRegular());
         $this->assertFalse(UserTypeEnum::ADMIN->isRegular());
@@ -45,7 +45,7 @@ class UserTypeEnumTest extends TestCase
     }
 
     #[Test]
-    public function isAdmin_returns_true_only_for_admin_case()
+    public function testIsAdminReturnsTrueOnlyForAdminCase()
     {
         $this->assertFalse(UserTypeEnum::REGULAR->isAdmin());
         $this->assertTrue(UserTypeEnum::ADMIN->isAdmin());
@@ -53,7 +53,7 @@ class UserTypeEnumTest extends TestCase
     }
 
     #[Test]
-    public function isApi_returns_true_only_for_api_case()
+    public function testIsApiReturnsTrueOnlyForApiCase()
     {
         $this->assertFalse(UserTypeEnum::REGULAR->isApi());
         $this->assertFalse(UserTypeEnum::ADMIN->isApi());
@@ -61,7 +61,7 @@ class UserTypeEnumTest extends TestCase
     }
 
     #[Test]
-    public function it_can_be_created_from_valid_value_using_tryFrom()
+    public function testItCanBeCreatedFromValidValueUsingTryFrom()
     {
         $this->assertSame(UserTypeEnum::REGULAR, UserTypeEnum::tryFrom('regular'));
         $this->assertSame(UserTypeEnum::ADMIN, UserTypeEnum::tryFrom('admin'));
@@ -70,7 +70,7 @@ class UserTypeEnumTest extends TestCase
     }
 
     #[Test]
-    public function it_can_be_created_from_valid_value_using_from()
+    public function testItCanBeCreatedFromValidValueUsingFrom()
     {
         $this->assertSame(UserTypeEnum::REGULAR, UserTypeEnum::from('regular'));
         $this->assertSame(UserTypeEnum::ADMIN, UserTypeEnum::from('admin'));
@@ -78,14 +78,14 @@ class UserTypeEnumTest extends TestCase
     }
 
     #[Test]
-    public function it_throws_exception_for_invalid_value_in_from()
+    public function testItThrowsExceptionForInvalidValueInFrom()
     {
         $this->expectException(\ValueError::class);
         UserTypeEnum::from('invalid');
     }
 
     #[Test]
-    public function it_returns_all_cases()
+    public function testItReturnsAllCases()
     {
         $cases = UserTypeEnum::cases();
         $this->assertCount(3, $cases);
@@ -93,7 +93,7 @@ class UserTypeEnumTest extends TestCase
     }
 
     #[Test]
-    public function it_can_check_equality()
+    public function testItCanCheckEquality()
     {
         $regular = UserTypeEnum::REGULAR;
         $admin = UserTypeEnum::ADMIN;
