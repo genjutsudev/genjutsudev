@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\UserAuthenticatedController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserPasswordResetController;
 use App\Http\Controllers\UserPasswordForgotController;
 use App\Http\Controllers\UserRegistrationController;
@@ -47,3 +48,23 @@ Route::group(['prefix' => 'users'], function () {
         Route::post('/reset', [UserPasswordResetController::class, 'store'])->name('.store');
     }); # password
 }); # users
+
+Route::group([
+    'prefix' => 'users',
+    'as' => 'users',
+], function () {
+    Route::get('/', action: [UserController::class, 'index']);
+    Route::group(['prefix' => '{user:nid}'], function () {
+        Route::get('/', [UserController::class, 'redirect'])->name('.redirect');
+        Route::group(['prefix' => '/{profilelink}', 'as' => '.show', 'middleware' => ['redirect.profilelink']], function () {
+            Route::get('/', [UserController::class, 'show']);
+            Route::group(['prefix' => 'edit', 'as' => '.edit', 'middleware' => ['auth', 'access.edit']], function () {
+                /*Route::get('/', [UserEditController::class, 'redirect'])->name('.redirect');*/
+                Route::group(['prefix' => 'account', 'as' => '.account'], function () {
+                    /*Route::get('/', [UserEditAccountController::class, 'show']);*/
+                    /*Route::put('/', [UserEditAccountController::class, 'update'])->name('.update');*/
+                });
+            });
+        });
+    });
+});

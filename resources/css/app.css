@@ -20,6 +20,10 @@
     max-width: 1080px;
 }
 
+.avatar-xll {
+    --tblr-avatar-size: 8rem
+}
+
 .block {
     margin-bottom: 2rem;
 }
