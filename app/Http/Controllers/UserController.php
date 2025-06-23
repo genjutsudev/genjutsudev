@@ -25,7 +25,7 @@ class UserController extends Controller
     public function redirect(?User $user): RedirectResponse
     {
         if (! $user) {
-            abort(404, 'The requested user does not exist.');
+            abort(404, 'The requested user does not exist.'); // @todo i18n
         }
 
         return redirect()->route('users.show', [$user->nid, $user->profilelink]);

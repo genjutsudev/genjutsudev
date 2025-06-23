@@ -20,7 +20,7 @@ class UserEnsureEditOnlySelfAccount
     public function handle(Request $request, Closure $next): Response
     {
         if (! Auth::check()) {
-            abort(403, 'You must be logged in to access this page.');
+            abort(403, 'You must be logged in to access this page.'); // @todo i18n
         }
 
         /** @var ?User $user */
@@ -28,7 +28,7 @@ class UserEnsureEditOnlySelfAccount
 
         // Проверяем, что текущий пользователь пытается редактировать себя
         if ($user && Auth::user()?->id !== $user->id) {
-            abort(403, 'You are not authorized to edit this user.');
+            abort(403, 'You are not authorized to edit this user.'); // @todo i18n
         }
 
         return $next($request);
