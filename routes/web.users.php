@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\UserAuthenticatedController;
+use App\Http\Controllers\UserPasswordResetController;
+use App\Http\Controllers\UserPasswordForgotController;
 use App\Http\Controllers\UserRegistrationController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,3 +38,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('sign-out', [UserAuthenticatedController::class, 'destroy'])->name('logout');
     }); # users
 }); # auth
+
+Route::group(['prefix' => 'users'], function () {
+    Route::group(['prefix' => 'password', 'as' => 'password'], function () {
+        Route::get('/new', [UserPasswordForgotController::class, 'create'])->name('.request');
+        Route::post('/new', [UserPasswordForgotController::class, 'store'])->name('.email');
+        Route::get('/reset/{token}', [UserPasswordResetController::class, 'create'])->name('.reset');
+        Route::post('/reset', [UserPasswordResetController::class, 'store'])->name('.store');
+    }); # password
+}); # users
