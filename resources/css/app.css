@@ -27,3 +27,25 @@
 .block {
     margin-bottom: 2rem;
 }
+
+/**
+ * @todo move to other .css file
+ */
+.gjsu-avatar-right-icon {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    background-size: cover;
+    image-rendering: -webkit-optimize-contrast;
+}
+
+.gjsu-avatar * {
+    margin: 8px;
+    padding: 0;
+}
+
+.gjsu-avatar-icon-premium {
+    background-image: url('/static/media/premium.svg');
+}

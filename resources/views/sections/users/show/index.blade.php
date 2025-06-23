@@ -8,9 +8,12 @@
         <div class="card">
             <div class="card-cover text-start p-5 d-flex" style="background-image: url({{ asset('static/media/default-cover.jpg') }}); padding-bottom: 10rem !important;">
                 <div class="d-none d-sm-block">
-                    <div class="avatar avatar-xll" style="background-image: url(https://www.gravatar.com/avatar/9dcc550d0691ed1c0d52bf46ff7cb967?s=160&amp;d=identicon&amp;r=g)"></div>
+                    <div class="gjsu-avatar avatar avatar-xll bg-white-lt">
+                        <img class="rounded-circle" alt="{{ $user->profilename }}" src="https://www.gravatar.com/avatar/9dcc550d0691ed1c0d52bf46ff7cb967?s=160&amp;d=identicon&amp;r=g">
+                        <span class="gjsu-avatar-right-icon gjsu-avatar-icon-premium"></span>
+                    </div>
                 </div>
-                <div class="text-light  ms-4" style="z-index: 999;">
+                <div class="text-light ms-4" style="z-index: 999;">
                     <div class="h1 m-0">
                         <span>
                             {{ $user->profilename }}
@@ -38,7 +41,7 @@
             <x-ui.block
                 {{-- Проверяем, что текущий пользователь пытается редактировать себя --}}
                 :disabled="$user && Auth::user()?->id !== $user->id"
-                class="card-footer m-0">
+                class="card-footer border-0 m-0">
                 <div class="d-flex">
                     <div class="d-flex me-auto" style="font-size: 24px;">
                         @foreach([

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-require_once __DIR__ . '/web.users.php';
+Route::group([], fn() => require_once __DIR__ . '/web.users.php');
 
 // @deprecated
 Route::get('/', fn() => 'Hello, World!');
