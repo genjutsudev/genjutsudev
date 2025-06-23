@@ -16,5 +16,5 @@
         required
         :error="$errors->has('email')"
     />
-    {{ $slot ?? '' }}
+    <x-ui.input-errors :messages="$errors->get('email')"/>
 </div>
