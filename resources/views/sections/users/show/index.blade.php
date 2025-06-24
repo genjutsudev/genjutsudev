@@ -28,20 +28,10 @@
                     <div class="h4 m-0">
                         <ol class="breadcrumb text-lowercase">
                             @if(! $user->gender->isOther())
-                                <li class="breadcrumb-item">{{ __('user.gender.' . $user->gender) }}</li>
+                                <li class="breadcrumb-item">{{ user_gender_title($user) }}</li>
                             @endif
                             <li class="breadcrumb-item">
-                                <div class="d-flex">
-                                    <div class="ms-1">
-                                        <span
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom"
-                                            data-bs-original-title="Участник 6 месяцев, 17 часов"
-                                        >
-                                            на сайте с 2024 г.
-                                        </span>
-                                    </div>
-                                </div>
+                                <x-user-joined :user="$user"/>
                             </li>
                         </ol>
                     </div>

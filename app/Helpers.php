@@ -7,6 +7,11 @@ use App\Values\UserActivityAtValue;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
+function user_gender_title(User $user): string
+{
+    return __('user.gender.' . $user->gender);
+}
+
 function user_last_activity(User $user): string
 {
     $activityAt = UserActivityAtValue::make($user->getActivityAt());
