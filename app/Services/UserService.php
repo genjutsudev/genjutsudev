@@ -56,7 +56,7 @@ class UserService
     ) : User
     {
         return self::createUser(
-            type: $type = new Type(UserTypeEnum::REGULAR),
+            type: $type = Type::make(UserTypeEnum::REGULAR),
             referrer_nid: $referrer_nid,
             email: $email,
             password: $password,
@@ -67,7 +67,7 @@ class UserService
     public function createUserApi(): User
     {
         return self::createUser(
-            type: $type = new Type(UserTypeEnum::API),
+            type: $type = Type::make(UserTypeEnum::API),
             api_key: hash('sha256', $type . time()), // @todo
         );
     }

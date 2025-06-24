@@ -8,8 +8,8 @@
         <div class="card">
             <div class="card-cover text-start p-5 d-flex" style="background-image: url({{ asset('static/media/default-cover.jpg') }}); padding-bottom: 10rem !important;">
                 <div class="d-none d-sm-block">
-                    <div class="gjsu-avatar avatar avatar-xll bg-white-lt">
-                        <img class="rounded-circle" alt="{{ $user->profilename }}" src="https://www.gravatar.com/avatar/9dcc550d0691ed1c0d52bf46ff7cb967?s=160&amp;d=identicon&amp;r=g">
+                    <div class="gjsu-avatar avatar avatar-xll rounded-circle">
+                        <img class="rounded-circle" alt="{{ $user->profilename }}" src="{{ gravatar($user->email) }}">
                         <span class="gjsu-avatar-right-icon gjsu-avatar-icon-premium"></span>
                     </div>
                 </div>
@@ -19,7 +19,7 @@
                             {{ $user->profilename }}
                         </span>{{-- TODO: components/ui --}}
                         <small style="font-size: 14px;" class="text-lowercase">
-                            {{ $user->activity_at }}
+                            {{ user_last_activity($user) }}
                         </small>
                     </div>
                     <div class="h4 m-0">
@@ -66,7 +66,9 @@
                     </div>{{-- TODO: components/ui --}}
                     <div class="d-flex align-items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"></path>
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                            <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"></path>
                         </svg>
                         <form action="/" method="post" class="m-0">
                             @method('put')

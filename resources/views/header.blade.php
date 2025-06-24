@@ -104,7 +104,7 @@
                         href="{{ route('users.show', [$user->nid, $user->profilelink]) }}"
                         @class(['nav-link', 'lh-1', 'p-2', 'bg-azure-lt' => $user && $user->id == request()->user?->id])
                     >
-                        <span class="avatar avatar-sm" style="background-image: url(https://www.gravatar.com/avatar/9dcc550d0691ed1c0d52bf46ff7cb967?s=32&d=identicon&r=g);"></span>
+                        <span class="avatar avatar-sm" style="background-image: url({{ gravatar($user->email) }});"></span>
                         <div class="d-none d-sm-block ps-2">
                             <div
                                 @class([

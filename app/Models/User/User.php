@@ -59,6 +59,7 @@ class User extends Authenticatable
         'registration_ip_hash',
         'registration_country',
         'token',
+        'activity_at',
         'api_key',
     ];
 
@@ -89,6 +90,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            //'activity_at' => 'datetime',
         ];
     }
 }

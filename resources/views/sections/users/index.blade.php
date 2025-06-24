@@ -12,7 +12,7 @@
                 >
                     {{ $user->profilename }}
                 </a>
-                <small class="text-lowercase">{{ $user->activity_at ?? 'nani' }}</small>
+                <small class="text-lowercase">{{ user_last_activity($user) }}</small>
             </div>
         @endforeach
     </div>
