@@ -49,3 +49,13 @@
 .gjsu-avatar-icon-premium {
     background-image: url('/static/media/premium.svg');
 }
+
+.gjsu-avatar-frame {
+    border: solid 5px white;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.gjsu-avatar-frame-red {
+    border-color: red;
+}

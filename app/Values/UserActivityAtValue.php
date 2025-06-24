@@ -8,13 +8,13 @@ use Illuminate\Support\Carbon;
 
 readonly final class UserActivityAtValue
 {
-    private function __construct(public string $datetime)
+    private function __construct(public Carbon $date)
     {
     }
 
-    public static function make(string $datetime): self
+    public static function make(Carbon $date): self
     {
-        return new self($datetime);
+        return new self($date);
     }
 
     public function forHumans(bool $is_online): string
@@ -28,6 +28,6 @@ readonly final class UserActivityAtValue
 
     public function diffForHumans(): string
     {
-        return Carbon::parse($this->datetime)->diffForHumans();
+        return Carbon::parse($this->date)->diffForHumans();
     }
 }

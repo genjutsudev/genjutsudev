@@ -6,8 +6,11 @@
     <div class="container">
         {{-- Card --}}
         <div class="card">
-            <div class="card-cover text-start p-5 d-flex" style="background-image: url({{ asset('static/media/default-cover.jpg') }}); padding-bottom: 10rem !important;">
-                <div class="d-none d-sm-block">
+            <div
+                class="card-cover text-start p-5 d-flex"
+                style="background-image: url({{ asset('static/media/default-cover.jpg') }}); padding-bottom: 10rem !important;"
+            >
+                <div class="d-none d-sm-block gjsu-avatar-frame">
                     <div class="gjsu-avatar avatar avatar-xll rounded-circle">
                         <img class="rounded-circle" alt="{{ $user->profilename }}" src="{{ gravatar($user->email) }}">
                         <span class="gjsu-avatar-right-icon gjsu-avatar-icon-premium"></span>
@@ -24,11 +27,17 @@
                     </div>
                     <div class="h4 m-0">
                         <ol class="breadcrumb text-lowercase">
-                            <li class="breadcrumb-item">Мужской</li>
+                            @if(! $user->gender->isOther())
+                                <li class="breadcrumb-item">{{ __('user.gender.' . $user->gender) }}</li>
+                            @endif
                             <li class="breadcrumb-item">
                                 <div class="d-flex">
                                     <div class="ms-1">
-                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Участник 6 месяцев, 17 часов">
+                                        <span
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="bottom"
+                                            data-bs-original-title="Участник 6 месяцев, 17 часов"
+                                        >
                                             на сайте с 2024 г.
                                         </span>
                                     </div>

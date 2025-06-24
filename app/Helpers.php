@@ -3,21 +3,22 @@
 declare(strict_types=1);
 
 use App\Models\User\User;
+use App\Values\UserActivityAtValue;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 function user_last_activity(User $user): string
 {
-    $activityAt = \App\Values\UserActivityAtValue::make($user->activity_at);
-    return $activityAt->forHumans(user_is_online($user->id));
+    $activityAt = UserActivityAtValue::make($user->getActivityAt());
+    return $activityAt->forHumans(user_is_online($user));
 }
 
-function user_is_online(string $id): bool
+function user_is_online(User $user): bool
 {
-    return Cache::store('redis')->getStore()->get('user:' . $id . ':online') ?? false;
+    return Cache::store('redis')->getStore()->get('user:' . $user->id . ':online') ?? false;
 }
 
 function gravatar(string $email, int $size = 192): string
 {
-    return sprintf("https://www.gravatar.com/avatar/%s?s=$size&d=robohash", md5(Str::lower($email)));
+    return sprintf("https://www.gravatar.com/avatar/%s?s=$size&d=robohash&r=g", md5(Str::lower($email)));
 }
