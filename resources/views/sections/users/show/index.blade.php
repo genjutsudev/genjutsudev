@@ -16,7 +16,7 @@
                         <span class="gjsu-avatar-right-icon gjsu-avatar-icon-premium"></span>
                     </div>
                 </div>
-                <div class="text-light" style="z-index: 999;">
+                <div class="text-light me-auto" style="z-index: 999;">
                     <div class="h1 m-0">
                         <span>
                             {{ $user->profilename }}
@@ -36,30 +36,59 @@
                         </ol>
                     </div>
                 </div>
+                <div>
+                    <button class="btn btn-primary" style="padding: 10px;" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show app menu" data-bs-auto-close="outside" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-menu-2 m-0">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M4 6l16 0"/>
+                            <path d="M4 12l16 0"/>
+                            <path d="M4 18l16 0"/>
+                        </svg>
+                    </button>
+                    <style>.nav-segmented-fix { min-width: 0; margin-top: 5px !important; padding: 0; }</style>
+                    <div class="dropdown-menu dropdown-menu-end nav-segmented-fix">
+                        <nav class="nav nav-segmented nav-segmented-vertical nav-3" role="tablist">
+                            @foreach([
+                                'Друзья' => ['href' => '#', 'icon' => '<i class="fas fa-user-friends"></i>'],
+                                'Комментарии' => ['href' => '#', 'icon' => '<i class="fa fa-comments"></i>'],
+                                'Рецензии' => ['href' => '#', 'icon' => '<i class="fa fa-paint-brush"></i>'],
+                                'Жалобы' => ['href' => '#', 'icon' => '<i class="fa fa-warning"></i>'],
+                                'Настройки' => ['href' => '/', 'icon' => '<i class="fas fa-user-cog"></i>'],
+                            ] as $title => $item)
+                                <a
+                                    href="{{ $item['href'] }}"
+                                    @class(['nav-link', 'justify-content-center', 'p-1', 'disabled' => $item['href'] === '#'])
+                                    style="font-size: 16px"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="left"
+                                    data-bs-original-title="{{ $title }}"
+                                >
+                                    {!! $item['icon'] !!}
+                                </a>
+                            @endforeach
+                        </nav>
+                    </div>
+                </div>
             </div>
             <x-ui.block
                 {{-- Проверяем, что текущий пользователь пытается редактировать себя --}}
                 :disabled="$user && Auth::user()?->id !== $user->id"
                 class="card-footer border-0 m-0">
                 <div class="d-flex">
-                    <div class="d-flex me-auto" style="font-size: 24px;">
+                    <div class="d-flex me-auto text-uppercase" style="font-size: 16px;">
                         @foreach([
-                            'Друзья' => ['href' => '#', 'icon' => '<i class="fas fa-user-friends"></i>'],
-                            'Подписки' => ['href' => '#', 'icon' => '<i class="fa fa-rss"></i>'],
-                            'Комментарии' => ['href' => '#', 'icon' => '<i class="fa fa-comments"></i>'],
-                            'Рецензии' => ['href' => '#', 'icon' => '<i class="fa fa-paint-brush"></i>'],
-                            'Заявки' => ['href' => '#', 'icon' => '<i class="fa fa-ticket"></i>'],
-                            'Жалобы' => ['href' => '#', 'icon' => '<i class="fa fa-warning"></i>'],
-                            'Настройки' => ['href' => '/'/* route('users.show.edit.account', [$user->nid, $user->profilelink]) */, 'icon' => '<i class="fas fa-user-cog"></i>'],
+                            'Главная' => ['href' => route('users.show', [$user->nid, $user->profilelink]), 'icon' => '<i class="fas fa-home text-green"></i>'],
+                            'Коллекции' => ['href' => '/', 'icon' => '<i class="fa-solid fa-layer-group"></i>'],
+                            'Коллекция' => ['href' => '/', 'icon' => '<i class="fa-solid fa-star text-yellow"></i>'],
+                            'Следите' => ['href' => '/', 'icon' => '<i class="fa-solid fa-heart" style="color: red;"></i>'],
                         ] as $title => $item)
                             <a
                                 href="{{ $item['href'] }}"
-                                @class(['me-3', 'link-azure', 'disabled' => $item['href'] === '#'])
-                                class="pe-3 link-azure"
+                                @class(['me-3', 'link-azure btn', 'text-decoration-none', 'disabled' => $item['href'] === '#'])
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="bottom"
                                 data-bs-original-title="{{ $title }}">
-                                {!! $item['icon'] !!}
+                                <span>{!! $item['icon'] !!} <small><b>{{ $title }}</b></small></span>
                             </a>
                         @endforeach
                     </div>{{-- TODO: components/ui --}}
