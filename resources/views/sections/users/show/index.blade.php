@@ -10,13 +10,13 @@
                 class="card-cover text-start p-5 d-flex"
                 style="background-image: url({{ asset('static/media/default-cover.jpg') }}); padding-bottom: 10rem !important;"
             >
-                <div class="d-none d-sm-block gjsu-avatar-frame">
+                <div class="gjsu-avatar-frame d-none d-sm-block me-4">
                     <div class="gjsu-avatar avatar avatar-xll rounded-circle">
                         <img class="rounded-circle" alt="{{ $user->profilename }}" src="{{ gravatar($user->email) }}">
                         <span class="gjsu-avatar-right-icon gjsu-avatar-icon-premium"></span>
                     </div>
                 </div>
-                <div class="text-light ms-4" style="z-index: 999;">
+                <div class="text-light" style="z-index: 999;">
                     <div class="h1 m-0">
                         <span>
                             {{ $user->profilename }}
@@ -63,7 +63,7 @@
                             </a>
                         @endforeach
                     </div>{{-- TODO: components/ui --}}
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center d-none d-sm-flex">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>

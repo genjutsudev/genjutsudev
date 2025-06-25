@@ -12,7 +12,7 @@
         >
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="h1 navbar-brand navbar-brand-autodark d-none-navbar-horizontal p-0 pe-3">
+        <div class="h1 navbar-brand navbar-brand-autodark d-none-navbar-horizontal me-auto p-0 pe-3">
             <a href="/" class="text-decoration-none text-uppercase" title="Домой">
                 <div class="align-items-center">
                     <div class="d-flex font-vina-sans" style="font-size: 36px;">
