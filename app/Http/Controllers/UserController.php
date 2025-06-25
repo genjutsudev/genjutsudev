@@ -19,7 +19,7 @@ class UserController extends Controller
 
     public function show(User $user): View
     {
-        return view('sections.users.show.index', compact(['user']));
+        return view('sections.users.show', compact(['user']));
     }
 
     public function redirect(?User $user): RedirectResponse

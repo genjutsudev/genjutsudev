@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\View\Layouts;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class UsersPassword extends Component
+class UsersEdit  extends Component
 {
     /**
      * Create a new component instance.
@@ -22,6 +20,6 @@ class UsersPassword extends Component
      */
     public function render(): View
     {
-        return view('layouts.users-password');
+        return view('layouts.users-edit');
     }
 }

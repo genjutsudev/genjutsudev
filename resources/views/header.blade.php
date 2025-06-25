@@ -102,20 +102,18 @@
                 <div class="nav-item me-3">
                     <a
                         href="{{ route('users.show', [$user->nid, $user->profilelink]) }}"
-                        @class(['nav-link', 'lh-1', 'p-2', 'bg-azure-lt' => $user && $user->id == request()->user?->id])
+                        @class([
+                            'nav-link',
+                            'lh-1',
+                            'p-2',
+                            'bg-azure-lt' => auth()->user()->equals(request()->user) && request()->routeIs('users.show')
+                        ])
                     >
                         <span class="avatar avatar-sm" style="background-image: url({{ gravatar($user->email) }});"></span>
                         <div class="d-none d-sm-block ps-2">
-                            <div
-                                @class([
-                                    'fw-bold',
-                                    'text-azure' => false/*Route::isWith([
-                                        'users.show', [$user->nid, $user->profilelink]
-                                    ])*/
-                                ])
-                            >
+                            <div class="fw-bold">
                                 {{ $user->profilename }}
-                            </div>{{-- TODO: components/ui --}}
+                            </div>
                             <div class="mt-1 small text-muted text-uppercase">Профиль</div>
                         </div>
                     </a>

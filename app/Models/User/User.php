@@ -132,4 +132,9 @@ class User extends Authenticatable
     {
         return $this->activity_at;
     }
+
+    public function equals(?self $other): bool
+    {
+        return $this->id === $other?->id;
+    }
 }

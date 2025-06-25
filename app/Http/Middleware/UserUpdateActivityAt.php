@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Models\User\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -26,6 +27,9 @@ class UserUpdateActivityAt
             return $next($request);
         }
 
+        /**
+         * @var ?User $user
+         */
         $user = Auth::user();
         $now = Carbon::now();
         $expiresAt = $now->copy()->subMinutes(self::INTERVAL);
@@ -41,6 +45,6 @@ class UserUpdateActivityAt
             $user->updateQuietly(['activity_at' => $now]);
         }
 
-        return $next($request); // @todo
+        return $next($request);
     }
 }

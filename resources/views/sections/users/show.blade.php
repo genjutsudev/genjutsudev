@@ -51,21 +51,21 @@
                         {{-- Проверяем, что текущий пользователь пытается редактировать себя --}}
                         @if($user && Auth::user()?->id === $user->id)
                             @foreach([
-                                'Друзья' => ['href' => '#', 'icon' => '<i class="fas fa-user-friends"></i>'],
-                                'Комментарии' => ['href' => '#', 'icon' => '<i class="fa fa-comments"></i>'],
-                                'Рецензии' => ['href' => '#', 'icon' => '<i class="fa fa-paint-brush"></i>'],
-                                'Жалобы' => ['href' => '#', 'icon' => '<i class="fa fa-warning"></i>'],
-                                'Настройки' => ['href' => '/', 'icon' => '<i class="fas fa-user-cog"></i>'],
+                                'Друзья' => ['routeName' => '#', 'icon' => '<i class="fas fa-user-friends"></i>'],
+                                'Комментарии' => ['routeName' => '#', 'icon' => '<i class="fa fa-comments"></i>'],
+                                'Рецензии' => ['routeName' => '#', 'icon' => '<i class="fa fa-paint-brush"></i>'],
+                                'Жалобы' => ['routeName' => '#', 'icon' => '<i class="fa fa-warning"></i>'],
+                                'Настройки' => ['routeName' => 'users.edit.account', 'icon' => '<i class="fas fa-user-cog"></i>'],
                             ] as $title => $item)
                                 <a
-                                    href="{{ $item['href'] }}"
-                                    @class(['nav-link', 'justify-content-center', 'p-1', 'disabled' => $item['href'] === '#'])
+                                    href="{{ $item['routeName'] !== '#' ? route($item['routeName'], [$user->nid, $user->profilelink]) : '/' }}"
+                                    @class(['nav-link', 'justify-content-center', 'p-1', 'disabled' => $item['routeName'] === '#'])
                                     style="font-size: 16px"
                                     data-bs-toggle="tooltip"
                                     data-bs-placement="left"
                                     data-bs-original-title="{{ $title }}"
                                 >
-                                    {!! $item['icon'] !!}
+                                    <span>{!! $item['icon'] !!}</span>
                                 </a>
                             @endforeach
                         @else
@@ -89,15 +89,15 @@
             <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs text-uppercase" style="flex-wrap: nowrap; overflow-y: hidden;">
                     @foreach([
-                        'Главная' => ['route' => 'users.show', 'icon' => '<i class="fas fa-home text-green"></i>'],
-                        'Коллекции' => ['route' => '#', 'icon' => '<i class="fa-solid fa-layer-group text-azure"></i>'],
-                        'Избранное' => ['route' => '#', 'icon' => '<i class="fa-solid fa-star text-yellow"></i>'],
-                        'Следите' => ['route' => '#', 'icon' => '<i class="fa-solid fa-heart" style="color: red;"></i>'],
+                        'Главная' => ['routeName' => 'users.show', 'icon' => '<i class="fas fa-home text-green"></i>'],
+                        'Коллекции' => ['routeName' => '#', 'icon' => '<i class="fa-solid fa-layer-group text-azure"></i>'],
+                        'Избранное' => ['routeName' => '#', 'icon' => '<i class="fa-solid fa-star text-yellow"></i>'],
+                        'Следите' => ['routeName' => '#', 'icon' => '<i class="fa-solid fa-heart" style="color: red;"></i>'],
                     ] as $title => $item)
                         <li class="nav-item">
                             <a
-                                href="{{ $item['route'] !== '#' ? route($item['route'], [$user->nid, $user->profilelink]) : '/' }}"
-                                @class(['nav-link', 'active' => request()->routeIs($item['route']), 'disabled' => $item['route'] === '#'])
+                                href="{{ $item['routeName'] !== '#' ? route($item['routeName'], [$user->nid, $user->profilelink]) : '/' }}"
+                                @class(['nav-link', 'active' => request()->routeIs($item['routeName']), 'disabled' => $item['routeName'] === '#'])
                             >
                                 <span style="display: flex; align-items: center;">{!! $item['icon'] !!} <b style="margin-left: 8px;">{{ $title }}</b></span>
                             </a>
