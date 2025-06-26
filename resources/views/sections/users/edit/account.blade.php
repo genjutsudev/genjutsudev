@@ -155,6 +155,45 @@
                 </div>
             </x-ui.subheadline>
         </div>
-        <div class="col">2</div>
+        <div class="col">
+            {{-- avatar, frame & cover --}}
+            <div class="card mb-3">
+                <div
+                    class="card-cover d-flex rounded-0 text-start p-5"
+                    style="background-image: url({{ asset('static/media/default-cover.jpg') }});"
+                >
+                    <div class="me-4 d-none d-sm-block">
+                        <div
+                            class="avatar avatar-xll rounded-circle align-items-end"
+                            style="background-image: url({{ gravatar($user->email) }})"
+                        >
+                            <a
+                                href="/users/1/Noilty/edit/avatar"
+                                class="position-absolute btn btn-sm btn-primary rounded-circle border-0 p-2 m-1 disabled"
+                                style="right: 0;"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="right"
+                                data-bs-original-title="Сменить аватар"
+                            >
+                                <i class="fa fa-pencil" style="font-size:16px;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <a
+                    href="/users/1/Noilty/edit/cover"
+                    class="position-absolute btn btn-sm btn-primary border-0 p-2 m-3 disabled"
+                    style="right:0; bottom:0;"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="left"
+                    data-bs-original-title="Сменить обложку"
+                >
+                    <i class="fa fa-pencil" style="font-size:16px;"></i>
+                </a>
+            </div>
+            <x-ui.subheadline :label="__('Привязанные социальные сети')">
+                networks
+            </x-ui.subheadline>
+        </div>
     </div>
 </x-layouts::users-edit>
