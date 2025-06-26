@@ -3,9 +3,13 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\UserAuthenticatedController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserEditAccountController;
+use App\Http\Controllers\UserEditController;
 use App\Http\Controllers\UserPasswordResetController;
 use App\Http\Controllers\UserPasswordForgotController;
 use App\Http\Controllers\UserRegistrationController;
+use App\Http\Controllers\UserShowController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -13,11 +17,11 @@ Route::middleware('guest')->group(function () {
         Route::group(['prefix' => 'sign-up'], function () {
             Route::get('/', [UserRegistrationController::class, 'create'])->name('register');
             Route::post('/', [UserRegistrationController::class, 'store'])->name('register.store');
-        });
+        }); # sign-up
         Route::group(['prefix' => 'sign-in'], function () {
             Route::get('/', [UserAuthenticatedController::class, 'create'])->name('login');
             Route::post('/', [UserAuthenticatedController::class, 'store'])->name('login.store');
-        });
+        }); # sign-in
     }); # users
 }); # guest
 
@@ -46,4 +50,26 @@ Route::group(['prefix' => 'users'], function () {
         Route::get('/reset/{token}', [UserPasswordResetController::class, 'create'])->name('.reset');
         Route::post('/reset', [UserPasswordResetController::class, 'store'])->name('.store');
     }); # password
+}); # users
+
+Route::group(['prefix' => 'users', 'as' => 'users'], function () {
+    Route::get('/', action: [UserController::class, 'index']);
+    Route::group(['prefix' => '{user:nid}'], function () {
+        Route::get('/', [UserShowController::class, 'redirect'])->name('.redirect');
+        Route::group(['prefix' => '/{profilelink}', 'middleware' => ['redirect.profilelink']], function () {
+            Route::group(['as' => '.show'], function () {
+                Route::get('/', [UserShowController::class, 'show']);
+                Route::get('/collections', [UserShowController::class, 'collections'])->name('.collections');
+                Route::get('/featured', [UserShowController::class, 'featured'])->name('.featured');
+                Route::get('/tracked', [UserShowController::class, 'tracked'])->name('.tracked');
+            }); # show
+            Route::group(['prefix' => 'edit', 'as' => '.edit', 'middleware' => ['auth', 'access.edit']], function () {
+                Route::get('/', [UserEditController::class, 'redirect'])->name('.redirect');
+                Route::group(['prefix' => 'account', 'as' => '.account'], function () {
+                    Route::get('/', [UserEditAccountController::class, 'show']);
+                    /*Route::put('/', [UserEditAccountController::class, 'update'])->name('.update');*/
+                }); # account
+            }); # edit
+        });
+    });
 }); # users

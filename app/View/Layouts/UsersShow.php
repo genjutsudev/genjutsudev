@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\View\Layouts;
 
+use App\Models\User\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Illuminate\View\Component;
 
-class UsersPassword extends Component
+class UsersShow  extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(private readonly Request $request)
     {
         //
     }
@@ -22,6 +24,11 @@ class UsersPassword extends Component
      */
     public function render(): View
     {
-        return view('layouts.users-password');
+        /**
+         * @var User $user;
+         */
+        $user = $this->request->user;
+
+        return view('layouts.users-show', compact(['user']));
     }
 }
