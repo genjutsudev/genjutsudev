@@ -7,9 +7,9 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property string $user_profilename
+ * @property string $user_profilelink
  */
-class UserUpdateProfilenameRequest extends FormRequest
+class UserUpdateProfilelinkRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,7 @@ class UserUpdateProfilenameRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_profilename' => ['required', 'string', 'min:6'],
+            'user_profilelink' => ['required', 'string', 'min:6'],
         ];
     }
 }

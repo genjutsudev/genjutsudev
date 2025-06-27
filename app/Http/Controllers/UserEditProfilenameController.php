@@ -20,13 +20,13 @@ class UserEditProfilenameController extends Controller
     public function update(ProfilenameRequest $request, User $user): RedirectResponse
     {
         try {
-            $status = $user->update(['profilename' => $request->input('user_profilename')]);
+            $status = $user->update(['profilename' => $profilename = $request->input('user_profilename')]);
         } catch (\Throwable $e) {
             dd($e->getMessage());
         }
 
         $level = $status ? 'success' : 'warning';
-        $message = $status ? 'Изменения успешно сохранены.' : 'Изменения не удалось сохранень.';
+        $message = $status ? 'Изменения успешно сохранены.' : 'Изменения сохранень не удалось.'; // @todo i18n
 
         return redirect()
             ->route('users.edit.account', [$user->nid, $user->profilelink])

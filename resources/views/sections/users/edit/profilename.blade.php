@@ -8,17 +8,17 @@
         @csrf
         {{-- profilename --}}
         <div class="mb-3 w-50">
-            <label for="profilename" class="form-label">Имя профиля</label>
+            <label for="user_profilename" class="form-label">Имя профиля</label>
             <x-ui.input
-                id="profilename"
-                name="profilename"
-                value="{{ old('profilename') ?? $user->profilename }}"
+                id="user_profilename"
+                name="user_profilename"
+                value="{{ old('user_profilename') ?? $user->profilename }}"
                 class="form-control"
                 autocomplete="off"
                 required
-                :error="$errors->has('profilename')"
+                :error="$errors->has('user_profilename')"
             />
-            <x-ui.input-errors :messages="$errors->get('profilename')"/>
+            <x-ui.input-errors :messages="$errors->get('user_profilename')"/>
         </div>
         <div class="w-50 form-group text-end">
             <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}" class="me-3">Отмена</a>
