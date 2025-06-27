@@ -9,9 +9,32 @@
             <div class="mb-3 w-50">
                 <label for="user_profilename" class="form-label">Имя профиля</label>
                 <div class="input-group">
-                    <input id="user_profilename" class="form-control" placeholder="{{ $user->profilename }}" autocomplete="off" disabled>
-                    <a href="{{ route('users.edit.profilename', [$user->nid, $user->profilelink]) }}" class="btn" type="button" title="Изменить" style="width: 36px;">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil m-0" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <input
+                        id="user_profilename"
+                        class="form-control"
+                        placeholder="{{ $user->profilename }}"
+                        autocomplete="off"
+                        disabled
+                    >
+                    <a
+                        href="{{ route('users.edit.profilename', [$user->nid, $user->profilelink]) }}"
+                        class="btn"
+                        type="button"
+                        title="Изменить"
+                        style="width: 36px;"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="icon icon-tabler icon-tabler-pencil m-0"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
                             <path d="M13.5 6.5l4 4"></path>
@@ -26,9 +49,31 @@
                 <div class="mb-3 w-50">
                     <label for="user_profilelink" class="form-label">Ссылка профиля</label>
                     <div class="input-group">
-                        <input id="user_profilelink" class="form-control" placeholder="{{ $user->profilelink }}" autocomplete="off" disabled>
-                        <a href="/users/1/Noilty/edit/profilelink" class="btn" type="button" title="Изменить" style="width: 36px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil m-0" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <input
+                            id="user_profilelink"
+                            class="form-control"
+                            placeholder="{{ $user->profilelink }}"
+                            autocomplete="off"
+                            disabled
+                        >
+                        <a
+                            href="{{ route('users.edit.profilelink', [$user->nid, $user->profilelink]) }}"
+                            class="btn"
+                            type="button"
+                            title="Изменить"
+                            style="width: 36px;"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="icon icon-tabler icon-tabler-pencil m-0"
+                                width="24" height="24"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
                                 <path d="M13.5 6.5l4 4"></path>

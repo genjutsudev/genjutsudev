@@ -6,6 +6,7 @@ use App\Http\Controllers\UserAuthenticatedController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEditAccountController;
 use App\Http\Controllers\UserEditController;
+use App\Http\Controllers\UserEditProfilelinkController;
 use App\Http\Controllers\UserEditProfilenameController;
 use App\Http\Controllers\UserPasswordResetController;
 use App\Http\Controllers\UserPasswordForgotController;
@@ -74,6 +75,10 @@ Route::group(['prefix' => 'users', 'as' => 'users'], function () {
                     Route::get('/', [UserEditProfilenameController::class, 'show']);
                     /*Route::put('/', [UserEditProfilenameController::class, 'update'])->name('.update');*/
                 }); # profilename
+                Route::group(['prefix' => 'profilelink', 'as' => '.profilelink'], function () {
+                    Route::get('/', [UserEditProfilelinkController::class, 'show']);
+                    /*Route::put('/', [UserEditProfilelinkController::class, 'update'])->name('.update');*/
+                }); # profilelink
             }); # edit
         });
     });

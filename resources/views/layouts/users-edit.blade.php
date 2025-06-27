@@ -20,9 +20,21 @@
                     <x-slot:options>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item active" aria-current="page">Аккаунт</li>
+                                @foreach([
+                                    ['title' => 'Аккаунт', 'routeName' => 'users.edit.account']
+                                ] as $bcItem)
+                                    @if(! request()->routeIs($bcItem['routeName']))
+                                        <li class="breadcrumb-item">
+                                            <a href="{{ route($bcItem['routeName'], [$user->nid, $user->profilelink]) }}">
+                                                {{ $bcItem['title'] }}
+                                            </a>
+                                        </li>
+                                    @else
+                                        <li class="breadcrumb-item">{{ $bcItem['title'] }}</li>
+                                    @endif
+                                @endforeach
                             </ol>
-                        </nav>
+                        </nav>{{-- @todo move to ui\component --}}
                     </x-slot:options>
                 </x-ui.subheadline>
                 {{ $slot }}
