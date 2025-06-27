@@ -73,7 +73,7 @@ Route::group(['prefix' => 'users', 'as' => 'users'], function () {
                 }); # account
                 Route::group(['prefix' => 'profilename', 'as' => '.profilename'], function () {
                     Route::get('/', [UserEditProfilenameController::class, 'show']);
-                    /*Route::put('/', [UserEditProfilenameController::class, 'update'])->name('.update');*/
+                    Route::put('/', [UserEditProfilenameController::class, 'update'])->name('.update');
                 }); # profilename
                 Route::group(['prefix' => 'profilelink', 'as' => '.profilelink'], function () {
                     Route::get('/', [UserEditProfilelinkController::class, 'show']);
