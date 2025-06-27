@@ -10,7 +10,7 @@
                 <label for="user_profilename" class="form-label">Имя профиля</label>
                 <div class="input-group">
                     <input id="user_profilename" class="form-control" placeholder="{{ $user->profilename }}" autocomplete="off" disabled>
-                    <a href="/users/1/Noilty/edit/profilename" class="btn" type="button" title="Изменить" style="width: 36px;">
+                    <a href="{{ route('users.edit.profilename', [$user->nid, $user->profilelink]) }}" class="btn" type="button" title="Изменить" style="width: 36px;">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil m-0" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
@@ -100,7 +100,7 @@
                     </label>
                 </div>
                 <div class="form-group text-end">
-                    <input type="submit" value="Сохранить" class="btn btn-primary">
+                    <input type="submit" value="Сохранить" class="btn btn-sm btn-secondary px-2 py-1">
                 </div>
             </form>
             {{-- security account --}}
@@ -113,7 +113,7 @@
                             class="form-label-description"
                             data-bs-toggle="tooltip"
                             data-bs-placement="left"
-                            data-bs-original-title="Изменить e-mail и пароль"
+                            data-bs-original-title="Эл. почту и пароль"
                         >
                             <a href="https://kitaku.noilty.com/users/Noilty/edit/password">Изменить</a>
                         </div>
@@ -146,7 +146,7 @@
                             class="form-label-description"
                             data-bs-toggle="tooltip"
                             data-bs-placement="left"
-                            data-bs-original-title="Сбросить пароль по e-mail"
+                            data-bs-original-title="Пароль по эл. почте"
                         >
                             <a href="/users/1/Noilty/edit/password">Сбросить</a>
                         </div>
