@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserUpdateProfilenameRequest as ProfilenameRequest;
 use App\Models\User\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class UserEditProfilenameController extends Controller
         return view('sections.users.edit.profilename', compact(['user']));
     }
 
-    public function update(Request $request, User $user): RedirectResponse
+    public function update(ProfilenameRequest $request, User $user): RedirectResponse
     {
         try {
             $status = $user->update(['profilename' => $request->input('user_profilename')]);
