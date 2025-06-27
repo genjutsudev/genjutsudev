@@ -7,29 +7,33 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserUpdateProfilenameRequest as ProfilenameRequest;
 use App\Models\User\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class UserEditProfilenameController extends Controller
 {
-    public function show(Request $request, User $user): View
+    public function show(User $user): View
     {
         return view('sections.users.edit.profilename', compact(['user']));
     }
 
     public function update(ProfilenameRequest $request, User $user): RedirectResponse
     {
+        $profilename = $request->validated('user_profilename');
+
         try {
-            $status = $user->update(['profilename' => $profilename = $request->input('user_profilename')]);
-        } catch (\Throwable $e) {
-            dd($e->getMessage());
+            $isUpdated = $user->update(['profilename' => $profilename]);
+            $level = $isUpdated ? 'success' : 'warning';
+            $message = $isUpdated ? 'Имя профиля успешно обновлено.' : 'Имя профиля обновить не удалось.';
+            $routeName = $isUpdated ? 'users.edit.account' : 'users.edit.profilelink';
+        } catch (\Throwable $th) {
+            $level = 'danger';
+            $message = 'Произошла внутренняя ошибка, повторите попытку позже.';
+            $routeName = 'users.edit.profilelink';
+            logger()->error(self::class, ['error' => $th->getMessage(), 'user_id' => $user->id]);
         }
 
-        $level = $status ? 'success' : 'warning';
-        $message = $status ? 'Изменения успешно сохранены.' : 'Изменения сохранень не удалось.'; // @todo i18n
-
         return redirect()
-            ->route('users.edit.account', [$user->nid, $user->profilelink])
+            ->route($routeName, [$user->nid, $user->profilelink])
             ->with('messages', [['level' => $level, 'message' => $message]]);
     }
 }
