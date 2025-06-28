@@ -86,6 +86,8 @@ class User extends Authenticatable
         'email',
         'password',
         'profilename',
+        'birthday',
+        'gender',
         'registration_ip_hash',
         'registration_country',
         'token',

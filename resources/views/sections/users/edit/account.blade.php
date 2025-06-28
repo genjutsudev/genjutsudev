@@ -43,63 +43,72 @@
                 </div>
             </div>
             {{-- profilelink --}}
+            <div class="mb-3 w-50">
+                <label for="user_profilelink" class="form-label">Ссылка профиля</label>
+                <div class="input-group">
+                    <input
+                        id="user_profilelink"
+                        class="form-control"
+                        placeholder="{{ $user->profilelink }}"
+                        autocomplete="off"
+                        disabled
+                    >
+                    <a
+                        href="{{ route('users.edit.profilelink', [$user->nid, $user->profilelink]) }}"
+                        class="btn"
+                        type="button"
+                        title="Изменить"
+                        style="width: 36px;"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="icon icon-tabler icon-tabler-pencil m-0"
+                            width="24" height="24"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
+                            <path d="M13.5 6.5l4 4"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            {{-- others --}}
             <form action="" method="post" class="mb-3">
                 @method('put')
                 @csrf
-                <div class="mb-3 w-50">
-                    <label for="user_profilelink" class="form-label">Ссылка профиля</label>
-                    <div class="input-group">
-                        <input
-                            id="user_profilelink"
-                            class="form-control"
-                            placeholder="{{ $user->profilelink }}"
-                            autocomplete="off"
-                            disabled
-                        >
-                        <a
-                            href="{{ route('users.edit.profilelink', [$user->nid, $user->profilelink]) }}"
-                            class="btn"
-                            type="button"
-                            title="Изменить"
-                            style="width: 36px;"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="icon icon-tabler icon-tabler-pencil m-0"
-                                width="24" height="24"
-                                viewBox="0 0 24 24"
-                                stroke-width="2"
-                                stroke="currentColor"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
-                                <path d="M13.5 6.5l4 4"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
                 {{-- birthday --}}
                 <div class="mb-3">
                     <div class="form-label">Дата рождения <b class="text-red">*</b></div>
                     <div class="row">
                         {{-- birthday.day --}}
                         <div class="col">
-                            <select id="user_birthday_day" class="form-control">
+                            <select id="user_birthday_day" name="user_birthday[day]" class="form-control" required>
                                 <option value="" selected disabled>День</option>
                                 @for($day = 31; $day >= 1; $day--)
-                                    <option value="{{ $day }}">{{ $day }}</option>
+                                    <option
+                                        value="{{ $day }}"
+                                        @selected($user->birthday->format('d') == $day)
+                                    >
+                                        {{ $day }}
+                                    </option>
                                 @endfor
                             </select>
                         </div>
                         {{-- birthday.month --}}
                         <div class="col">
-                            <select id="user_birthday_month" class="form-control">
+                            <select id="user_birthday_month" name="user_birthday[month]" class="form-control" required>
                                 <option value="" selected disabled>Месяц</option>
                                 @for($month = 12; $month >= 1; $month--)
-                                    <option value="{{ $month }}">
+                                    <option
+                                        value="{{ $month }}"
+                                        @selected($user->birthday->format('m') == $month)
+                                    >
                                         {{ str_pad($month, 2, '0', STR_PAD_LEFT) }}
                                     </option>
                                 @endfor
@@ -107,10 +116,15 @@
                         </div>
                         {{-- birthday.year --}}
                         <div class="col">
-                            <select id="user_birthday_year" class="form-control">
+                            <select id="user_birthday_year" name="user_birthday[year]" class="form-control" required>
                                 <option value="" selected disabled>Год</option>
                                 @for($year = date('Y'); $year >= 1971; $year--)
-                                    <option value="{{ $year }}">{{ $year }}</option>
+                                    <option
+                                        value="{{ $year }}"
+                                        @selected($user->birthday->format('Y') == $year)
+                                    >
+                                        {{ $year }}
+                                    </option>
                                 @endfor
                             </select>
                         </div>
@@ -119,7 +133,7 @@
                 {{-- gender --}}
                 <div class="mb-3 w-50">
                     <label for="user_gender" class="form-label">Пол</label>
-                    <select id="user_gender" class="form-control">
+                    <select id="user_gender" name="user_gender" class="form-control">
                         @foreach(\App\Enums\UserGenderEnum::cases() as $gender)
                             <option
                                 value="{{ $gender }}"
