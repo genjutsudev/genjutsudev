@@ -12,7 +12,7 @@
             <x-ui.input
                 id="user_profilename"
                 name="user_profilename"
-                value="{{ old('user_profilename') ?? $user->profilename }}"
+                value="{{ old('user_profilename', $user->profilename) }}"
                 class="form-control"
                 autocomplete="off"
                 required

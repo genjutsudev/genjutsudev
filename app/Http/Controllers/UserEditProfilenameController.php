@@ -6,11 +6,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserUpdateProfilenameRequest as ProfilenameRequest;
 use App\Models\User\User;
+use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class UserEditProfilenameController extends Controller
 {
+    public function __construct(
+        private readonly UserService $userService
+    )
+    {
+    }
+
     public function show(User $user): View
     {
         return view('sections.users.edit.profilename', compact(['user']));
@@ -20,15 +27,16 @@ class UserEditProfilenameController extends Controller
     {
         $profilename = $request->validated('user_profilename');
 
+        $level = 'success';
+        $message = 'Имя профиля успешно обновлено.';
+        $routeName = 'users.edit.account';
+
         try {
-            $isUpdated = $user->update(['profilename' => $profilename]);
-            $level = $isUpdated ? 'success' : 'warning';
-            $message = $isUpdated ? 'Имя профиля успешно обновлено.' : 'Имя профиля обновить не удалось.';
-            $routeName = $isUpdated ? 'users.edit.account' : 'users.edit.profilelink';
+            $this->userService->updateUser($user, ['profilename' => $profilename]);
         } catch (\Throwable $th) {
             $level = 'danger';
             $message = 'Произошла внутренняя ошибка, повторите попытку позже.';
-            $routeName = 'users.edit.profilelink';
+            $routeName = 'users.edit.profilename';
             logger()->error(self::class, ['error' => $th->getMessage(), 'user_id' => $user->id]);
         }
 

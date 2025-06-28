@@ -15,7 +15,7 @@ use Illuminate\Support\Carbon;
  * @property string $id
  * @property int $nid
  * @property-read ?int $referrer_nid
- * @property string $type
+ * @property-read string $type
  * @property bool $is_active
  * @property ?string $profilelink
  * @property ?string $email
@@ -98,7 +98,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $guarded = ['id', 'nid', 'referrer_nid', 'created_at'];
+    protected $guarded = ['id', 'nid', 'referrer_nid', 'type', 'created_at'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -133,8 +133,8 @@ class User extends Authenticatable
         return $this->activity_at;
     }
 
-    public function equals(?self $other): bool
+    public function equals(?self $other, string $attribute = 'id'): bool
     {
-        return $this->id === $other?->id;
+        return $this->$attribute === $other?->$attribute;
     }
 }

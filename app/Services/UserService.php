@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\UserTypeEnum;
+use App\Exceptions\ProtectedAttributeException;
 use App\Exceptions\UserAlreadyExistException;
 use App\Models\User\User;
 use App\Repositories\UserRepository;
@@ -70,5 +71,38 @@ class UserService
             type: $type = Type::make(UserTypeEnum::API),
             api_key: hash('sha256', $type . time()), // @todo
         );
+    }
+
+    public function updateUser(
+        User $user,
+        array $attributes,
+        array $options = []
+    ) : User
+    {
+        foreach (array_keys($attributes) as $attributeName) {
+            throw_if(! in_array($attributeName, [
+                'is_active',
+                'profilelink',
+                'email',
+                'email_verified_at',
+                'email_changed_at',
+                'password',
+                'password_changed_at',
+                'profilename',
+                'birthday',
+                'gender',
+                'karma',
+                'power',
+                'sign_in_count',
+                'token',
+                'api_key',
+                'remember_token',
+                'activity_at'
+            ]), new ProtectedAttributeException($attributeName));
+        }
+
+        $user->update($attributes, $options);
+
+        return $user;
     }
 }

@@ -6,11 +6,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserUpdateProfilelinkRequest as ProfilelinkRequest;
 use App\Models\User\User;
+use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class UserEditProfilelinkController extends Controller
 {
+    public function __construct(
+        private readonly UserService $userService
+    )
+    {
+    }
+
     public function show(User $user): View
     {
         return view('sections.users.edit.profilelink', compact(['user']));
@@ -20,11 +27,12 @@ class UserEditProfilelinkController extends Controller
     {
         $profilelink = $request->validated('user_profilelink');
 
+        $level = 'success';
+        $message = 'Ссылка профиля успешно обновлена.';
+        $routeName = 'users.edit.account';
+
         try {
-            $isUpdated = $user->update(['profilelink' => $profilelink]);
-            $level = $isUpdated ? 'success' : 'warning';
-            $message = $isUpdated ? 'Ссылка профиля успешно обновлена.' : 'Ссылку профиля обновить не удалось.';
-            $routeName = $isUpdated ? 'users.edit.account' : 'users.edit.profilelink';
+            $this->userService->updateUser($user, ['profilelink' => $profilelink]);
         } catch (\Throwable $th) {
             $level = 'danger';
             $message = 'Произошла внутренняя ошибка, повторите попытку позже.';
