@@ -147,14 +147,26 @@
                 {{-- age --}}
                 <div class="mb-3">
                     <label class="form-check form-switch form-switch-3">
-                        <input class="form-check-input" type="checkbox" value="1">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="user_preferences[is_show_age]"
+                            value="1"
+                            @checked($preferences->is_show_age)
+                        >
                         <span class="form-check-label">Отображать возраст в профиле</span>
                     </label>
                 </div>
                 {{-- content --}}
                 <div class="mb-3">
                     <label class="form-check form-switch form-switch-3">
-                        <input class="form-check-input" type="checkbox" value="1">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="user_preferences[is_view_censored]"
+                            value="1"
+                            @checked($preferences->is_view_censored)
+                        >
                         <span class="form-check-label">Отображать 18+ контент</span>
                     </label>
                 </div>

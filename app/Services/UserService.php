@@ -8,6 +8,7 @@ use App\Enums\UserTypeEnum;
 use App\Exceptions\ProtectedAttributeException;
 use App\Exceptions\UserAlreadyExistException;
 use App\Models\User\User;
+use App\Models\User\UserPreference as Preferences;
 use App\Repositories\UserRepository;
 use App\Traits\HasherTrait;
 use App\Values\UserTypeValue as Type;
@@ -104,5 +105,18 @@ class UserService
         $user->update($attributes, $options);
 
         return $user;
+    }
+
+    public function updatePreferences(
+        User $user,
+        array $attributes,
+        array $options = []
+    ) : Preferences
+    {
+        $preference = $user->preferences;
+
+        $preference->update($attributes, $options);
+
+        return $preference;
     }
 }

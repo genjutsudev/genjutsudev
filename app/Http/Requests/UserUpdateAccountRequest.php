@@ -11,6 +11,7 @@ use Illuminate\Validation\Rules;
 /**
  * @property array $user_birthday
  * @property string $user_gender
+ * @property array $user_preferences
  */
 class UserUpdateAccountRequest extends FormRequest
 {
@@ -33,7 +34,8 @@ class UserUpdateAccountRequest extends FormRequest
             'user_birthday.day' => ['required', 'integer', 'min:1', 'max:31'],
             'user_birthday.month' => ['required', 'integer', 'min:1', 'max:12'],
             'user_birthday.year' => ['required', 'integer', 'min:1971', 'max:' . date('Y')],
-            'user_gender' => ['required', new Rules\Enum(UserGenderEnum::class)]
+            'user_gender' => ['required', new Rules\Enum(UserGenderEnum::class)],
+            'user_preferences.*' => ['integer', 'max:1'],
         ];
     }
 }

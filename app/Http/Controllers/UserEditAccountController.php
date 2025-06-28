@@ -22,13 +22,15 @@ class UserEditAccountController extends Controller
 
     public function show(Request $request, User $user): View
     {
-        return view('sections.users.edit.account', compact(['user']));
+        $preferences = $user->preferences;
+        return view('sections.users.edit.account', compact(['user', 'preferences']));
     }
 
     public function update(AccountRequest $request, User $user): RedirectResponse
     {
         $user_birthday = array_reverse($request->validated('user_birthday'));
         $user_gender = $request->validated('user_gender');
+        $user_preferences = $request->validated('user_preferences');
 
         $birthday = Carbon::createFromDate(...$user_birthday);
 
@@ -38,6 +40,10 @@ class UserEditAccountController extends Controller
 
         try {
             $this->userService->updateUser($user, ['birthday' => $birthday, 'gender' => $user_gender]);
+            $this->userService->updatePreferences($user, [
+                'is_show_age' => isset($user_preferences['is_show_age']),
+                'is_view_censored' => isset($user_preferences['is_view_censored'])
+            ]);
         } catch (\Throwable $th) {
             $level = 'danger';
             $message = 'Произошла внутренняя ошибка, повторите попытку позже.';
