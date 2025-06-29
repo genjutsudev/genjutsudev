@@ -1,3 +1,5 @@
+{{-- @todo move --}}
+
 @props(['label' => 'Пароль', 'error' => false])
 
 <div

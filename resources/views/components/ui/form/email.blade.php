@@ -1,3 +1,5 @@
+{{-- @todo move --}}
+
 @props(['label' => 'Логин (Адрес эл. почты)', 'error' => false])
 
 <div

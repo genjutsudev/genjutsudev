@@ -27,7 +27,7 @@ class UserUpdateProfilenameRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_profilename' => ['required', 'string', 'min:6'],
+            'user_profilename' => ['required', 'string', 'min:3', 'max:128'],
         ];
     }
 }
