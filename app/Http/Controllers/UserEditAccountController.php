@@ -42,7 +42,7 @@ class UserEditAccountController extends Controller
             $this->userService->updateUser($user, ['birthday' => $birthday, 'gender' => $user_gender]);
             $this->userService->updatePreferences($user, [
                 'is_show_age' => isset($user_preferences['is_show_age']),
-                'is_view_censored' => isset($user_preferences['is_view_censored'])
+                'is_view_censored' => isset($user_preferences['is_view_censored']) && $user->birthday->age >= 18
             ]);
         } catch (\Throwable $th) {
             $level = 'danger';

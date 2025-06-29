@@ -4,6 +4,7 @@
 
 <x-layouts::users-edit>
     <div class="row">
+        {{-- left --}}
         <div class="col">
             {{-- profilename --}}
             <div class="mb-3 w-50">
@@ -12,7 +13,7 @@
                     <input
                         id="user_profilename"
                         class="form-control"
-                        placeholder="{{ $user->profilename }}"
+                        value="{{ $user->profilename }}"
                         disabled
                     >
                     <a
@@ -48,7 +49,7 @@
                     <input
                         id="user_profilelink"
                         class="form-control"
-                        placeholder="{{ $user->profilelink }}"
+                        value="{{ $user->profilelink }}"
                         disabled
                     >
                     <a
@@ -141,31 +142,35 @@
                     </select>
                 </div>
                 {{-- age --}}
-                <div class="mb-3">
-                    <label class="form-check form-switch form-switch-3">
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            name="user_preferences[is_show_age]"
-                            value="1"
-                            @checked($preferences->is_show_age)
-                        >
-                        <span class="form-check-label">Отображать возраст в профиле</span>
-                    </label>
-                </div>
+                @if($user->birthday)
+                    <div class="mb-3">
+                        <label class="form-check form-switch form-switch-3">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                name="user_preferences[is_show_age]"
+                                value="1"
+                                @checked($preferences->is_show_age)
+                            >
+                            <span class="form-check-label">Отображать возраст в профиле</span>
+                        </label>
+                    </div>
+                @endif
                 {{-- content --}}
-                <div class="mb-3">
-                    <label class="form-check form-switch form-switch-3">
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            name="user_preferences[is_view_censored]"
-                            value="1"
-                            @checked($preferences->is_view_censored)
-                        >
-                        <span class="form-check-label">Отображать 18+ контент</span>
-                    </label>
-                </div>
+                @if($user->birthday && ($user->birthday->age >= 18))
+                    <div class="mb-3">
+                        <label class="form-check form-switch form-switch-3">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                name="user_preferences[is_view_censored]"
+                                value="1"
+                                @checked($preferences->is_view_censored)
+                            >
+                            <span class="form-check-label">Отображать 18+ контент</span>
+                        </label>
+                    </div>
+                @endif
                 <div class="form-group text-end">
                     <input type="submit" value="Сохранить" class="btn btn-sm btn-secondary px-2 py-1">
                 </div>
@@ -222,6 +227,7 @@
                 </div>
             </x-ui.subheadline>
         </div>
+        {{-- right --}}
         <div class="col">
             {{-- avatar, frame & cover --}}
             <div class="card mb-3">

@@ -7,6 +7,12 @@ use App\Values\UserActivityAtValue;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
+function user_age_title(User $user): string
+{
+    $age = $user->birthday->age;
+    return $age . ' ' . trans_choice('user.birthday.year', $age);
+}
+
 function user_gender_title(User $user): string
 {
     return __('user.gender.' . $user->gender);
