@@ -13,7 +13,6 @@
                         id="user_profilename"
                         class="form-control"
                         placeholder="{{ $user->profilename }}"
-                        autocomplete="off"
                         disabled
                     >
                     <a
@@ -50,7 +49,6 @@
                         id="user_profilelink"
                         class="form-control"
                         placeholder="{{ $user->profilelink }}"
-                        autocomplete="off"
                         disabled
                     >
                     <a
@@ -79,9 +77,7 @@
                 </div>
             </div>
             {{-- others --}}
-            <form action="" method="post" class="mb-3">
-                @method('put')
-                @csrf
+            <x-ui.form.index method="put" class="mb-3">
                 {{-- birthday --}}
                 <div class="mb-3">
                     <div class="form-label">Дата рождения <b class="text-red">*</b></div>
@@ -173,7 +169,7 @@
                 <div class="form-group text-end">
                     <input type="submit" value="Сохранить" class="btn btn-sm btn-secondary px-2 py-1">
                 </div>
-            </form>
+            </x-ui.form.index>
             {{-- security account --}}
             <x-ui.subheadline :label="__('Безопасность аккаунта')">
                 {{-- email --}}

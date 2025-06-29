@@ -1,4 +1,4 @@
-@props(['id', 'name', 'value', 'errors' => false])
+@props(['id', 'name', 'value', 'placeholder', 'errors' => false])
 
 <input
     id="{{ $id }}"

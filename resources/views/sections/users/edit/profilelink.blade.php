@@ -6,20 +6,20 @@
     <div class="alert alert-info">
         Можно использовать латиницу (a-z), цифры (0-9) и подчёркивание. Минимальная длина &mdash; 5 символов.
     </div>
-    <form method="post">
-        @method('put')
-        @csrf
+    <x-ui.form.index method="put">
         {{-- profilelink --}}
         <div class="mb-3 w-50">
-            <label for="user_profilelink" class="form-label">Ссылка профиля</label>
-            <x-ui.input
+            <x-ui.form.label for="user_profilelink" required>
+                <span>Ссылка профиля</span>
+            </x-ui.form.label>
+            <x-ui.form.input.text
                 id="user_profilelink"
                 name="user_profilelink"
                 value="{{ old('user_profilelink', $user->profilelink) }}"
-                class="form-control"
+                placeholder="{{ $user->profilelink }}"
                 autocomplete="off"
                 required
-                :error="$errors->has('user_profilelink')"
+                :errors="$errors->has('user_profilelink')"
             />
             <x-ui.input-errors :messages="$errors->get('user_profilelink')"/>
         </div>
@@ -27,5 +27,5 @@
             <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}" class="me-3">Отмена</a>
             <input type="submit" value="Сохранить" class="btn btn-sm btn-secondary px-2 py-1">
         </div>
-    </form>
+    </x-ui.form.index>
 </x-layouts::users-edit>
