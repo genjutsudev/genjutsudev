@@ -3,6 +3,9 @@
 @section('title', $user->profilename)
 
 <x-layouts::users-edit>
+    <div class="alert alert-info">
+        Можно использовать латиницу (a-z), цифры (0-9) и подчёркивание. Минимальная длина &mdash; 5 символов.
+    </div>
     <form method="post">
         @method('put')
         @csrf

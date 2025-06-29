@@ -40,6 +40,8 @@ class UserRegistrationController extends Controller
             self::info($e->getMessage());
             return redirect(route('register', false));
         } catch (\Throwable $th) {
+            logger()->error(self::class, ['error' => $th->getMessage()]);
+
             self::danger('Что-то пошло не так, попробуйте ещё раз.'); // @todo i18n
             return redirect(route('register', false));
         }

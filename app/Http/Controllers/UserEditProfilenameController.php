@@ -25,19 +25,20 @@ class UserEditProfilenameController extends Controller
 
     public function update(ProfilenameRequest $request, User $user): RedirectResponse
     {
-        $profilename = $request->validated('user_profilename');
+        $user_profilename = $request->validated('user_profilename');
 
         $level = 'success';
         $message = 'Имя профиля успешно обновлено.';
         $routeName = 'users.edit.account';
 
         try {
-            $this->userService->updateUser($user, ['profilename' => $profilename]);
+            $this->userService->updateUser($user, ['profilename' => $user_profilename]);
         } catch (\Throwable $th) {
+            logger()->error(self::class, ['error' => $th->getMessage(), 'user_id' => $user->id]);
+
             $level = 'danger';
             $message = 'Произошла внутренняя ошибка, повторите попытку позже.';
             $routeName = 'users.edit.profilename';
-            logger()->error(self::class, ['error' => $th->getMessage(), 'user_id' => $user->id]);
         }
 
         return redirect()

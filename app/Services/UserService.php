@@ -37,7 +37,8 @@ class UserService
             throw_if($this->repository->findOneByEmail($email), new UserAlreadyExistException());
         }
 
-        return User::create([
+        /** @var User $user */
+        $user = User::create([
             'referrer_nid' => $referrer_nid,
             'type' => $type,
             'profilelink' => Str::ulid(new \DateTime()),
@@ -49,6 +50,10 @@ class UserService
             'token' => $token,
             'api_key' => $api_key,
         ]);
+        /** @var Preferences $preferences */
+        $preferences = $user->preferences()->create();
+
+        return $user->load('preferences');
     }
 
     public function createUserRegular(

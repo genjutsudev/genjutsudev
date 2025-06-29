@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\UserProfilelinkIsTakenException;
 use App\Http\Requests\UserUpdateProfilelinkRequest as ProfilelinkRequest;
 use App\Models\User\User;
+use App\Repositories\UserRepository;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -13,6 +15,7 @@ use Illuminate\View\View;
 class UserEditProfilelinkController extends Controller
 {
     public function __construct(
+        private readonly UserRepository $userRepository,
         private readonly UserService $userService
     )
     {
@@ -25,23 +28,33 @@ class UserEditProfilelinkController extends Controller
 
     public function update(ProfilelinkRequest $request, User $user): RedirectResponse
     {
-        $profilelink = $request->validated('user_profilelink');
+        $user_profilelink = $request->validated('user_profilelink');
 
         $level = 'success';
         $message = 'Ссылка профиля успешно обновлена.';
         $routeName = 'users.edit.account';
 
         try {
-            $this->userService->updateUser($user, ['profilelink' => $profilelink]);
+            throw_if(
+                $this->userRepository->findOneByProfilelink($user_profilelink),
+                new UserProfilelinkIsTakenException()
+            );
+
+            $this->userService->updateUser($user, ['profilelink' => $user_profilelink]);
+        } catch (UserProfilelinkIsTakenException $e) {
+            $level = 'info';
+            $message = $e->getMessage();
+            $routeName = 'users.edit.profilelink';
         } catch (\Throwable $th) {
+            logger()->error(self::class, ['error' => $th->getMessage(), 'user_id' => $user->id]);
+
             $level = 'danger';
             $message = 'Произошла внутренняя ошибка, повторите попытку позже.';
             $routeName = 'users.edit.profilelink';
-            logger()->error(self::class, ['error' => $th->getMessage(), 'user_id' => $user->id]);
         }
 
         return redirect()
-            ->route($routeName, [$user->nid, $profilelink])
+            ->route($routeName, [$user->nid, $user->profilelink])
             ->with('messages', [['level' => $level, 'message' => $message]]);
     }
 }

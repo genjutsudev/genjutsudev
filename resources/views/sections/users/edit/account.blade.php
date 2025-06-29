@@ -93,7 +93,7 @@
                                 @for($day = 31; $day >= 1; $day--)
                                     <option
                                         value="{{ $day }}"
-                                        @selected($user->birthday->format('d') == $day)
+                                        @selected($user->birthday?->format('d') == $day)
                                     >
                                         {{ $day }}
                                     </option>
@@ -107,7 +107,7 @@
                                 @for($month = 12; $month >= 1; $month--)
                                     <option
                                         value="{{ $month }}"
-                                        @selected($user->birthday->format('m') == $month)
+                                        @selected($user->birthday?->format('m') == $month)
                                     >
                                         {{ str_pad($month, 2, '0', STR_PAD_LEFT) }}
                                     </option>
@@ -121,7 +121,7 @@
                                 @for($year = date('Y'); $year >= 1971; $year--)
                                     <option
                                         value="{{ $year }}"
-                                        @selected($user->birthday->format('Y') == $year)
+                                        @selected($user->birthday?->format('Y') == $year)
                                     >
                                         {{ $year }}
                                     </option>

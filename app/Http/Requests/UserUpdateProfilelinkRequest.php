@@ -27,7 +27,7 @@ class UserUpdateProfilelinkRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_profilelink' => ['required', 'string', 'min:6'],
+            'user_profilelink' => ['required', 'string', 'min:5', 'regex:/^(?!_)(?!.*__)[a-zA-Z0-9_]+(?<!_)$/'],
         ];
     }
 }
