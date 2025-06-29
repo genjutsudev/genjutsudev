@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\UserTypeEnum;
+use App\Exceptions\ProtectedAttributeException;
 use App\Exceptions\UserAlreadyExistException;
 use App\Models\User\User;
+use App\Models\User\UserPreference as Preferences;
 use App\Repositories\UserRepository;
 use App\Traits\HasherTrait;
 use App\Values\UserTypeValue as Type;
@@ -35,7 +37,8 @@ class UserService
             throw_if($this->repository->findOneByEmail($email), new UserAlreadyExistException());
         }
 
-        return User::create([
+        /** @var User $user */
+        $user = User::create([
             'referrer_nid' => $referrer_nid,
             'type' => $type,
             'profilelink' => Str::ulid(new \DateTime()),
@@ -47,6 +50,10 @@ class UserService
             'token' => $token,
             'api_key' => $api_key,
         ]);
+        /** @var Preferences $preferences */
+        $preferences = $user->preferences()->create();
+
+        return $user->load('preferences');
     }
 
     public function createUserRegular(
@@ -70,5 +77,51 @@ class UserService
             type: $type = Type::make(UserTypeEnum::API),
             api_key: hash('sha256', $type . time()), // @todo
         );
+    }
+
+    public function updateUser(
+        User $user,
+        array $attributes,
+        array $options = []
+    ) : User
+    {
+        foreach (array_keys($attributes) as $attributeName) {
+            throw_if(! in_array($attributeName, [
+                'is_active',
+                'profilelink',
+                'email',
+                'email_verified_at',
+                'email_changed_at',
+                'password',
+                'password_changed_at',
+                'profilename',
+                'birthday',
+                'gender',
+                'karma',
+                'power',
+                'sign_in_count',
+                'token',
+                'api_key',
+                'remember_token',
+                'activity_at'
+            ]), new ProtectedAttributeException($attributeName));
+        }
+
+        $user->update($attributes, $options);
+
+        return $user;
+    }
+
+    public function updatePreferences(
+        User $user,
+        array $attributes,
+        array $options = []
+    ) : Preferences
+    {
+        $preference = $user->preferences;
+
+        $preference->update($attributes, $options);
+
+        return $preference;
     }
 }

@@ -24,11 +24,10 @@ class UsersShow  extends Component
      */
     public function render(): View
     {
-        /**
-         * @var User $user;
-         */
+        /** @var User $user */
         $user = $this->request->user;
+        $preferences = $user->preferences;
 
-        return view('layouts.users-show', compact(['user']));
+        return view('layouts.users-show', compact(['user', 'preferences']));
     }
 }

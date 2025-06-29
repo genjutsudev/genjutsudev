@@ -6,7 +6,10 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserStoreRequest extends FormRequest
+/**
+ * @property string $user_profilelink
+ */
+class UserUpdateProfilelinkRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +27,7 @@ class UserStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
+            'user_profilelink' => ['required', 'string', 'min:5', 'max:32', 'regex:/^(?!_)(?!.*__)[a-zA-Z0-9_]+(?<!_)$/'],
         ];
     }
 }

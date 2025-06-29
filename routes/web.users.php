@@ -6,6 +6,8 @@ use App\Http\Controllers\UserAuthenticatedController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEditAccountController;
 use App\Http\Controllers\UserEditController;
+use App\Http\Controllers\UserEditProfilelinkController;
+use App\Http\Controllers\UserEditProfilenameController;
 use App\Http\Controllers\UserPasswordResetController;
 use App\Http\Controllers\UserPasswordForgotController;
 use App\Http\Controllers\UserRegistrationController;
@@ -67,8 +69,16 @@ Route::group(['prefix' => 'users', 'as' => 'users'], function () {
                 Route::get('/', [UserEditController::class, 'redirect'])->name('.redirect');
                 Route::group(['prefix' => 'account', 'as' => '.account'], function () {
                     Route::get('/', [UserEditAccountController::class, 'show']);
-                    /*Route::put('/', [UserEditAccountController::class, 'update'])->name('.update');*/
+                    Route::put('/', [UserEditAccountController::class, 'update']);
                 }); # account
+                Route::group(['prefix' => 'profilename', 'as' => '.profilename'], function () {
+                    Route::get('/', [UserEditProfilenameController::class, 'show']);
+                    Route::put('/', [UserEditProfilenameController::class, 'update']);
+                }); # profilename
+                Route::group(['prefix' => 'profilelink', 'as' => '.profilelink'], function () {
+                    Route::get('/', [UserEditProfilelinkController::class, 'show']);
+                    Route::put('/', [UserEditProfilelinkController::class, 'update']);
+                }); # profilelink
             }); # edit
         });
     });

@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('user_users', function (Blueprint $table) {
             $table->uuid('id')->comment('user_uuid');
             $table->id('nid')->comment('user_id');
-            $table->unsignedBigInteger('referrer_nid')->nullable()->comment('referrer_user_id');
+            $table->unsignedBigInteger('referrer_nid')->nullable()->comment('referrer_user_nid');
             $table->string('type')->comment('тип уч. записи');
-            $table->tinyInteger('is_active')->default(true);
+            $table->unsignedTinyInteger('is_active')->default(true);
             $table->string('profilelink', 32)->nullable();
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();

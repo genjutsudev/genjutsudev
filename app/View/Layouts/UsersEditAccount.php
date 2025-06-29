@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace App\View\Layouts;
 
-use App\Models\User\User;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 use Illuminate\View\Component;
 
-class UsersEdit extends Component
+class UsersEditAccount extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(private readonly Request $request)
+    public function __construct()
     {
         //
     }
@@ -24,11 +22,6 @@ class UsersEdit extends Component
      */
     public function render(): View
     {
-        /**
-         * @var User $user
-         */
-        $user = $this->request->user();
-
-        return view('layouts.users-edit', compact(['user']));
+        return view('layouts.users-edit-account');
     }
 }

@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\User;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Casts\UserGenderCast;
 use App\Values\UserGenderValue;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -15,7 +19,7 @@ use Illuminate\Support\Carbon;
  * @property string $id
  * @property int $nid
  * @property-read ?int $referrer_nid
- * @property string $type
+ * @property-read string $type
  * @property bool $is_active
  * @property ?string $profilelink
  * @property ?string $email
@@ -37,10 +41,11 @@ use Illuminate\Support\Carbon;
  * @property Carbon $activity_at
  * @property-read Carbon $created_at
  * @property Carbon $updated_at
+ * @property UserPreference $preferences
  */
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, HasUuids;
 
     /**
@@ -86,6 +91,8 @@ class User extends Authenticatable
         'email',
         'password',
         'profilename',
+        'birthday',
+        'gender',
         'registration_ip_hash',
         'registration_country',
         'token',
@@ -98,7 +105,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $guarded = ['id', 'nid', 'referrer_nid', 'created_at'];
+    protected $guarded = ['id', 'nid', 'referrer_nid', 'type', 'created_at'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -133,8 +140,13 @@ class User extends Authenticatable
         return $this->activity_at;
     }
 
-    public function equals(?self $other): bool
+    public function equals(?self $other, string $attribute = 'id'): bool
     {
-        return $this->id === $other?->id;
+        return $this->$attribute === $other?->$attribute;
+    }
+
+    public function preferences(): HasOne
+    {
+        return $this->hasOne(UserPreference::class);
     }
 }

@@ -1,3 +1,5 @@
+{{-- @deprecated --}}
+
 @props([
     'id',
     'name',
