@@ -9,7 +9,6 @@ use App\Models\User\User;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\View\View;
 
 class UserEditAccountController extends Controller
@@ -28,22 +27,20 @@ class UserEditAccountController extends Controller
 
     public function update(AccountRequest $request, User $user): RedirectResponse
     {
-        $user_birthday = array_reverse($request->validated('user_birthday'));
         $user_gender = $request->validated('user_gender');
         $user_preferences = $request->validated('user_preferences');
 
-        $birthday = Carbon::createFromDate(...$user_birthday);
+        $is_show_age = isset($user_preferences['is_show_age']);
+        $is_view_censored = isset($user_preferences['is_view_censored']) && $user->birthday->age >= 18;
+        $preferences_data = ['is_show_age' => $is_show_age, 'is_view_censored' => $is_view_censored];
 
         $level = 'success';
         $message = 'Изменения успешно сохранены.';
         $routeName = 'users.edit.account';
 
         try {
-            $this->userService->updateUser($user, ['birthday' => $birthday, 'gender' => $user_gender]);
-            $this->userService->updatePreferences($user, [
-                'is_show_age' => isset($user_preferences['is_show_age']),
-                'is_view_censored' => isset($user_preferences['is_view_censored']) && $user->birthday->age >= 18
-            ]);
+            $this->userService->updateUser($user, ['gender' => $user_gender]);
+            $this->userService->updatePreferences($user, $preferences_data);
         } catch (\Throwable $th) {
             $level = 'danger';
             $message = 'Произошла внутренняя ошибка, повторите попытку позже.';

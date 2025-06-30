@@ -6,9 +6,9 @@
     <div class="alert alert-info">
         Можно использовать латиницу (a-z), цифры (0-9) и подчёркивание. Минимальная длина &mdash; 5 символов.
     </div>
-    <x-ui.form.index method="put">
+    <x-ui.form.index method="put" class="w-50">
         {{-- profilelink --}}
-        <div class="mb-3 w-50">
+        <div class="mb-3">
             <x-ui.form.label for="user_profilelink" required>
                 <span>Ссылка профиля</span>
             </x-ui.form.label>
@@ -23,7 +23,7 @@
             />
             <x-ui.input-errors :messages="$errors->get('user_profilelink')"/>
         </div>
-        <div class="w-50 form-group text-end">
+        <div class="form-group text-end">
             <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}" class="me-3">Отмена</a>
             <input type="submit" value="Сохранить" class="btn btn-sm btn-secondary px-2 py-1">
         </div>

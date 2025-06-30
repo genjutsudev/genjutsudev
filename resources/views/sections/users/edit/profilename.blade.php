@@ -3,9 +3,9 @@
 @section('title', $user->profilename)
 
 <x-layouts::users-edit>
-    <x-ui.form.index method="put">
+    <x-ui.form.index method="put" class="w-50">
         {{-- profilename --}}
-        <div class="mb-3 w-50">
+        <div class="mb-3">
             <x-ui.form.label for="user_profilename" required>
                 <span>Имя профиля</span>
             </x-ui.form.label>
@@ -20,7 +20,7 @@
             />
             <x-ui.input-errors :messages="$errors->get('user_profilename')"/>
         </div>
-        <div class="w-50 form-group text-end">
+        <div class="form-group text-end">
             <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}" class="me-3">Отмена</a>
             <input type="submit" value="Сохранить" class="btn btn-sm btn-secondary px-2 py-1">
         </div>

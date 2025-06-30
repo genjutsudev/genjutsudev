@@ -46,11 +46,10 @@ class UserEditProfilelinkController extends Controller
             $message = $e->getMessage();
             $routeName = 'users.edit.profilelink';
         } catch (\Throwable $th) {
-            logger()->error(self::class, ['error' => $th->getMessage(), 'user_id' => $user->id]);
-
             $level = 'danger';
             $message = 'Произошла внутренняя ошибка, повторите попытку позже.';
             $routeName = 'users.edit.profilelink';
+            logger()->error(self::class, ['error' => $th->getMessage(), 'user_id' => $user->id]);
         }
 
         return redirect()

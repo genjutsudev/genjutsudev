@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\UserAuthenticatedController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEditAccountController;
+use App\Http\Controllers\UserEditBirthdayController;
 use App\Http\Controllers\UserEditController;
 use App\Http\Controllers\UserEditProfilelinkController;
 use App\Http\Controllers\UserEditProfilenameController;
@@ -78,6 +79,10 @@ Route::group(['prefix' => 'users', 'as' => 'users'], function () {
                 Route::group(['prefix' => 'profilelink', 'as' => '.profilelink'], function () {
                     Route::get('/', [UserEditProfilelinkController::class, 'show']);
                     Route::put('/', [UserEditProfilelinkController::class, 'update']);
+                }); # profilelink
+                Route::group(['prefix' => 'birthday', 'as' => '.birthday'], function () {
+                    Route::get('/', [UserEditBirthdayController::class, 'show']);
+                    Route::put('/', [UserEditBirthdayController::class, 'update']);
                 }); # profilelink
             }); # edit
         });
