@@ -7,8 +7,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEditAccountController;
 use App\Http\Controllers\UserEditBirthdayController;
 use App\Http\Controllers\UserEditController;
+use App\Http\Controllers\UserEditPasswordController;
 use App\Http\Controllers\UserEditProfilelinkController;
 use App\Http\Controllers\UserEditProfilenameController;
+use App\Http\Controllers\UserPasswordConfirmController;
 use App\Http\Controllers\UserPasswordResetController;
 use App\Http\Controllers\UserPasswordForgotController;
 use App\Http\Controllers\UserRegistrationController;
@@ -37,10 +39,10 @@ Route::middleware(['auth'])->group(function () {
                 /*Route::post('verify/send', [EmailVerificationNotificationController::class, 'store'])->middleware('throttle:6,1')->name('.send');*/
             }); # email
         }); # verification
-        Route::group(['prefix' => 'password'], function () {
-            /*Route::get('confirm', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');*/
-            /*Route::post('confirm', [ConfirmablePasswordController::class, 'store']);*/
-            /*Route::put('update', [PasswordController::class, 'update'])->name('password.update');*/
+        Route::group(['prefix' => 'password', 'as' => 'password'], function () {
+            Route::get('confirm', [UserPasswordConfirmController::class, 'show'])->name('.confirm');
+            Route::post('confirm', [UserPasswordConfirmController::class, 'store'])->name('.confirm');
+            Route::put('update', [UserEditPasswordController::class, 'update'])->name('.update');
         }); # password
         Route::post('sign-out', [UserAuthenticatedController::class, 'destroy'])->name('logout');
     }); # users
@@ -83,7 +85,11 @@ Route::group(['prefix' => 'users', 'as' => 'users'], function () {
                 Route::group(['prefix' => 'birthday', 'as' => '.birthday'], function () {
                     Route::get('/', [UserEditBirthdayController::class, 'show']);
                     Route::put('/', [UserEditBirthdayController::class, 'update']);
-                }); # profilelink
+                }); # birthday
+                Route::group(['prefix' => 'password', 'as' => '.password', 'middleware' => ['password.confirm']], function () {
+                    Route::get('/', [UserEditPasswordController::class, 'show']);
+                    Route::put('/', [UserEditPasswordController::class, 'update']);
+                }); # password
             }); # edit
         });
     });
