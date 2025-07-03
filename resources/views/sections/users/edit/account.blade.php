@@ -174,7 +174,7 @@
                             data-bs-placement="left"
                             data-bs-original-title="Эл. почту и пароль"
                         >
-                            <a href="https://kitaku.noilty.com/users/Noilty/edit/password">Изменить</a>
+                            <a href="/users/1/Noilty/edit/password">Изменить</a>
                         </div>
                     </div>
                     <div class="input-group">
