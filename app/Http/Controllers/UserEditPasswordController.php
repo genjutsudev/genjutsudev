@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
-/**
- * @todo
- */
 class UserEditPasswordController extends Controller
 {
     public function __construct(
@@ -30,16 +27,30 @@ class UserEditPasswordController extends Controller
 
     public function update(Request $request, User $user): RedirectResponse
     {
-        $validated = $request->validate( [
-            'password' => ['required', Password::defaults(), 'confirmed'],
-        ]);
+        $attrs = [];
 
-        $this->userService->updateUser($user, [
-            'password' => Hash::make($validated['password'])
-        ]);
+        if ($request->input('password')) {
+            $validated = $request->validate(['password' => ['required', Password::defaults(), 'confirmed']]);
+            $attrs['password'] = Hash::make($validated['password']);
+        }
 
-        return back()->with('messages', [
-            ['level' => 'info', 'message' => __('password-updated')]
-        ]);
+        $attrs['email'] = $request->input('email');
+
+        $level = 'success';
+        $message = 'Данные успешно обновлены.';
+        $routeName = 'users.edit.account';
+
+        try {
+            $this->userService->updateUser($user, $attrs);
+        } catch (\Throwable $th) {
+            $level = 'danger';
+            $message = 'Произошла внутренняя ошибка, повторите попытку позже.';
+            $routeName = 'users.edit.password';
+            logger()->error(self::class, ['error' => $th->getMessage(), 'user_id' => $user->id]);
+        }
+
+        return redirect()
+            ->route($routeName, [$user->nid, $user->profilelink])
+            ->with('messages', [['level' => $level, 'message' => $message]]);
     }
 }

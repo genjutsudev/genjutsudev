@@ -1,12 +1,13 @@
-@props(['id', 'name', 'type', 'value', 'placeholder', 'disabled', 'required', 'readonly'])
+@props(['id', 'name', 'value', 'placeholder', 'disabled', 'required', 'readonly', 'errors' => false])
 
 <input
     id="{{ $id }}"
     name="{{ $name }}"
-    type="{{ $type }}"
-    @if (!empty($value))
+    type="password"
+    @if(!empty($value))
     value="{!! $value !!}"
     @endif
+    @class(['form-control', 'is-invalid' => $errors])
     @if(!empty($placeholder))
     placeholder="{!! $placeholder !!}"
     @endif
