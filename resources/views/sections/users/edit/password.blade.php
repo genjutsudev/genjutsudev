@@ -3,6 +3,9 @@
 @section('title', $user->profilename)
 
 <x-layouts::users-edit>
+    <div class="alert alert-info">
+        Обратите внимание: изменение эл. почты потребует его повторной верификации.
+    </div>
     <x-ui.form.index method="put" class="w-50">
         {{-- email --}}
         <div class="mb-3">

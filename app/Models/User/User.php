@@ -135,6 +135,19 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * @todo move & refactored
+     */
+    public function save(array $options = []): bool
+    {
+        if ($this->isDirty('email')) {
+            $this->email_verified_at = null;
+            $this->email_changed_at = Carbon::now();
+        }
+
+        return parent::save($options);
+    }
+
     public function getActivityAt(): Carbon
     {
         return $this->activity_at;
