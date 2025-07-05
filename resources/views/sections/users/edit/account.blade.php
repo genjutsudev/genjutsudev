@@ -127,6 +127,7 @@
                             </option>
                         @endforeach
                     </select>
+                    <x-ui.input-errors :messages="$errors->get('user_gender')"/>
                 </div>
                 {{-- age --}}
                 @if($user->birthday)
@@ -174,7 +175,7 @@
                             data-bs-placement="left"
                             data-bs-original-title="Эл. почту и пароль"
                         >
-                            <a href="https://kitaku.noilty.com/users/Noilty/edit/password">Изменить</a>
+                            <a href="{{ route('users.edit.password', [$user->nid, $user->profilelink]) }}">Изменить</a>
                         </div>
                     </div>
                     <div class="input-group">
@@ -186,12 +187,12 @@
                             data-bs-original-title="{{ $user->email_verified_at ? 'Подтверждено' : 'Подтвердить' }}"
                         >
                             @if($user->email_verified_at)
-                                <span class="d-flex text-azure">
-                                    <i style="font-size: 18px" class="fa-solid fa-circle-check"></i>
+                                <span class="d-flex text-green">
+                                    <i style="font-size: 17px" class="fa-solid fa-circle-check"></i>
                                 </span>
                             @else
-                                <a href="" class="d-flex link-azure text-decoration-none">
-                                    <i style="font-size: 18px" class="fa-solid fa-envelope"></i>
+                                <a href="{{ route('verification.notice') }}" class="d-flex link-warning text-decoration-none">
+                                    <i style="font-size: 17px" class="fa-solid fa-envelope"></i>
                                 </a>
                             @endif
                         </div>
@@ -207,10 +208,15 @@
                             data-bs-placement="left"
                             data-bs-original-title="Пароль по эл. почте"
                         >
-                            <a href="/users/1/Noilty/edit/password">Сбросить</a>
+                            <a href="{{ route('password.request', ['email' => $user->email]) }}">Сбросить</a>
                         </div>
                     </div>
-                    <input id="user_password" class="form-control" type="password" placeholder="обновлён 1 год назад" disabled>
+                    <input
+                        id="user_password"
+                        class="form-control"
+                        type="password"
+                        placeholder="обновлён {{ $user->password_changed_at?->diffForHumans() ?? 'нет данных' }}"
+                        disabled>
                 </div>
             </x-ui.subheadline>
         </div>

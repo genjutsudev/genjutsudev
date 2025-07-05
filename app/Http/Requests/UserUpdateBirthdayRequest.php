@@ -29,6 +29,7 @@ class UserUpdateBirthdayRequest extends FormRequest
     {
         $is_already_set = $this->user()->birthday !== null;
         $curr_year = date('Y');
+
         return [
             'user_birthday.day' => ['required', 'integer', 'min:1', 'max:31', Rule::prohibitedIf($is_already_set)],
             'user_birthday.month' => ['required', 'integer', 'min:1', 'max:12', Rule::prohibitedIf($is_already_set)],

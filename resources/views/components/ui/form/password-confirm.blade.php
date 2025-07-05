@@ -1,4 +1,4 @@
-{{-- @todo move --}}
+{{-- @deprecated --}}
 
 @props(['label' => 'Повтор пароля'])
 
