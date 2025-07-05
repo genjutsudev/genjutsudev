@@ -13,7 +13,7 @@
                             </div>
                             <div>
                                 <img
-                                    style="height:52px;"
+                                    style="height: 52px;"
                                     alt="Донат"
                                     class="bg-light"
                                     {{-- @todo --}}

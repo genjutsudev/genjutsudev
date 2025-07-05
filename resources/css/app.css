@@ -12,14 +12,61 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Instrument Sans'
+    , ui-sans-serif, system-ui
+    , sans-serif
+    , 'Apple Color Emoji'
+    , 'Segoe UI Emoji'
+    , 'Segoe UI Symbol'
+    , 'Noto Color Emoji';
+}
+
+[data-bs-theme=dark] {
+    a {
+        color: #fff;
+    }
 }
 
 .container {
     max-width: 1080px;
 }
 
+.avatar-xll {
+    --tblr-avatar-size: 8rem
+}
+
 .block {
     margin-bottom: 2rem;
+}
+
+/**
+ * @todo move to other .css file
+ */
+.gjsu-avatar-right-icon {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    background-size: cover;
+    image-rendering: -webkit-optimize-contrast;
+}
+
+.gjsu-avatar * {
+    margin: 8px;
+    padding: 0;
+}
+
+.gjsu-avatar-icon-premium {
+    background-image: url('/static/media/premium.svg');
+}
+
+.gjsu-avatar-frame {
+    border: solid 5px white;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.gjsu-avatar-frame-red {
+    border-color: red;
 }

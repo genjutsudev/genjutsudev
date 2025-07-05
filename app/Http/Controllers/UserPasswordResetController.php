@@ -20,7 +20,7 @@ class UserPasswordResetController extends Controller
      */
     public function create(Request $request): View
     {
-        return view('sections.users.password.reset', ['request' => $request]);
+        return view('sections.users.password.reset');
     }
 
     /**

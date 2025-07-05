@@ -14,7 +14,7 @@ class UserPasswordForgotController extends Controller
     /**
      * Display the password reset link request view.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
         return view('sections.users.password.forgot');
     }

@@ -12,18 +12,16 @@
         >
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="h1 navbar-brand navbar-brand-autodark d-none-navbar-horizontal p-0 pe-3">
+        <div class="h1 navbar-brand navbar-brand-autodark d-none-navbar-horizontal me-auto p-0 pe-3">
             <a href="/" class="text-decoration-none text-uppercase" title="Домой">
-                <div class="align-items-center">
-                    <div class="d-flex font-vina-sans" style="font-size: 36px;">
-                        genjut
-                        <img
-                            style="width: 38px; margin: 0 5px;"
-                            src="{{ asset('static/media/sharingan.svg') }}"
-                            alt="Sharingan"
-                        >
-                        su
-                    </div>
+                <div class="d-flex font-vina-sans" style="font-size: 36px;">
+                    genjut
+                    <img
+                        style="width: 38px; margin: 0 5px;"
+                        src="{{ asset('static/media/sharingan.svg') }}"
+                        alt="Sharingan"
+                    >
+                    su
                 </div>
             </a>
         </div>
@@ -101,21 +99,19 @@
                 </div>
                 <div class="nav-item me-3">
                     <a
-                        href="{{--{{ route('users.show', [$user->uid, $user->profilelink]) }}--}}"
-                        class="nav-link lh-1 p-2"
+                        href="{{ route('users.show', [$user->nid, $user->profilelink]) }}"
+                        @class([
+                            'nav-link',
+                            'lh-1',
+                            'p-2',
+                            'bg-azure-lt' => auth()->user()->equals(request()->user) && request()->routeIs('users.show')
+                        ])
                     >
-                        <span class="avatar avatar-sm" style="background-image: url(https://www.gravatar.com/avatar/9dcc550d0691ed1c0d52bf46ff7cb967?s=32&d=identicon&r=g);"></span>
+                        <span class="avatar avatar-sm" style="background-image: url({{ gravatar($user->email) }});"></span>
                         <div class="d-none d-sm-block ps-2">
-                            <div
-                                @class([
-                                    'fw-bold',
-                                    'text-azure' => false/*Route::isWith([
-                                        'users.show', [$user->uid, $user->profilelink]
-                                    ])*/
-                                ])
-                            >
+                            <div class="fw-bold">
                                 {{ $user->profilename }}
-                            </div>{{-- TODO: components/ui --}}
+                            </div>
                             <div class="mt-1 small text-muted text-uppercase">Профиль</div>
                         </div>
                     </a>
