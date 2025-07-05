@@ -145,6 +145,13 @@ class User extends Authenticatable
             $this->email_changed_at = Carbon::now();
         }
 
+        /*
+         * @todo move & refactored (observer or other)
+         */
+        if ($this->isDirty('password')) {
+            $this->password_changed_at = Carbon::now();
+        }
+
         return parent::save($options);
     }
 

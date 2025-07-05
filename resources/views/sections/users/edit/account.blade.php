@@ -208,10 +208,15 @@
                             data-bs-placement="left"
                             data-bs-original-title="Пароль по эл. почте"
                         >
-                            <a href="{{ route('password.request') }}">Сбросить</a>
+                            <a href="{{ route('password.request', ['email' => $user->email]) }}">Сбросить</a>
                         </div>
                     </div>
-                    <input id="user_password" class="form-control" type="password" placeholder="обновлён 1 год назад" disabled>
+                    <input
+                        id="user_password"
+                        class="form-control"
+                        type="password"
+                        placeholder="обновлён {{ $user->password_changed_at?->diffForHumans() ?? 'нет данных' }}"
+                        disabled>
                 </div>
             </x-ui.subheadline>
         </div>
