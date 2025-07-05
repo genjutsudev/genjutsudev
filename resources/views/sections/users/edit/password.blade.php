@@ -20,7 +20,7 @@
                 placeholder="{{ $user->email }}"
                 autocomplete="off"
                 required
-                :errors="$errors->has('email')"
+                :is_invalid="$errors->has('email')"
             />
             <x-ui.input-errors :messages="$errors->get('email')"/>
         </div>

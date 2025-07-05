@@ -1,4 +1,4 @@
-{{-- @todo move --}}
+{{-- @deprecated --}}
 
 @props(['label' => 'Логин (Адрес эл. почты)', 'error' => false])
 

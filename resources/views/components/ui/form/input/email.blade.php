@@ -1,4 +1,4 @@
-@props(['id', 'name', 'value', 'placeholder', 'disabled', 'required', 'readonly', 'errors' => false])
+@props(['id', 'name', 'value', 'placeholder', 'disabled', 'required', 'readonly', 'is_invalid' => false])
 
 <input
     id="{{ $id }}"
@@ -7,7 +7,7 @@
     @if(!empty($value))
     value="{!! $value !!}"
     @endif
-    @class(['form-control', 'is-invalid' => $errors])
+    @class(['form-control', 'is-invalid' => $is_invalid])
     @if(!empty($placeholder))
     placeholder="{!! $placeholder !!}"
     @endif

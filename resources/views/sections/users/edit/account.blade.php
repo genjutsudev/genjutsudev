@@ -208,7 +208,7 @@
                             data-bs-placement="left"
                             data-bs-original-title="Пароль по эл. почте"
                         >
-                            <a href="/users/1/Noilty/edit/password">Сбросить</a>
+                            <a href="{{ route('password.request') }}">Сбросить</a>
                         </div>
                     </div>
                     <input id="user_password" class="form-control" type="password" placeholder="обновлён 1 год назад" disabled>

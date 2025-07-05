@@ -4,23 +4,20 @@
     <div class="card card-md">
         <div class="card-body">
             <h2 class="h2 text-center mb-4">{{ $title }}</h2>
-
             <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
                 {{ __('Забыли пароль? Не проблема! Просто сообщите нам свой адрес электронной почты, и мы вышлем вам письмо с инструкцией по сбросу пароля. Оно позволит вам установить новый пароль.') }}
             </div>
-
             <!-- Session Status -->
             @if (session('status'))
                 <div class="font-medium text-sm text-green-600 dark:text-green-400 alert alert-success mb-4">
                     {{ session('status') }}
                 </div>
             @endif
-
             <x-ui.form.index action="{{ route('password.email') }}">
                 <!-- Email Address -->
                 <div class="form-group">
                     <x-ui.form.email :label="__('Эл. почта')"/>
-                    <x-ui.input-errors :messages="$errors->get('email')" class="mt-2" />
+                    <x-ui.input-errors :messages="$errors->get('email')" class="mt-2"/>
                 </div>
                 <div class="flex items-center justify-end mt-4">
                     <button type="submit" class="btn btn-primary">
@@ -44,7 +41,6 @@
             </x-ui.form.index>
         </div>
     </div>
-
     <div class="text-center text-secondary mt-3">
         <span>Забудьте об этом, <a href="{{ route('login') }}">верните меня</a> на экран входа.</span>
     </div>
