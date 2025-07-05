@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\UserAlreadyExistException;
 use App\Models\User\User;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
@@ -34,7 +35,8 @@ class UserEditPasswordController extends Controller
             $attrs['password'] = Hash::make($validated['password']);
         }
 
-        $attrs['email'] = $request->input('email');
+        $validated = $request->validate(['email' => ['required', 'email']]);
+        $attrs['email'] = $validated['email'];
 
         $level = 'success';
         $message = 'Данные успешно обновлены.';
@@ -42,6 +44,10 @@ class UserEditPasswordController extends Controller
 
         try {
             $this->userService->updateUser($user, $attrs);
+        } catch (UserAlreadyExistException $e) {
+            $level = 'info';
+            $message = $e->getMessage();
+            $routeName = 'users.edit.password';
         } catch (\Throwable $th) {
             $level = 'danger';
             $message = 'Произошла внутренняя ошибка, повторите попытку позже.';

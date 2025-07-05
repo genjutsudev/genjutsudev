@@ -136,7 +136,7 @@ class User extends Authenticatable
     }
 
     /**
-     * @todo move & refactored
+     * @todo move & refactored (observer or other)
      */
     public function save(array $options = []): bool
     {

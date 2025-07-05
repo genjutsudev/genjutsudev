@@ -127,6 +127,7 @@
                             </option>
                         @endforeach
                     </select>
+                    <x-ui.input-errors :messages="$errors->get('user_gender')"/>
                 </div>
                 {{-- age --}}
                 @if($user->birthday)
@@ -186,11 +187,11 @@
                             data-bs-original-title="{{ $user->email_verified_at ? 'Подтверждено' : 'Подтвердить' }}"
                         >
                             @if($user->email_verified_at)
-                                <span class="d-flex text-azure">
+                                <span class="d-flex text-green">
                                     <i style="font-size: 18px" class="fa-solid fa-circle-check"></i>
                                 </span>
                             @else
-                                <a href="" class="d-flex link-azure text-decoration-none">
+                                <a href="" class="d-flex link-warning text-decoration-none">
                                     <i style="font-size: 18px" class="fa-solid fa-envelope"></i>
                                 </a>
                             @endif

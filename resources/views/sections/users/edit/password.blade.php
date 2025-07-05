@@ -4,7 +4,8 @@
 
 <x-layouts::users-edit>
     <div class="alert alert-info">
-        Обратите внимание: изменение эл. почты потребует его повторной верификации.
+        Изменение эл. почты потребует повторного подтверждения через письмо.<br/>
+        Это необходимо для подтверждения, что новый адрес электронной почты действительно принадлежит вам.
     </div>
     <x-ui.form.index method="put" class="w-50">
         {{-- email --}}
@@ -12,13 +13,14 @@
             <x-ui.form.label for="email" class="form-label" required>
                 Эл. почта
             </x-ui.form.label>
-            <x-ui.form.input.email id="email"
-                                   name="email"
-                                   value="{{ $user->email }}"
-                                   placeholder="{{ $user->email }}"
-                                   autocomplete="off"
-                                   required
-                                   :errors="$errors->get('email')"
+            <x-ui.form.input.email
+                id="email"
+                name="email"
+                value="{{ old('email', $user->email) }}"
+                placeholder="{{ $user->email }}"
+                autocomplete="off"
+                required
+                :errors="$errors->has('email')"
             />
             <x-ui.input-errors :messages="$errors->get('email')"/>
         </div>
@@ -28,10 +30,11 @@
                 Новый пароль
             </x-ui.form.label>
             <div class="input-group input-group-flat">
-                <x-ui.form.input.password id="password"
-                                          name="password"
-                                          autocomplete="new-password"
-                                          :errors="$errors->get('password')"
+                <x-ui.form.input.password
+                    id="password"
+                    name="password"
+                    autocomplete="new-password"
+                    :is_invalid="$errors->has('password')"
                 />
                 <span class="input-group-text">
                     <a href="/"
@@ -66,9 +69,9 @@
                 Повторите новый пороль
             </x-ui.form.label>
             <div class="input-group input-group-flat">
-                <x-ui.form.input.password id="password_confirmation"
-                                          name="password_confirmation"
-                                          :errors="$errors->get('password')"
+                <x-ui.form.input.password
+                    id="password_confirmation"
+                    name="password_confirmation"
                 />
                 <span class="input-group-text">
                     <a href="#"

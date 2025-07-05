@@ -33,10 +33,6 @@ class UserService
         ?string $api_key = null,
     ) : User
     {
-        if (! $type->isApi()) {
-            throw_if($this->repository->findOneByEmail($email), new UserAlreadyExistException());
-        }
-
         /** @var User $user */
         $user = User::create([
             'referrer_nid' => $referrer_nid,
@@ -50,32 +46,65 @@ class UserService
             'token' => $token,
             'api_key' => $api_key,
         ]);
-        /** @var Preferences $preferences */
-        $preferences = $user->preferences()->create();
+
+        return $user->load('preferences');
+    }
+
+    private function createUserRegularOrAdmin(
+        string $email,
+        string $password,
+        ?int $referrer_nid = null,
+        ?bool $is_admin = false,
+    ) : User
+    {
+        throw_if($this->repository->findOneByEmail($email), new UserAlreadyExistException());
+
+        $user = self::createUser(
+            type: $type = Type::make($is_admin ? UserTypeEnum::ADMIN : UserTypeEnum::REGULAR),
+            referrer_nid: $referrer_nid,
+            email: $email,
+            password: $password,
+            token: hash('md5', $type . time()),
+        );
+
+        $user->preferences()->create();
 
         return $user->load('preferences');
     }
 
     public function createUserRegular(
+        string $email,
+        string $password,
         ?int $referrer_nid = null,
-        ?string $email = null,
-        ?string $password = null,
     ) : User
     {
-        return self::createUser(
-            type: $type = Type::make(UserTypeEnum::REGULAR),
-            referrer_nid: $referrer_nid,
+        return self::createUserRegularOrAdmin(
             email: $email,
             password: $password,
-            token: hash('md5', $type . time()), // @todo
+            referrer_nid: $referrer_nid
         );
     }
 
+    public function createUserAdmin(
+        string $email,
+        string $password,
+    ) : User
+    {
+        return self::createUserRegularOrAdmin(
+            email: $email,
+            password: $password,
+            is_admin: true
+        );
+    }
+
+    /*
+     * @todo
+     */
     public function createUserApi(): User
     {
         return self::createUser(
             type: $type = Type::make(UserTypeEnum::API),
-            api_key: hash('sha256', $type . time()), // @todo
+            api_key: hash('sha256', $type . time())
         );
     }
 
@@ -107,9 +136,38 @@ class UserService
             ]), new ProtectedAttributeException($attributeName));
         }
 
+        if (array_key_exists('email', $attributes)) {
+            /** @var ?User $found */
+            $found = $this->repository->findOneByEmail($attributes['email']);
+            throw_if($found && ! $user->equals($found, 'email'), new UserAlreadyExistException());
+        }
+
         $user->update($attributes, $options);
 
         return $user;
+    }
+
+    /*
+     * @todo
+     */
+    public function updateUserRegular(
+        User $user,
+        array $attrs = [],
+        bool $is_admin = false
+    ) : User
+    {
+        return self::updateUser($user, $attrs);
+    }
+
+    /*
+     * @todo
+     */
+    public function updateUserApi(
+        User $user,
+        array $attrs = [],
+    ) : User
+    {
+        return self::updateUser($user, $attrs);
     }
 
     public function updatePreferences(
