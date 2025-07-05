@@ -42,7 +42,7 @@ class UserRegistrationController extends Controller
         } catch (\Throwable $th) {
             logger()->error(self::class, ['error' => $th->getMessage()]);
 
-            self::danger('Что-то пошло не так, попробуйте ещё раз.'); // @todo i18n
+            self::danger('Произошла внутренняя ошибка, повторите попытку позже.'); // @todo i18n
             return redirect(route('register', false));
         }
 

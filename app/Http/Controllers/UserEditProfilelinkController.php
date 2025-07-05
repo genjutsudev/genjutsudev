@@ -35,10 +35,8 @@ class UserEditProfilelinkController extends Controller
         $routeName = 'users.edit.account';
 
         try {
-            throw_if(
-                $this->userRepository->findOneByProfilelink($user_profilelink),
-                new UserProfilelinkIsTakenException()
-            );
+            $found = $this->userRepository->findOneByProfilelink($user_profilelink);
+            throw_if($found, new UserProfilelinkIsTakenException());
 
             $this->userService->updateUser($user, ['profilelink' => $user_profilelink]);
         } catch (UserProfilelinkIsTakenException $e) {
