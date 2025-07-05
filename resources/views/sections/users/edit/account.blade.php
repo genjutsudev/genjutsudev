@@ -188,11 +188,11 @@
                         >
                             @if($user->email_verified_at)
                                 <span class="d-flex text-green">
-                                    <i style="font-size: 18px" class="fa-solid fa-circle-check"></i>
+                                    <i style="font-size: 17px" class="fa-solid fa-circle-check"></i>
                                 </span>
                             @else
-                                <a href="" class="d-flex link-warning text-decoration-none">
-                                    <i style="font-size: 18px" class="fa-solid fa-envelope"></i>
+                                <a href="{{ route('verification.notice') }}" class="d-flex link-warning text-decoration-none">
+                                    <i style="font-size: 17px" class="fa-solid fa-envelope"></i>
                                 </a>
                             @endif
                         </div>

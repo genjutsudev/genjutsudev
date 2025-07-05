@@ -15,6 +15,8 @@ use App\Http\Controllers\UserPasswordResetController;
 use App\Http\Controllers\UserPasswordForgotController;
 use App\Http\Controllers\UserRegistrationController;
 use App\Http\Controllers\UserShowController;
+use App\Http\Controllers\UserVerificationEmailController;
+use App\Http\Controllers\UserVerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -34,9 +36,9 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['prefix' => 'users'], function () {
         Route::group(['as' => 'verification'], function () {
             Route::group(['prefix' => 'email'], function () {
-                /*Route::get('verify', EmailVerificationPromptController::class)->name('.notice');*/
-                /*Route::get('verify/{id}/{hash}', VerifyEmailController::class)->middleware(['signed', 'throttle:6,1'])->name('.verify');*/
-                /*Route::post('verify/send', [EmailVerificationNotificationController::class, 'store'])->middleware('throttle:6,1')->name('.send');*/
+                Route::get('verify', [UserVerificationEmailController::class, 'show'])->name('.notice');
+                Route::post('verify', [UserVerificationEmailController::class, 'store'])->middleware('throttle:6,1')->name('.send');
+                Route::get('verify/{id}/{hash}', [UserVerifyEmailController::class, 'store'])->middleware(['signed', 'throttle:6,1'])->name('.verify');
             }); # email
         }); # verification
         Route::group(['prefix' => 'password', 'as' => 'password'], function () {

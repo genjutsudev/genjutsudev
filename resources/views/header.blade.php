@@ -14,16 +14,14 @@
         </button>
         <div class="h1 navbar-brand navbar-brand-autodark d-none-navbar-horizontal me-auto p-0 pe-3">
             <a href="/" class="text-decoration-none text-uppercase" title="Домой">
-                <div class="align-items-center">
-                    <div class="d-flex font-vina-sans" style="font-size: 36px;">
-                        genjut
-                        <img
-                            style="width: 38px; margin: 0 5px;"
-                            src="{{ asset('static/media/sharingan.svg') }}"
-                            alt="Sharingan"
-                        >
-                        su
-                    </div>
+                <div class="d-flex font-vina-sans" style="font-size: 36px;">
+                    genjut
+                    <img
+                        style="width: 38px; margin: 0 5px;"
+                        src="{{ asset('static/media/sharingan.svg') }}"
+                        alt="Sharingan"
+                    >
+                    su
                 </div>
             </a>
         </div>
