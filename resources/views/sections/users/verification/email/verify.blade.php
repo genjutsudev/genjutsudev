@@ -17,19 +17,20 @@
             <div class="mt-4 flex items-center justify-between">
                 <x-ui.form.index action="{{ route('verification.send') }}">
                     <div class="form-group text-end">
-                        <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}"
-                           class="me-3"
+                        <a
+                            href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}"
+                            class="me-3"
                         >
                             Отмена
                         </a>
-                        <input type="submit"
-                               value="Повторно отправить письмо с подтверждением"
-                               class="btn btn-sm btn-secondary px-2 py-1"
+                        <input
+                            type="submit"
+                            value="Повторно отправить письмо с подтверждением"
+                            class="btn btn-sm btn-secondary px-2 py-1"
                         >
                     </div>
                 </x-ui.form.index>
             </div>
-
         </div>
     </div>
 

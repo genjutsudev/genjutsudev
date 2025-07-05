@@ -16,15 +16,12 @@
                 </div>
             @endif
 
-            <form method="post" action="{{ route('password.email') }}">
-                @csrf
-
+            <x-ui.form.index action="{{ route('password.email') }}">
                 <!-- Email Address -->
                 <div class="form-group">
                     <x-ui.form.email :label="__('Эл. почта')"/>
                     <x-ui.input-errors :messages="$errors->get('email')" class="mt-2" />
                 </div>
-
                 <div class="flex items-center justify-end mt-4">
                     <button type="submit" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +41,7 @@
                         <span>Отправить инструкцию</span>
                     </button>
                 </div>
-            </form>
+            </x-ui.form.index>
         </div>
     </div>
 

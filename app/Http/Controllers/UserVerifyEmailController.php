@@ -7,12 +7,12 @@ namespace App\Http\Controllers;
 use App\Models\User\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class UserVerifyEmailController extends Controller
 {
-    public function store(Request $request): RedirectResponse
+    public function store(EmailVerificationRequest $request): RedirectResponse
     {
         /** @var User|MustVerifyEmail $user */
         $user = $request->user();
