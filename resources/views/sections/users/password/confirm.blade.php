@@ -1,3 +1,5 @@
+@props(['user'])
+
 @section('title', $title = 'Введите текущий пароль что-бы продолжить')
 
 <x-layouts::users-password>
@@ -8,17 +10,7 @@
                 Это защищенная область приложения. Пожалуйста, подтвердите свой пароль, прежде чем продолжить.
             </div>
             <x-ui.form.index action="{{ route('password.confirm') }}">
-                <div class="mb-3">
-                    <x-ui.form.label for="user_password" required>Пароль</x-ui.form.label>
-                    <x-ui.form.input.password
-                        id="user_password"
-                        name="user_password"
-                        autocomplete="current-password"
-                        required
-                        :is_invalid="$errors->has('password')"
-                    />
-                    <x-ui.input-errors :messages="$errors->get('password')"/>
-                </div>
+                <x-widgets.form.password id="user_password" name="user_password" required/>
                 <div class="form-group text-end">
                     <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}" class="me-3">Отмена</a>
                     <input type="submit" value="Продолжить" class="btn btn-sm btn-secondary px-2 py-1">

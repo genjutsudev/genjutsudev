@@ -10,7 +10,7 @@ use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
 class UserEditPasswordController extends Controller
@@ -31,7 +31,7 @@ class UserEditPasswordController extends Controller
         $attrs = [];
 
         if ($request->input('password')) {
-            $validated = $request->validate(['password' => ['required', Password::defaults(), 'confirmed']]);
+            $validated = $request->validate(['password' => ['required', 'string', 'confirmed', Rules\Password::defaults()]]);
             $attrs['password'] = Hash::make($validated['password']);
         }
 
