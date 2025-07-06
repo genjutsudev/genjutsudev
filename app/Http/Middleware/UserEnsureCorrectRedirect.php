@@ -18,9 +18,7 @@ class UserEnsureCorrectRedirect
      */
     public function handle(Request $request, Closure $next): Response
     {
-        /**
-         * @var ?User $user
-         */
+        /** @var User $user */
         $user = $request->route('user');
 
         if ($user && $user->profilelink !== $request->profilelink) {

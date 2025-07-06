@@ -31,14 +31,14 @@ class UserPasswordConfirmController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        if (! Auth::guard('web')->validate([
+        $validated = Auth::guard('web')->validate([
             'email' => $user->email,
             'password' => $request->input('user_password'),
-        ])) {
-            throw ValidationException::withMessages([
-                'password' => __('auth.password')
-            ]);
-        }
+        ]);
+
+        if (! $validated) throw ValidationException::withMessages([
+            'password' => __('auth.password')
+        ]);
 
         $request->session()->put('auth.password_confirmed_at', time());
 
