@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\UserAlreadyExistException;
+use App\Exceptions\UserEmailTakenException;
 use App\Http\Requests\UserStoreRequest;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
@@ -32,15 +32,16 @@ class UserRegistrationController extends Controller
      */
     public function store(UserStoreRequest $request): RedirectResponse
     {
-        $data = $request->except(['_token', 'password_confirmation']);
+        $data = $request->except(['_token', '_method', 'password_confirmation']);
 
         try {
             $user = $this->userService->createUserRegular(...$data);
-        } catch (UserAlreadyExistException $e) {
+        } catch (UserEmailTakenException $e) {
             self::info($e->getMessage());
             return redirect(route('register', false));
         } catch (\Throwable $th) {
-            self::danger('Что-то пошло не так, попробуйте ещё раз.'); // @todo i18n
+            logger()->error(self::class, ['error' => $th->getMessage()]);
+            self::danger('Произошла внутренняя ошибка, повторите попытку позже.'); // @todo i18n
             return redirect(route('register', false));
         }
 

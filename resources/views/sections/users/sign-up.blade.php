@@ -15,13 +15,12 @@
             {{--<p>После заполнения формы вам на адрес эл. почты (e-mail) придет письмо с подтверждением.</p>--}}
             {{--<p>Отправка писем на сервера @ex.ua, @i.ua, @online.ua, @meta.ua не поддерживается, используйте другие почтовые сервисы.</p>--}}
         </x-ui.block>
-        <form action="{{ route('register.store') }}" method="post" class="mb-4 col-6">
-            @csrf
-            <x-ui.form.email class="mb-3"/>
-            <x-ui.form.password class="mb-3"/>
-            <x-ui.form.password-confirm class="mb-3"/>
+        <x-ui.form.index action="{{ route('register.store') }}" class="mb-4 col-6">
+            <x-widgets.form.email id="register-email" label="Логин (Эл. почта)" required/>
+            <x-widgets.form.password id="register-password" required/>
+            <x-widgets.form.password id="register-password-confirmation" label="Повтор пароля" name="password_confirmation" required/>
             <input class="btn btn-primary" type="submit" value="Зарегистрироваться"/>
-        </form>
+        </x-ui.form.index>
         <div class="h2">Что дает регистрация?</div>
         <ol class="ps-3">
             <li>Возможность вести свои списки<b class="text-danger">[1]</b>: просмотренного, того, что смотрите сейчас, или запланированного на будущее.</li>

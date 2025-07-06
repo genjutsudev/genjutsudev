@@ -12,4 +12,9 @@ class UserRepository extends Repository
     {
         return User::query()->firstWhere('email', $email);
     }
+
+    public function findOneByProfilelink(string $profilelink): ?User
+    {
+        return User::query()->firstWhere('profilelink', $profilelink);
+    }
 }

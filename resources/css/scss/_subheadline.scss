@@ -2,15 +2,17 @@
 
 .subheadline {
     margin-bottom: 1rem;
-    padding: 0.5rem 0.5rem 0.5rem 1rem;
+    padding: .5rem .5rem .5rem 1rem;
     border-width: 5px !important;
     border-left: var(--tblr-border-width) var(--tblr-border-style) rgba(216, 221, 228, 1);
-    background-color: rgba(var(--tblr-secondary-lt-rgb), var(--tblr-bg-opacity));
+    background-color:  color-mix(
+            in srgb, var(--tblr-secondary-lt) calc(var(--tblr-bg-opacity, 1) * 100%), transparent
+    ) !important;
     --tblr-bg-opacity: 1;
 
     a {
         &:hover {
-            color: red!important;
+            color: red !important;
         }
     }
 
@@ -29,17 +31,21 @@
         "cyan":   (23, 162, 184),
     );
 
-    @each $color-name, $color-rgb in $colors {
-        &.#{$color-name} {
-            color: rgb(list.nth($color-rgb, 1), list.nth($color-rgb, 2), list.nth($color-rgb, 3));
-            border-left: var(--tblr-border-width) var(--tblr-border-style) rgba(list.nth($color-rgb, 1), list.nth($color-rgb, 2), list.nth($color-rgb, 3), 0.8);
-            background-color: rgba(var(--tblr-#{$color-name}-lt-rgb), var(--tblr-bg-opacity));
+    @each $name, $rgb in $colors {
+        &.#{$name} {
+            color: rgb(list.nth($rgb, 1), list.nth($rgb, 2), list.nth($rgb, 3));
+            border-left: var(--tblr-border-width) var(--tblr-border-style) rgba(
+                    list.nth($rgb, 1), list.nth($rgb, 2), list.nth($rgb, 3), 0.8
+            );
+            background-color:  color-mix(
+                    in srgb, var(--tblr-#{$name}-lt) calc(var(--tblr-bg-opacity, 1) * 100%), transparent
+            ) !important;
 
             a {
-                color: rgb(list.nth($color-rgb, 1), list.nth($color-rgb, 2), list.nth($color-rgb, 3));
+                color: rgb(list.nth($rgb, 1), list.nth($rgb, 2), list.nth($rgb, 3));
 
                 // &:hover {
-                //     color: rgba(list.nth($color-rgb, 1), list.nth($color-rgb, 2), list.nth($color-rgb, 3), 0.8);
+                //     color: rgba(list.nth($rgb, 1), list.nth($rgb, 2), list.nth($rgb, 3), 0.8);
                 // }
             }
         }
