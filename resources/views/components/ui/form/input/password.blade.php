@@ -1,4 +1,4 @@
-@props(['id', 'name', 'value', 'placeholder', 'disabled', 'required', 'readonly', 'is_invalid' => false])
+@props(['id', 'name', 'value', 'placeholder', 'disabled', 'required' => false, 'readonly', 'is_invalid' => false])
 
 <input
     id="{{ $id }}"
@@ -14,7 +14,7 @@
     @if (isset($disabled))
     disabled="disabled"
     @endif
-    @if (isset($required))
+    @if ($required)
     required="required"
     @endif
     @if (isset($readonly))

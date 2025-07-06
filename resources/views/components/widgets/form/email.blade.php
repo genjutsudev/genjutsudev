@@ -4,11 +4,12 @@
     'name' => 'email',
     'value' => null,
     'placeholder' => null,
+    'required' => false,
     'is_invalid' => false,
 ])
 
 <div class="form-group mb-3">
-    <x-ui.form.label :for="$id" required>
+    <x-ui.form.label :for="$id" :required="$required">
         {{ $label }}
     </x-ui.form.label>
     <x-ui.form.input.email
@@ -16,9 +17,9 @@
         :name="$name"
         :value="old($name, $value)"
         :placeholder="$placeholder"
+        :required="$required"
         :is_invalid="$errors->has($name)"
         autocomplete="off"
-        required
     />
     <x-ui.input-errors :messages="$errors->get($name)"/>
 </div>

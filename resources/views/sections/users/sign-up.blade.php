@@ -16,9 +16,9 @@
             {{--<p>Отправка писем на сервера @ex.ua, @i.ua, @online.ua, @meta.ua не поддерживается, используйте другие почтовые сервисы.</p>--}}
         </x-ui.block>
         <x-ui.form.index action="{{ route('register.store') }}" class="mb-4 col-6">
-            <x-widgets.form.email id="register-email" label="Логин (Эл. почта)" value=""/>
-            <x-widgets.form.password id="register-password"/>
-            <x-widgets.form.password id="register-password-confirmation" label="Повтор пароля" name="password_confirmation"/>
+            <x-widgets.form.email id="register-email" label="Логин (Эл. почта)" required/>
+            <x-widgets.form.password id="register-password" required/>
+            <x-widgets.form.password id="register-password-confirmation" label="Повтор пароля" name="password_confirmation" required/>
             <input class="btn btn-primary" type="submit" value="Зарегистрироваться"/>
         </x-ui.form.index>
         <div class="h2">Что дает регистрация?</div>

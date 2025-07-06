@@ -9,15 +9,15 @@
                 Просто сообщите нам свой адрес электронной почты, и мы вышлем вам письмо с инструкцией по сбросу пароля.
                 Оно позволит вам установить новый пароль.
             </div>
-            <!-- Session Status -->
+            <!-- status -->
             @if (session('status'))
                 <div class="font-medium text-sm text-green-600 dark:text-green-400 alert alert-success mb-4">
                     {{ session('status') }}
                 </div>
             @endif
             <x-ui.form.index action="{{ route('password.email') }}">
-                <!-- Email Address -->
-                <x-widgets.form.email label="Эл. почта" :value="request()->input('email')"/>
+                <!-- email -->
+                <x-widgets.form.email label="Эл. почта" :value="request()->input('email')" required/>
                 <div class="flex items-center justify-end mt-4">
                     <button type="submit" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg"

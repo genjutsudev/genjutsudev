@@ -3,11 +3,12 @@
     'id' => 'password',
     'name' => 'password',
     'placeholder' => null,
+    'required' => false,
     'is_invalid' => false,
 ])
 
 <div class="form-group mb-3">
-    <x-ui.form.label :for="$id" required>
+    <x-ui.form.label :for="$id" :required="$required">
         {{ $label }}
     </x-ui.form.label>
     <div class="input-group input-group-flat">
@@ -15,9 +16,9 @@
             :id="$id"
             :name="$name"
             :placeholder="$placeholder"
+            :required="$required"
             :is_invalid="$errors->has($name)"
             autocomplete="off"
-            required
         />
         <span class="input-group-text">
             <a href="#"

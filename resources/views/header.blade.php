@@ -169,8 +169,8 @@
                     <div class="hr-text m-2">или</div>
                     <x-ui.form.index action="{{ route('login.store') }}">
                         <div class="modal-body">
-                            <x-widgets.form.email id="login-email" label="Логин (Эл. почта)"/>
-                            <x-widgets.form.password id="login-password"/>
+                            <x-widgets.form.email id="login-email" label="Логин (Эл. почта)" required/>
+                            <x-widgets.form.password id="login-password" required/>
                             <x-ui.form.remember/>
                         </div>
                         <div class="modal-footer">
