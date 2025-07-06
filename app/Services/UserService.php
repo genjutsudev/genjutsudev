@@ -6,7 +6,7 @@ namespace App\Services;
 
 use App\Enums\UserTypeEnum;
 use App\Exceptions\ProtectedAttributeException;
-use App\Exceptions\UserAlreadyExistException;
+use App\Exceptions\UserEmailTakenException;
 use App\Models\User\User;
 use App\Models\User\UserPreference as Preferences;
 use App\Repositories\UserRepository;
@@ -57,7 +57,7 @@ class UserService
         ?bool $is_admin = false,
     ) : User
     {
-        throw_if($this->repository->findOneByEmail($email), new UserAlreadyExistException());
+        throw_if($this->repository->findOneByEmail($email), new UserEmailTakenException());
 
         $user = self::createUser(
             type: $type = Type::make($is_admin ? UserTypeEnum::ADMIN : UserTypeEnum::REGULAR),
@@ -139,7 +139,7 @@ class UserService
         if (array_key_exists('email', $attributes)) {
             /** @var ?User $found */
             $found = $this->repository->findOneByEmail($attributes['email']);
-            throw_if($found && ! $user->equals($found, 'email'), new UserAlreadyExistException());
+            throw_if($found && ! $user->equals($found, 'email'), new UserEmailTakenException());
         }
 
         $user->update($attributes, $options);

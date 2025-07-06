@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\UserProfilelinkIsTakenException;
+use App\Exceptions\UserProfilelinkTakenException;
 use App\Http\Requests\UserUpdateProfilelinkRequest as ProfilelinkRequest;
 use App\Models\User\User;
 use App\Repositories\UserRepository;
@@ -36,10 +36,10 @@ class UserEditProfilelinkController extends Controller
 
         try {
             $found = $this->userRepository->findOneByProfilelink($user_profilelink);
-            throw_if($found, new UserProfilelinkIsTakenException());
+            throw_if($found, new UserProfilelinkTakenException());
 
             $this->userService->updateUser($user, ['profilelink' => $user_profilelink]);
-        } catch (UserProfilelinkIsTakenException $e) {
+        } catch (UserProfilelinkTakenException $e) {
             $level = 'info';
             $message = $e->getMessage();
             $routeName = 'users.edit.profilelink';

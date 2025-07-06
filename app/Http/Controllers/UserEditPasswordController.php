@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\UserAlreadyExistException;
+use App\Exceptions\UserEmailTakenException;
 use App\Models\User\User;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
@@ -44,7 +44,7 @@ class UserEditPasswordController extends Controller
 
         try {
             $this->userService->updateUser($user, $attrs);
-        } catch (UserAlreadyExistException $e) {
+        } catch (UserEmailTakenException $e) {
             $level = 'info';
             $message = $e->getMessage();
             $routeName = 'users.edit.password';

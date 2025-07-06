@@ -6,6 +6,7 @@ namespace App\Models\User;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Casts\UserGenderCast;
+use App\Casts\UserTypeCast;
 use App\Values\UserGenderValue;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -125,6 +126,7 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'type' => UserTypeCast::class,
             'email_verified_at' => 'datetime',
             'email_changed_at' => 'datetime',
             'password' => 'hashed',

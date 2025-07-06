@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\User\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,11 +28,12 @@ class UserPasswordConfirmController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        /** @var User $user */
         $user = $request->user();
 
         if (! Auth::guard('web')->validate([
             'email' => $user->email,
-            'password' => $request->user_password,
+            'password' => $request->input('user_password'),
         ])) {
             throw ValidationException::withMessages([
                 'password' => __('auth.password')

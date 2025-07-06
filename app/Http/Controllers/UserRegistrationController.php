@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\UserAlreadyExistException;
+use App\Exceptions\UserEmailTakenException;
 use App\Http\Requests\UserStoreRequest;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
@@ -36,7 +36,7 @@ class UserRegistrationController extends Controller
 
         try {
             $user = $this->userService->createUserRegular(...$data);
-        } catch (UserAlreadyExistException $e) {
+        } catch (UserEmailTakenException $e) {
             self::info($e->getMessage());
             return redirect(route('register', false));
         } catch (\Throwable $th) {
@@ -49,6 +49,6 @@ class UserRegistrationController extends Controller
         Auth::login($user, true);
 
         self::success('Успешная регистрация — открыт доступ к лучшим аниме-тайтлам, обсуждениям и манге.'); // @todo i18n
-        return redirect(route('animes', false));
+        return redirect()->route('users.show', [$user->nid, $user->profilelink]);
     }
 }

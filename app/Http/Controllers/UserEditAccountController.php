@@ -22,6 +22,7 @@ class UserEditAccountController extends Controller
     public function show(Request $request, User $user): View
     {
         $preferences = $user->preferences;
+
         return view('sections.users.edit.account', compact(['user', 'preferences']));
     }
 
