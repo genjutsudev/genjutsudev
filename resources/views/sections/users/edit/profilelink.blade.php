@@ -10,16 +10,16 @@
         {{-- profilelink --}}
         <div class="mb-3">
             <x-ui.form.label for="user_profilelink" required>
-                <span>Ссылка профиля</span>
+                Ссылка профиля
             </x-ui.form.label>
             <x-ui.form.input.text
                 id="user_profilelink"
                 name="user_profilelink"
-                value="{{ old('user_profilelink', $user->profilelink) }}"
+                value="{{ $user->profilelink }}"
                 placeholder="{{ $user->profilelink }}"
                 autocomplete="off"
                 required
-                :errors="$errors->has('user_profilelink')"
+                :is_invalid="$errors->has('user_profilelink')"
             />
             <x-ui.input-errors :messages="$errors->get('user_profilelink')"/>
         </div>

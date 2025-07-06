@@ -32,7 +32,7 @@ class UserRegistrationController extends Controller
      */
     public function store(UserStoreRequest $request): RedirectResponse
     {
-        $data = $request->except(['_token', 'password_confirmation']);
+        $data = $request->except(['_token', '_method', 'password_confirmation']);
 
         try {
             $user = $this->userService->createUserRegular(...$data);
@@ -41,7 +41,6 @@ class UserRegistrationController extends Controller
             return redirect(route('register', false));
         } catch (\Throwable $th) {
             logger()->error(self::class, ['error' => $th->getMessage()]);
-
             self::danger('Произошла внутренняя ошибка, повторите попытку позже.'); // @todo i18n
             return redirect(route('register', false));
         }
@@ -49,6 +48,6 @@ class UserRegistrationController extends Controller
         Auth::login($user, true);
 
         self::success('Успешная регистрация — открыт доступ к лучшим аниме-тайтлам, обсуждениям и манге.'); // @todo i18n
-        return redirect()->route('users.show', [$user->nid, $user->profilelink]);
+        return redirect(route('animes', false));
     }
 }

@@ -1,9 +1,3 @@
-@php($routes = [
-    'terms' => 'Соглашение',
-    'privacy' => 'Конфиденциальность',
-    'copyright' => 'Для правообладателей'
-])
-
 <footer class="footer footer-transparent d-print-none">
     <div class="container">
         <div class="row text-center align-items-center flex-row-reverse">
@@ -14,7 +8,11 @@
             </div>
             <div class="col-12 col-lg-auto mt-3 mt-lg-0">
                 <ul class="list-inline list-inline-dots mb-0">
-                    @foreach($routes as $routeName => $routeTitle)
+                    @foreach([
+                        'terms' => 'Соглашение',
+                        'privacy' => 'Конфиденциальность',
+                        'copyright' => 'Для правообладателей',
+                    ] as $routeName => $routeTitle)
                         <li class="list-inline-item">
                             <a href="{{ route($routeName) }}?ref=footer" class="link-secondary">
                                 {{ $routeTitle }}

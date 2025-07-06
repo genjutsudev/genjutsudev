@@ -26,23 +26,23 @@
             </a>
         </div>
         @if($boosty_url = env('BOOSTY_URL'))
-        <div class="d-none d-md-block pe-2">
-            <a
-                href="{{ $boosty_url }}"
-                class="btn py-2"
-                target="_blank"
-                rel="noreferrer"
-                title="Внести свой вклад в развитие проекта"
-            >
-                <img
-                    style="margin-right: 10px;"
-                    src="{{ asset('static/media/boosty.png') }}"
-                    width="18"
-                    alt="Boosty"
+            <div class="d-none d-md-block pe-2">
+                <a
+                    href="{{ $boosty_url }}"
+                    class="btn py-2"
+                    target="_blank"
+                    rel="noreferrer"
+                    title="Внести свой вклад в развитие проекта"
                 >
-                <span class="text-uppercase">Стать спонсором</span>
-            </a>
-        </div>
+                    <img
+                        style="margin-right: 10px;"
+                        src="{{ asset('static/media/boosty.png') }}"
+                        width="18"
+                        alt="Boosty"
+                    >
+                    <span class="text-uppercase">Стать спонсором</span>
+                </a>
+            </div>
         @endif
         <div class="flex-grow-1 d-none d-md-block pe-3">
             <a
@@ -167,20 +167,10 @@
                         </div>
                     </div>
                     <div class="hr-text m-2">или</div>
-                    <form method="post" action="{{ route('login.store') }}">
-                        @csrf
+                    <x-ui.form.index action="{{ route('login.store') }}">
                         <div class="modal-body">
-                            <x-ui.form.email class="mb-3"/>
-                            <x-ui.form.password class="mb-3">
-                                <div class="col-12 text-end mt-2">
-                                    <a
-                                        href="{{ route('password.request') }}"
-                                        class="btn btn-sm btn-ghost-info"
-                                    >
-                                        Забыли пароль?
-                                    </a>
-                                </div>
-                            </x-ui.form.password>
+                            <x-widgets.form.email id="login-email" label="Логин (Эл. почта)"/>
+                            <x-widgets.form.password id="login-password"/>
                             <x-ui.form.remember/>
                         </div>
                         <div class="modal-footer">
@@ -192,15 +182,20 @@
                                             Войти
                                         </button>
                                     </div>
-                                    <div class="col text-uppercase">
+                                    <div class="col text-uppercase mb-3">
                                         <a href=" {{ route('register') }}" class="btn w-100">
-                                            Новый аккаунт
+                                            <strong>Новый аккаунт</strong>
+                                        </a>
+                                    </div>
+                                    <div class="col-12">
+                                        <a href="{{ route('password.request') }}" class="btn btn-primary w-100">
+                                            Забыли пароль?
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </x-ui.form.index>
                 </div>
             </div>
         </x-ui.block>

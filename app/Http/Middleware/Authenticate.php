@@ -14,14 +14,15 @@ class Authenticate extends Middleware
 
     /**
      * Redirect the user if they are not authenticated.
+     *
+     * @param Request $request
+     * @return string|void|null
      */
-    protected function redirectTo(Request $request): ?string
+    protected function redirectTo(Request $request)
     {
         if (! $request->expectsJson()) {
             self::info('Available only to authorized users.'); // @todo i18n
             return route('animes'); // @todo: changed route
         }
-
-        return null;
     }
 }

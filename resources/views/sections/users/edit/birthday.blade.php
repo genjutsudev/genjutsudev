@@ -14,7 +14,7 @@
     <x-ui.form.index method="put" class="w-50">
         {{-- birthday --}}
         <x-ui.form.label required>
-            <span>Дата рождения</span>
+            Дата рождения
         </x-ui.form.label>
         <div class="row mb-3">
             {{-- birthday.day --}}

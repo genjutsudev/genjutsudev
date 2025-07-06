@@ -5,7 +5,9 @@
         <div class="card-body">
             <h2 class="h2 text-center mb-4">{{ $title }}</h2>
             <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                {{ __('Забыли пароль? Не проблема! Просто сообщите нам свой адрес электронной почты, и мы вышлем вам письмо с инструкцией по сбросу пароля. Оно позволит вам установить новый пароль.') }}
+                Забыли пароль? Не проблема!
+                Просто сообщите нам свой адрес электронной почты, и мы вышлем вам письмо с инструкцией по сбросу пароля.
+                Оно позволит вам установить новый пароль.
             </div>
             <!-- Session Status -->
             @if (session('status'))
@@ -15,10 +17,7 @@
             @endif
             <x-ui.form.index action="{{ route('password.email') }}">
                 <!-- Email Address -->
-                <div class="form-group">
-                    <x-ui.form.email :label="__('Эл. почта')"/>
-                    <x-ui.input-errors :messages="$errors->get('email')" class="mt-2"/>
-                </div>
+                <x-widgets.form.email label="Эл. почта" :value="request()->input('email')"/>
                 <div class="flex items-center justify-end mt-4">
                     <button type="submit" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg"

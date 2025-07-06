@@ -7,16 +7,16 @@
         {{-- profilename --}}
         <div class="mb-3">
             <x-ui.form.label for="user_profilename" required>
-                <span>Имя профиля</span>
+                Имя профиля
             </x-ui.form.label>
             <x-ui.form.input.text
                 id="user_profilename"
                 name="user_profilename"
-                value="{{ old('user_profilename', $user->profilename) }}"
+                value="{{ $user->profilename }}"
                 placeholder="{{ $user->profilename }}"
                 autocomplete="off"
                 required
-                :errors="$errors->has('user_profilename')"
+                :is_invalid="$errors->has('user_profilelink')"
             />
             <x-ui.input-errors :messages="$errors->get('user_profilename')"/>
         </div>
