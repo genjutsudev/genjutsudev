@@ -137,9 +137,7 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * @todo move & refactored (observer or other)
-     */
+    // @todo move & refactored (observer or other)
     public function save(array $options = []): bool
     {
         if ($this->isDirty('email')) {
@@ -147,19 +145,11 @@ class User extends Authenticatable
             $this->email_changed_at = Carbon::now();
         }
 
-        /*
-         * @todo move & refactored (observer or other)
-         */
         if ($this->isDirty('password')) {
             $this->password_changed_at = Carbon::now();
         }
 
         return parent::save($options);
-    }
-
-    public function getActivityAt(): Carbon
-    {
-        return $this->activity_at;
     }
 
     public function equals(?self $other, string $attribute = 'id'): bool

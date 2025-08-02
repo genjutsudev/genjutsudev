@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\User\User;
-use App\Values\UserActivityAtValue;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
@@ -20,8 +20,13 @@ function user_gender_title(User $user): string
 
 function user_last_activity(User $user): string
 {
-    $activityAt = UserActivityAtValue::make($user->getActivityAt());
-    return $activityAt->forHumans(user_is_online($user));
+    if (user_is_online($user)) {
+        return trans('user.last_activity.curr');
+    }
+
+    return trans('user.last_activity.prev', [
+        'time' => Carbon::parse($user->activity_at)->diffForHumans()
+    ]);
 }
 
 function user_is_online(User $user): bool
