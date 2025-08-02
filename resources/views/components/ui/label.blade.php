@@ -1,3 +1,5 @@
+{{-- @deprecated --}}
+
 @props(['label' => ''])
 
 <label

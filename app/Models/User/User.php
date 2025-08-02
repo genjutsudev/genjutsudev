@@ -1,16 +1,52 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\User;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Casts\UserGenderCast;
+use App\Casts\UserTypeCast;
+use App\Values\UserGenderValue;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property string $id
+ * @property int $nid
+ * @property-read ?int $referrer_nid
+ * @property-read string $type
+ * @property bool $is_active
+ * @property ?string $profilelink
+ * @property ?string $email
+ * @property ?Carbon $email_verified_at
+ * @property ?Carbon $email_changed_at
+ * @property ?string $password
+ * @property ?Carbon $password_changed_at
+ * @property ?string $profilename
+ * @property ?Carbon $birthday
+ * @property UserGenderValue $gender
+ * @property float $karma
+ * @property float $power
+ * @property int $sign_in_count
+ * @property-read ?string $registration_ip_hash
+ * @property-read ?string $registration_country
+ * @property ?string $token
+ * @property ?string $api_key
+ * @property ?string $remember_token
+ * @property Carbon $activity_at
+ * @property-read Carbon $created_at
+ * @property Carbon $updated_at
+ * @property UserPreference $preferences
+ */
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, HasUuids;
 
     /**
@@ -56,9 +92,12 @@ class User extends Authenticatable
         'email',
         'password',
         'profilename',
+        'birthday',
+        'gender',
         'registration_ip_hash',
         'registration_country',
         'token',
+        'activity_at',
         'api_key',
     ];
 
@@ -67,7 +106,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $guarded = ['id', 'nid', 'referrer_nid', 'created_at'];
+    protected $guarded = ['id', 'nid', 'referrer_nid', 'type', 'created_at'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -87,8 +126,39 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'type' => UserTypeCast::class,
             'email_verified_at' => 'datetime',
+            'email_changed_at' => 'datetime',
             'password' => 'hashed',
+            'password_changed_at' => 'datetime',
+            'birthday' => 'date',
+            'gender' => UserGenderCast::class,
+            'activity_at' => 'datetime',
         ];
+    }
+
+    // @todo move & refactored (observer or other)
+    public function save(array $options = []): bool
+    {
+        if ($this->isDirty('email')) {
+            $this->email_verified_at = null;
+            $this->email_changed_at = Carbon::now();
+        }
+
+        if ($this->isDirty('password')) {
+            $this->password_changed_at = Carbon::now();
+        }
+
+        return parent::save($options);
+    }
+
+    public function equals(?self $other, string $attribute = 'id'): bool
+    {
+        return $this->$attribute === $other?->$attribute;
+    }
+
+    public function preferences(): HasOne
+    {
+        return $this->hasOne(UserPreference::class);
     }
 }

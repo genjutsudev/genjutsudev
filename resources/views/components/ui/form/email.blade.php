@@ -1,3 +1,5 @@
+{{-- @deprecated --}}
+
 @props(['label' => 'Логин (Адрес эл. почты)', 'error' => false])
 
 <div
@@ -10,6 +12,7 @@
         id="email"
         name="email"
         type="email"
+        value="{{ old('email', request()->input('email')) }}"
         class="form-control"
         :placeholder="$label"
         autocomplete="off"

@@ -12,39 +12,37 @@
         >
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="h1 navbar-brand navbar-brand-autodark d-none-navbar-horizontal p-0 pe-3">
+        <div class="h1 navbar-brand navbar-brand-autodark d-none-navbar-horizontal me-auto p-0 pe-3">
             <a href="/" class="text-decoration-none text-uppercase" title="Домой">
-                <div class="align-items-center">
-                    <div class="d-flex font-vina-sans" style="font-size: 36px;">
-                        genjut
-                        <img
-                            style="width: 38px; margin: 0 5px;"
-                            src="{{ asset('static/media/sharingan.svg') }}"
-                            alt="Sharingan"
-                        >
-                        su
-                    </div>
+                <div class="d-flex font-vina-sans" style="font-size: 36px;">
+                    genjut
+                    <img
+                        style="width: 38px; margin: 0 5px;"
+                        src="{{ asset('static/media/sharingan.svg') }}"
+                        alt="Sharingan"
+                    >
+                    su
                 </div>
             </a>
         </div>
         @if($boosty_url = env('BOOSTY_URL'))
-        <div class="d-none d-md-block pe-2">
-            <a
-                href="{{ $boosty_url }}"
-                class="btn py-2"
-                target="_blank"
-                rel="noreferrer"
-                title="Внести свой вклад в развитие проекта"
-            >
-                <img
-                    style="margin-right: 10px;"
-                    src="{{ asset('static/media/boosty.png') }}"
-                    width="18"
-                    alt="Boosty"
+            <div class="d-none d-md-block pe-2">
+                <a
+                    href="{{ $boosty_url }}"
+                    class="btn py-2"
+                    target="_blank"
+                    rel="noreferrer"
+                    title="Внести свой вклад в развитие проекта"
                 >
-                <span class="text-uppercase">Стать спонсором</span>
-            </a>
-        </div>
+                    <img
+                        style="margin-right: 10px;"
+                        src="{{ asset('static/media/boosty.png') }}"
+                        width="18"
+                        alt="Boosty"
+                    >
+                    <span class="text-uppercase">Стать спонсором</span>
+                </a>
+            </div>
         @endif
         <div class="flex-grow-1 d-none d-md-block pe-3">
             <a
@@ -101,21 +99,19 @@
                 </div>
                 <div class="nav-item me-3">
                     <a
-                        href="{{--{{ route('users.show', [$user->uid, $user->profilelink]) }}--}}"
-                        class="nav-link lh-1 p-2"
+                        href="{{ route('users.show', [$user->nid, $user->profilelink]) }}"
+                        @class([
+                            'nav-link',
+                            'lh-1',
+                            'p-2',
+                            'bg-azure-lt' => auth()->user()->equals(request()->user) && request()->routeIs('users.show')
+                        ])
                     >
-                        <span class="avatar avatar-sm" style="background-image: url(https://www.gravatar.com/avatar/9dcc550d0691ed1c0d52bf46ff7cb967?s=32&d=identicon&r=g);"></span>
+                        <span class="avatar avatar-sm" style="background-image: url({{ gravatar($user->email) }});"></span>
                         <div class="d-none d-sm-block ps-2">
-                            <div
-                                @class([
-                                    'fw-bold',
-                                    'text-azure' => false/*Route::isWith([
-                                        'users.show', [$user->uid, $user->profilelink]
-                                    ])*/
-                                ])
-                            >
+                            <div class="fw-bold">
                                 {{ $user->profilename }}
-                            </div>{{-- TODO: components/ui --}}
+                            </div>
                             <div class="mt-1 small text-muted text-uppercase">Профиль</div>
                         </div>
                     </a>
@@ -171,20 +167,10 @@
                         </div>
                     </div>
                     <div class="hr-text m-2">или</div>
-                    <form method="post" action="{{ route('login.store') }}">
-                        @csrf
+                    <x-ui.form.index action="{{ route('login.store') }}">
                         <div class="modal-body">
-                            <x-ui.form.email class="mb-3"/>
-                            <x-ui.form.password class="mb-3">
-                                <div class="col-12 text-end mt-2">
-                                    <a
-                                        href="{{ route('password.request') }}"
-                                        class="btn btn-sm btn-ghost-info"
-                                    >
-                                        Забыли пароль?
-                                    </a>
-                                </div>
-                            </x-ui.form.password>
+                            <x-widgets.form.email id="login-email" label="Логин (Эл. почта)" required/>
+                            <x-widgets.form.password id="login-password" required/>
                             <x-ui.form.remember/>
                         </div>
                         <div class="modal-footer">
@@ -196,15 +182,20 @@
                                             Войти
                                         </button>
                                     </div>
-                                    <div class="col text-uppercase">
+                                    <div class="col text-uppercase mb-3">
                                         <a href=" {{ route('register') }}" class="btn w-100">
-                                            Новый аккаунт
+                                            <strong>Новый аккаунт</strong>
+                                        </a>
+                                    </div>
+                                    <div class="col-12">
+                                        <a href="{{ route('password.request') }}" class="btn btn-primary w-100">
+                                            Забыли пароль?
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </x-ui.form.index>
                 </div>
             </div>
         </x-ui.block>

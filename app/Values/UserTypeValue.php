@@ -8,23 +8,28 @@ use App\Enums\UserTypeEnum;
 
 final readonly class UserTypeValue
 {
-    public function __construct(private UserTypeEnum $type)
+    private function __construct(private UserTypeEnum $type)
     {
+    }
+
+    public static function make(UserTypeEnum $type): self
+    {
+        return new self($type);
     }
 
     public static function regular(): self
     {
-        return new self(UserTypeEnum::REGULAR);
+        return self::make(UserTypeEnum::REGULAR);
     }
 
     public static function admin(): self
     {
-        return new self(UserTypeEnum::ADMIN);
+        return self::make(UserTypeEnum::ADMIN);
     }
 
     public static function api(): self
     {
-        return new self(UserTypeEnum::API);
+        return self::make(UserTypeEnum::API);
     }
 
     public function getType(): UserTypeEnum

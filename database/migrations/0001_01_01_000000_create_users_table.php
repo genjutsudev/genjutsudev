@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('user_users', function (Blueprint $table) {
             $table->uuid('id')->comment('user_uuid');
             $table->id('nid')->comment('user_id');
-            $table->unsignedBigInteger('referrer_nid')->nullable()->comment('referrer_user_id');
+            $table->unsignedBigInteger('referrer_nid')->nullable()->comment('referrer_user_nid');
             $table->string('type')->comment('тип уч. записи');
-            $table->tinyInteger('is_active')->default(true);
+            $table->unsignedTinyInteger('is_active')->default(true);
             $table->string('profilelink', 32)->nullable();
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->dateTime('password_changed_at')->nullable();
             $table->string('profilename', 128)->nullable();
             $table->date('birthday')->nullable();
-            $table->string('gender')->nullable();
+            $table->string('gender')->default('other');
             $table->decimal('karma', 5)->default(0.0)->comment('репутация пользователя');
             $table->decimal('power', 3)->default(1.0)->comment('сила голоса');
             $table->unsignedInteger('sign_in_count')->default(0)->comment('количество успешных входов');
@@ -34,7 +34,7 @@ return new class extends Migration
             $table->string('token', 32)->nullable();
             $table->string('api_key', 64)->nullable();
             $table->rememberToken();
-            $table->dateTime('activity_at')->nullable();
+            $table->dateTime('activity_at')->default(now());
             $table->timestamps();
         });
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserLoginRequest;
+use App\Models\User\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,10 +32,11 @@ class UserAuthenticatedController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
+        /** @var User $user */
         $user = Auth::user();
 
         self::success('С возвращением, <b>' . $user->profilename . '</b>!'); // @todo i18n
-        return redirect()->intended(route('animes', false));
+        return redirect()->intended(route('users.show', [$user->nid, $user->profilelink]));
     }
 
     /**
@@ -42,6 +44,7 @@ class UserAuthenticatedController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        /** @var User $user */
         $user = Auth::user();
 
         Auth::guard('web')->logout();

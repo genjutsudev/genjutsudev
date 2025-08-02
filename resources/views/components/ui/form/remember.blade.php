@@ -1,3 +1,5 @@
+{{-- @deprecated --}}
+
 @props([])
 
 <x-ui.label class="form-check m-0">
