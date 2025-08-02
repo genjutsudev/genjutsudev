@@ -39,7 +39,7 @@ class UserService
             'type' => $type,
             'profilelink' => Str::ulid(new \DateTime()),
             'email' => $email,
-            'password' => self::hash($password),
+            'password' => ! $password ? self::hash($password) : null,
             'profilename' => uniqid(),
             'registration_ip_hash' => self::hash(request()->ip(), ['memory' => 1024, 'time' => 2, 'threads' => 2]),
             'registration_country' => 'Russian', // @todo
@@ -47,7 +47,7 @@ class UserService
             'api_key' => $api_key,
         ]);
 
-        return $user->load('preferences');
+        return $user;
     }
 
     private function createUserRegularOrAdmin(
@@ -116,6 +116,7 @@ class UserService
     {
         foreach (array_keys($attributes) as $attributeName) {
             throw_if(! in_array($attributeName, [
+                // @todo move in DTO
                 'is_active',
                 'profilelink',
                 'email',
@@ -132,7 +133,7 @@ class UserService
                 'token',
                 'api_key',
                 'remember_token',
-                'activity_at'
+                'activity_at',
             ]), new ProtectedAttributeException($attributeName));
         }
 

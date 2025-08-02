@@ -258,7 +258,7 @@
                 </a>
             </div>
             <x-ui.subheadline :label="__('Привязанные социальные сети')">
-                networks
+                Нет данных
             </x-ui.subheadline>
         </div>
     </div>
