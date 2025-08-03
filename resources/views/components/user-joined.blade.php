@@ -1,7 +1,7 @@
 <span
     data-bs-toggle="tooltip"
-    data-bs-placement="right"
+    data-bs-placement="bottom"
     data-bs-original-title="{{ $title }}"
 >
-    <b>{{ $label }}</b>
+    <b class="cursor-help">{{ $label }}</b>
 </span>

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Models\User;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Casts\UserCreatedViaCast;
 use App\Casts\UserGenderCast;
 use App\Casts\UserTypeCast;
+use App\Values\UserCreatedViaValue;
 use App\Values\UserGenderValue;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -17,31 +19,40 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 
 /**
+ * Основная
  * @property string $id
  * @property int $nid
- * @property-read ?int $referrer_nid
  * @property-read string $type
  * @property bool $is_active
+ * @property UserCreatedViaValue $created_via
+ * @property-read Carbon $created_at
+ * @property Carbon $updated_at
+ * Профиль
+ * @property ?string $profilename
  * @property ?string $profilelink
+ * @property ?Carbon $birthday
+ * @property UserGenderValue $gender
+ * Учетные данные
  * @property ?string $email
  * @property ?Carbon $email_verified_at
  * @property ?Carbon $email_changed_at
  * @property ?string $password
  * @property ?Carbon $password_changed_at
- * @property ?string $profilename
- * @property ?Carbon $birthday
- * @property UserGenderValue $gender
+ * Статистика
  * @property float $karma
  * @property float $power
  * @property int $sign_in_count
- * @property-read ?string $registration_ip_hash
- * @property-read ?string $registration_country
+ * @property Carbon $activity_at
+ * Реферальные связи
+ * @property-read ?int $referrer_nid
+ * Токены и ключи
  * @property ?string $token
  * @property ?string $api_key
  * @property ?string $remember_token
- * @property Carbon $activity_at
- * @property-read Carbon $created_at
- * @property Carbon $updated_at
+ * Другое
+ * @property-read ?string $registration_ip_hash
+ * @property-read ?string $registration_country
+ * Связи
  * @property UserPreference $preferences
  */
 class User extends Authenticatable
@@ -99,6 +110,7 @@ class User extends Authenticatable
         'token',
         'activity_at',
         'api_key',
+        'created_via',
     ];
 
     /**
@@ -106,7 +118,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $guarded = ['id', 'nid', 'referrer_nid', 'type', 'created_at'];
+    protected $guarded = ['id', 'nid', 'referrer_nid', 'type', 'created_at', 'created_via'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -134,6 +146,7 @@ class User extends Authenticatable
             'birthday' => 'date',
             'gender' => UserGenderCast::class,
             'activity_at' => 'datetime',
+            'created_via' => UserCreatedViaCast::class
         ];
     }
 
