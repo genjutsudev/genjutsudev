@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\UserCreatedViaEnum;
 use App\Enums\UserTypeEnum;
 use App\Exceptions\ProtectedAttributeException;
 use App\Exceptions\UserEmailTakenException;
@@ -11,7 +12,9 @@ use App\Models\User\User;
 use App\Models\User\UserPreference as Preferences;
 use App\Repositories\UserRepository;
 use App\Traits\HasherTrait;
+use App\Values\UserCreatedViaValue as CreatedVia;
 use App\Values\UserTypeValue as Type;
+use DateTime;
 use Illuminate\Support\Str;
 
 class UserService
@@ -26,6 +29,7 @@ class UserService
 
     private function createUser(
         Type $type,
+        CreatedVia $created_via,
         ?int $referrer_nid = null,
         ?string $email = null,
         ?string $password = null,
@@ -35,11 +39,12 @@ class UserService
     {
         /** @var User $user */
         $user = User::create([
-            'referrer_nid' => $referrer_nid,
             'type' => $type,
-            'profilelink' => Str::ulid(new \DateTime()),
+            'created_via' => $created_via,
+            'referrer_nid' => $referrer_nid,
+            'profilelink' => Str::ulid(new DateTime()),
             'email' => $email,
-            'password' => ! $password ? self::hash($password) : null,
+            'password' => ! empty($password) ? self::hash($password) : null,
             'profilename' => uniqid(),
             'registration_ip_hash' => self::hash(request()->ip(), ['memory' => 1024, 'time' => 2, 'threads' => 2]),
             'registration_country' => 'Russian', // @todo
@@ -53,6 +58,7 @@ class UserService
     private function createUserRegularOrAdmin(
         string $email,
         string $password,
+        string $created_via = 'web',
         ?int $referrer_nid = null,
         ?bool $is_admin = false,
     ) : User
@@ -61,6 +67,7 @@ class UserService
 
         $user = self::createUser(
             type: $type = Type::make($is_admin ? UserTypeEnum::ADMIN : UserTypeEnum::REGULAR),
+            created_via: CreatedVia::make(UserCreatedViaEnum::from($created_via)),
             referrer_nid: $referrer_nid,
             email: $email,
             password: $password,
@@ -75,35 +82,44 @@ class UserService
     public function createUserRegular(
         string $email,
         string $password,
+        string $created_via = 'web',
         ?int $referrer_nid = null,
     ) : User
     {
         return self::createUserRegularOrAdmin(
             email: $email,
             password: $password,
-            referrer_nid: $referrer_nid
+            created_via: $created_via,
+            referrer_nid: $referrer_nid,
         );
     }
 
     public function createUserAdmin(
         string $email,
         string $password,
+        string $created_via = 'web',
     ) : User
     {
         return self::createUserRegularOrAdmin(
             email: $email,
             password: $password,
-            is_admin: true
+            created_via: $created_via,
+            is_admin: true,
         );
     }
 
     /*
      * @todo
      */
-    public function createUserApi(): User
+    public function createUserApi(
+        string $created_via = 'web',
+    ) : User
     {
+        $type = Type::make(UserTypeEnum::API);
+        $created_via = CreatedVia::make(UserCreatedViaEnum::from($created_via));
         return self::createUser(
-            type: $type = Type::make(UserTypeEnum::API),
+            type: $type,
+            created_via: $created_via,
             api_key: hash('sha256', $type . time())
         );
     }
@@ -148,9 +164,7 @@ class UserService
         return $user;
     }
 
-    /*
-     * @todo
-     */
+    // @todo
     public function updateUserRegular(
         User $user,
         array $attrs = [],
@@ -160,9 +174,7 @@ class UserService
         return self::updateUser($user, $attrs);
     }
 
-    /*
-     * @todo
-     */
+    // @todo
     public function updateUserApi(
         User $user,
         array $attrs = [],
@@ -171,6 +183,7 @@ class UserService
         return self::updateUser($user, $attrs);
     }
 
+    // @todo
     public function updatePreferences(
         User $user,
         array $attributes,

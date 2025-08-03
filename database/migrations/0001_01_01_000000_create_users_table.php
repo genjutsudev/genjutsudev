@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id('nid')->comment('user_id');
             $table->string('type')->comment('тип уч. записи');
             $table->unsignedTinyInteger('is_active')->default(true);
-            $table->string('created_via');
+            $table->string('created_via', 8);
             $table->timestamps();
             // Профиль
             $table->string('profilename', 128)->nullable();
