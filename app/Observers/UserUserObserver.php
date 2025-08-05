@@ -6,7 +6,6 @@ namespace App\Observers;
 
 use App\Models\UserUser as User;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades;
 
 class UserUserObserver
 {
@@ -23,17 +22,17 @@ class UserUserObserver
      */
     public function updated(User $user): void
     {
-        if ($user->wasChanged('email')) {
+        if ($user->wasChanged(['email'])) {
             $user->email_verified_at = null;
             $user->email_changed_at = Carbon::now();
         }
 
-        if ($user->wasChanged('password')) {
+        if ($user->wasChanged(['password'])) {
             $user->password_changed_at = Carbon::now();
         }
 
-        if ($user->isDirty(['email_verified_at', 'email_changed_at', 'password_changed_at'])) {
-            Facades\DB::afterCommit(fn () => $user->save());
+        if ($user->isDirty(['email_changed_at', 'password_changed_at'])) {
+            $user->save();
         }
     }
 
