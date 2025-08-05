@@ -150,21 +150,6 @@ class UserUser extends Authenticatable
         ];
     }
 
-    // @todo move & refactored (observer or other)
-    public function save(array $options = []): bool
-    {
-        if ($this->isDirty('email')) {
-            $this->email_verified_at = null;
-            $this->email_changed_at = Carbon::now();
-        }
-
-        if ($this->isDirty('password')) {
-            $this->password_changed_at = Carbon::now();
-        }
-
-        return parent::save($options);
-    }
-
     public function equals(?self $other, string $attribute = 'id'): bool
     {
         return $this->$attribute === $other?->$attribute;
