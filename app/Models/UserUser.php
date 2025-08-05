@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Models\User;
+namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Casts\UserCreatedViaCast;
@@ -53,9 +53,9 @@ use Illuminate\Support\Carbon;
  * @property-read ?string $registration_ip_hash
  * @property-read ?string $registration_country
  * Связи
- * @property UserPreference $preferences
+ * @property UserUserPreference $preferences
  */
-class User extends Authenticatable
+class UserUser extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, HasUuids;
@@ -63,7 +63,7 @@ class User extends Authenticatable
     /**
      * @var string
      */
-    public const ENTITY_TYPE = 'user_users';
+    public const string ENTITY_TYPE = 'user_users';
 
     /**
      * @var string
@@ -172,6 +172,6 @@ class User extends Authenticatable
 
     public function preferences(): HasOne
     {
-        return $this->hasOne(UserPreference::class);
+        return $this->hasOne(UserUserPreference::class, 'user_id');
     }
 }

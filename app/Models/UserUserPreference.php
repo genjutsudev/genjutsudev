@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Models\User;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class UserPreference extends Model
+class UserUserPreference extends Model
 {
     use HasUuids;
 

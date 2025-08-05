@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserUpdateProfilenameRequest as ProfilenameRequest;
-use App\Models\User\User;
+use App\Models\UserUser as User;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;

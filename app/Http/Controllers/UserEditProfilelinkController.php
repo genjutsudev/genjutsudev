@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\UserProfilelinkTakenException;
 use App\Http\Requests\UserUpdateProfilelinkRequest as ProfilelinkRequest;
-use App\Models\User\User;
+use App\Models\UserUser as User;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
