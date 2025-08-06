@@ -10,17 +10,9 @@ use Illuminate\Support\Carbon;
 class UserUserObserver
 {
     /**
-     * Handle the User "created" event.
+     * Handle the User "updating" event.
      */
-    public function created(User $user): void
-    {
-        //
-    }
-
-    /**
-     * Handle the User "updated" event.
-     */
-    public function updated(User $user): void
+    public function updating(User $user): void
     {
         if ($user->wasChanged(['email'])) {
             $user->email_verified_at = null;
@@ -34,29 +26,5 @@ class UserUserObserver
         if ($user->isDirty(['email_changed_at', 'password_changed_at'])) {
             $user->save();
         }
-    }
-
-    /**
-     * Handle the User "deleted" event.
-     */
-    public function deleted(User $user): void
-    {
-        //
-    }
-
-    /**
-     * Handle the User "restored" event.
-     */
-    public function restored(User $user): void
-    {
-        //
-    }
-
-    /**
-     * Handle the User "force deleted" event.
-     */
-    public function forceDeleted(User $user): void
-    {
-        //
     }
 }
