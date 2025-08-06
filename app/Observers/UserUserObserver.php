@@ -14,17 +14,13 @@ class UserUserObserver
      */
     public function updating(User $user): void
     {
-        if ($user->wasChanged(['email'])) {
+        if ($user->isDirty('email')) {
             $user->email_verified_at = null;
             $user->email_changed_at = Carbon::now();
         }
 
-        if ($user->wasChanged(['password'])) {
+        if ($user->isDirty('password')) {
             $user->password_changed_at = Carbon::now();
-        }
-
-        if ($user->isDirty(['email_changed_at', 'password_changed_at'])) {
-            $user->save();
         }
     }
 }
