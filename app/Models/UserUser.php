@@ -13,10 +13,13 @@ use App\Values\UserGenderValue;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * Основная
@@ -54,10 +57,14 @@ use Illuminate\Support\Carbon;
  * @property-read ?string $registration_country
  * Связи
  * @property UserUserPreference $preferences
+ * @property Collection $historyFields
+ * @property Collection $madeFields
  */
 class UserUser extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
+    /**
+     * @use HasFactory<UserFactory>
+     */
     use HasFactory, Notifiable, HasUuids;
 
     /**
@@ -155,5 +162,15 @@ class UserUser extends Authenticatable
     public function preferences(): HasOne
     {
         return $this->hasOne(UserUserPreference::class, 'user_id');
+    }
+
+    public function historyFields(string $fieldName = 'email'): MorphMany
+    {
+        return $this->morphMany(HistoryEntityField::class, 'entity')->where('field', $fieldName);
+    }
+
+    public function madeFields(): HasMany
+    {
+        return $this->hasMany(HistoryEntityField::class, 'changed_id', 'id');
     }
 }
