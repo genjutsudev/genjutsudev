@@ -181,7 +181,6 @@ class UserService
         return self::updateUser($user, $attrs);
     }
 
-    // @todo
     public function updatePreferences(
         User $user,
         array $attributes,
@@ -193,5 +192,18 @@ class UserService
         $preference->update($attributes, $options);
 
         return $preference;
+    }
+
+    public function createHistoryField(
+        User $user,
+        string $fieldName,
+        string $changedId
+    )
+    {
+        return $user->historyFields()->create([
+            'field' => $fieldName,
+            'value' => $user->getOriginal($fieldName),
+            'changed_id' => $changedId,
+        ]);
     }
 }
