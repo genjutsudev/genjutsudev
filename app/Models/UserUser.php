@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Models\User;
+namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Casts\UserCreatedViaCast;
@@ -13,10 +13,13 @@ use App\Values\UserGenderValue;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * Основная
@@ -53,17 +56,21 @@ use Illuminate\Support\Carbon;
  * @property-read ?string $registration_ip_hash
  * @property-read ?string $registration_country
  * Связи
- * @property UserPreference $preferences
+ * @property UserUserPreference $preferences
+ * @property Collection $historyFields
+ * @property Collection $madeFields
  */
-class User extends Authenticatable
+class UserUser extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
+    /**
+     * @use HasFactory<UserFactory>
+     */
     use HasFactory, Notifiable, HasUuids;
 
     /**
      * @var string
      */
-    public const ENTITY_TYPE = 'user_users';
+    public const string ENTITY_TYPE = 'user_users';
 
     /**
      * @var string
@@ -125,10 +132,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
     /**
      * Get the attributes that should be cast.
@@ -150,21 +154,6 @@ class User extends Authenticatable
         ];
     }
 
-    // @todo move & refactored (observer or other)
-    public function save(array $options = []): bool
-    {
-        if ($this->isDirty('email')) {
-            $this->email_verified_at = null;
-            $this->email_changed_at = Carbon::now();
-        }
-
-        if ($this->isDirty('password')) {
-            $this->password_changed_at = Carbon::now();
-        }
-
-        return parent::save($options);
-    }
-
     public function equals(?self $other, string $attribute = 'id'): bool
     {
         return $this->$attribute === $other?->$attribute;
@@ -172,6 +161,16 @@ class User extends Authenticatable
 
     public function preferences(): HasOne
     {
-        return $this->hasOne(UserPreference::class);
+        return $this->hasOne(UserUserPreference::class, 'user_id');
+    }
+
+    public function historyFields(string $fieldName = 'email'): MorphMany
+    {
+        return $this->morphMany(HistoryEntityField::class, 'entity')->where('field', $fieldName);
+    }
+
+    public function madeFields(): HasMany
+    {
+        return $this->hasMany(HistoryEntityField::class, 'changed_id', 'id');
     }
 }

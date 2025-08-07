@@ -11,15 +11,15 @@
                                 Поддержи нас<br/>
                                 на <a href="{{ $boosty_url_donate }}" class="link-azure" target="_blank">Бусти</a>
                             </div>
-                            <div>
+                            {{--<div>
                                 <img
                                     style="height: 52px;"
                                     alt="Донат"
                                     class="bg-light"
-                                    {{-- @todo --}}
-                                    src="https://yagames.noilty.com/static/media/boosty-noilty-donate.svg"
+                                    --}}{{-- @todo --}}{{--
+                                    src="{{ asset('static/media/boosty-donate.svg') }}"
                                 >
-                            </div>
+                            </div>--}}
                         </div>
                     </div>
                     @endif

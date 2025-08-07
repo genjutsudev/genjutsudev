@@ -8,8 +8,9 @@ use App\Enums\UserCreatedViaEnum;
 use App\Enums\UserTypeEnum;
 use App\Exceptions\ProtectedAttributeException;
 use App\Exceptions\UserEmailTakenException;
-use App\Models\User\User;
-use App\Models\User\UserPreference as Preferences;
+use App\Models\HistoryEntityField;
+use App\Models\UserUser as User;
+use App\Models\UserUserPreference as Preferences;
 use App\Repositories\UserRepository;
 use App\Traits\HasherTrait;
 use App\Values\UserCreatedViaValue as CreatedVia;
@@ -108,9 +109,7 @@ class UserService
         );
     }
 
-    /*
-     * @todo
-     */
+    // @todo
     public function createUserApi(
         string $created_via = 'web',
     ) : User
@@ -195,5 +194,18 @@ class UserService
         $preference->update($attributes, $options);
 
         return $preference;
+    }
+
+    public function createHistoryField(
+        User $user,
+        string $fieldName,
+        string $changedId
+    ) : HistoryEntityField
+    {
+        return $user->historyFields()->create([
+            'field' => $fieldName,
+            'value' => $user->getOriginal($fieldName),
+            'changed_id' => $changedId,
+        ]);
     }
 }

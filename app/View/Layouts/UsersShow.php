@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\View\Layouts;
 
-use App\Models\User\User;
+use App\Models\UserUser as User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\View\Component;

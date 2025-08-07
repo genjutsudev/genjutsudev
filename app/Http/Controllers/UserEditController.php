@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\User\User;
+use App\Models\UserUser as User;
 use Illuminate\Http\RedirectResponse;
 
 class UserEditController extends Controller

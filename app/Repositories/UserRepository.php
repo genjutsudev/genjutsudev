@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Models\User\User;
+use App\Models\UserUser as User;
 
 class UserRepository extends Repository
 {

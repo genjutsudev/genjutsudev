@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Models\User;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class UserPreference extends Model
+class UserUserPreference extends Model
 {
     use HasUuids;
 
     /**
      * @var string
      */
-    public const ENTITY_TYPE = 'user_user_preferences';
+    public const string ENTITY_TYPE = 'user_user_preferences';
 
     /**
      * @var string
