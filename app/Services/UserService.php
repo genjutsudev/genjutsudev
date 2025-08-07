@@ -8,6 +8,7 @@ use App\Enums\UserCreatedViaEnum;
 use App\Enums\UserTypeEnum;
 use App\Exceptions\ProtectedAttributeException;
 use App\Exceptions\UserEmailTakenException;
+use App\Models\HistoryEntityField;
 use App\Models\UserUser as User;
 use App\Models\UserUserPreference as Preferences;
 use App\Repositories\UserRepository;
@@ -181,6 +182,7 @@ class UserService
         return self::updateUser($user, $attrs);
     }
 
+    // @todo
     public function updatePreferences(
         User $user,
         array $attributes,
@@ -198,7 +200,7 @@ class UserService
         User $user,
         string $fieldName,
         string $changedId
-    )
+    ) : HistoryEntityField
     {
         return $user->historyFields()->create([
             'field' => $fieldName,
