@@ -44,6 +44,8 @@ class UserEditPasswordController extends Controller
 
         try {
             $this->userService->updateUser($user, $attrs);
+            // обнуляем доступ к защищенной части приложения
+            request()->session()->put('auth.password_confirmed_at', -1);
         } catch (UserEmailTakenException $e) {
             $level = 'info';
             $message = $e->getMessage();
@@ -54,9 +56,6 @@ class UserEditPasswordController extends Controller
             $routeName = 'users.edit.password';
             logger()->error(self::class, ['error' => $th->getMessage(), 'user_id' => $user->id]);
         }
-
-        // обнуляем доступ к защищенной части приложения
-        request()->session()->put('auth.password_confirmed_at', -1);
 
         return redirect()
             ->route($routeName, [$user->nid, $user->profilelink])
