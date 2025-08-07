@@ -22,25 +22,22 @@ readonly class UserUserObserver
      */
     public function updating(User $user): void
     {
-        if ($user->isDirty($field = 'profilename')) {
-            $this->userService->createHistoryField($user, $field, Auth::id());
-        }
+        $now = Carbon::now();
+        $userId = Auth::id();
 
-        if ($user->isDirty($field = 'profilelink')) {
-            $this->userService->createHistoryField($user, $field, Auth::id());
-        }
-
-        if ($user->isDirty($field = 'email')) {
+        if ($user->isDirty('email')) {
             $user->email_verified_at = null;
-            $user->email_changed_at = Carbon::now();
-
-            $this->userService->createHistoryField($user, $field, Auth::id());
+            $user->email_changed_at = $now;
         }
 
-        if ($user->isDirty($field = 'password')) {
-            $user->password_changed_at = Carbon::now();
+        if ($user->isDirty('password')) {
+            $user->password_changed_at = $now;
+        }
 
-            $this->userService->createHistoryField($user, $field, Auth::id());
+        foreach (['profilename', 'profilelink', 'email', 'password'] as $field) {
+            if ($user->isDirty($field)) {
+                $this->userService->createHistoryField($user, $field, $userId);
+            }
         }
     }
 }
