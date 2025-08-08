@@ -8,6 +8,8 @@ use App\Enums\UserCreatedViaEnum;
 use App\Enums\UserTypeEnum;
 use App\Exceptions\ProtectedAttributeException;
 use App\Exceptions\UserEmailTakenException;
+use App\Exceptions\UserProfilelinkMonthlyLimitException;
+use App\Exceptions\UserProfilelinkTakenException;
 use App\Models\HistoryEntityField;
 use App\Models\UserUser as User;
 use App\Models\UserUserPreference as Preferences;
@@ -23,7 +25,7 @@ class UserService
     use HasherTrait;
 
     public function __construct(
-        private readonly UserRepository $repository,
+        private readonly UserRepository $userRepository,
     )
     {
     }
@@ -64,7 +66,7 @@ class UserService
         ?bool $is_admin = false,
     ) : User
     {
-        throw_if($this->repository->findOneByEmail($email), new UserEmailTakenException());
+        throw_if($this->userRepository->findOneByEmail($email), new UserEmailTakenException());
 
         $user = self::createUser(
             type: $type = Type::make($is_admin ? UserTypeEnum::ADMIN : UserTypeEnum::REGULAR),
@@ -154,13 +156,30 @@ class UserService
 
         if (array_key_exists('email', $attributes)) {
             /** @var ?User $found */
-            $found = $this->repository->findOneByEmail($attributes['email']);
+            $found = $this->userRepository->findOneByEmail($attributes['email']);
             throw_if($found && ! $user->equals($found, 'email'), new UserEmailTakenException());
         }
 
         $user->update($attributes, $options);
 
         return $user;
+    }
+
+    public function updateUserProfilelink(
+        User $user,
+        string $profilelink
+    ) : User
+    {
+        // @todo param "limit" move to .env file or in database in table "users"
+        if ($this->userRepository->hasProfilelinkMonthlyLimit($user, $limit = 1)) {
+            throw new UserProfilelinkMonthlyLimitException($limit);
+        }
+
+        if ($this->userRepository->findOneByProfilelink($profilelink)) {
+            throw new UserProfilelinkTakenException();
+        }
+
+        return self::updateUser($user, ['profilelink' => $profilelink]);
     }
 
     // @todo
