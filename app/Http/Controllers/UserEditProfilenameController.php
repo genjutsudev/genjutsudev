@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\UserProfilenameMonthlyLimitException;
 use App\Http\Requests\UserUpdateProfilenameRequest as ProfilenameRequest;
 use App\Models\UserUser as User;
+use App\Repositories\UserRepository;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -15,6 +16,7 @@ use Throwable;
 class UserEditProfilenameController extends Controller
 {
     public function __construct(
+        private readonly UserRepository $userRepository,
         private readonly UserService $userService
     )
     {
@@ -22,7 +24,9 @@ class UserEditProfilenameController extends Controller
 
     public function show(User $user): View
     {
-        return view('sections.users.edit.profilename', compact(['user']));
+        // @todo param "limit" move to .env file or in database in table "users"
+        $count = abs($this->userRepository->getCountProfilenameMonthlyLimit($user) - $limit = 3);
+        return view('sections.users.edit.profilename', compact(['user', 'count']));
     }
 
     public function update(ProfilenameRequest $request, User $user): RedirectResponse

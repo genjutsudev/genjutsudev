@@ -8,6 +8,7 @@ use App\Enums\UserCreatedViaEnum;
 use App\Enums\UserTypeEnum;
 use App\Exceptions\ProtectedAttributeException;
 use App\Exceptions\UserEmailTakenException;
+use App\Exceptions\UserProfilelinkMonthlyLimitException;
 use App\Exceptions\UserProfilenameMonthlyLimitException;
 use App\Exceptions\UserProfilelinkTakenException;
 use App\Models\HistoryEntityField;
