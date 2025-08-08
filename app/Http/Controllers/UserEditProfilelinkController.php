@@ -8,6 +8,7 @@ use App\Exceptions\UserProfilelinkMonthlyLimitException;
 use App\Exceptions\UserProfilelinkTakenException;
 use App\Http\Requests\UserUpdateProfilelinkRequest as ProfilelinkRequest;
 use App\Models\UserUser as User;
+use App\Repositories\UserRepository;
 use App\Services\UserService;
 use Throwable;
 use Illuminate\Http\RedirectResponse;
@@ -16,6 +17,7 @@ use Illuminate\View\View;
 class UserEditProfilelinkController extends Controller
 {
     public function __construct(
+        private readonly UserRepository $userRepository,
         private readonly UserService $userService
     )
     {
@@ -23,7 +25,8 @@ class UserEditProfilelinkController extends Controller
 
     public function show(User $user): View
     {
-        return view('sections.users.edit.profilelink', compact(['user']));
+        $count = abs($this->userRepository->getCountProfilelinkMonthlyLimit($user) - $limit = 3); // @todo
+        return view('sections.users.edit.profilelink', compact(['user', 'count']));
     }
 
     public function update(ProfilelinkRequest $request, User $user): RedirectResponse
