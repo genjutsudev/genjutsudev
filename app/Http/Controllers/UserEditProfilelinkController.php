@@ -25,7 +25,8 @@ class UserEditProfilelinkController extends Controller
 
     public function show(User $user): View
     {
-        $count = abs($this->userRepository->getCountProfilelinkMonthlyLimit($user) - $limit = 3); // @todo
+        // @todo param "limit" move to .env file or in database in table "users"
+        $count = abs($this->userRepository->getCountProfilelinkMonthlyLimit($user) - $limit = 1);
         return view('sections.users.edit.profilelink', compact(['user', 'count']));
     }
 
