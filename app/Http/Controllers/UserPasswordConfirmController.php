@@ -33,7 +33,7 @@ class UserPasswordConfirmController extends Controller
 
         $validated = Auth::guard('web')->validate([
             'email' => $user->email,
-            'password' => $request->input('user_password'),
+            'password' => $request->input('password'),
         ]);
 
         if (! $validated) throw ValidationException::withMessages([

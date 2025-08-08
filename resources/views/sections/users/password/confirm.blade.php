@@ -10,7 +10,7 @@
                 Это защищенная область приложения. Пожалуйста, подтвердите свой пароль, прежде чем продолжить.
             </div>
             <x-ui.form.index action="{{ route('password.confirm') }}">
-                <x-widgets.form.password id="user_password" name="user_password" required/>
+                <x-widgets.form.password required/>
                 <div class="form-group text-end">
                     <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}" class="me-3">Отмена</a>
                     <input type="submit" value="Продолжить" class="btn btn-sm btn-secondary px-2 py-1">
