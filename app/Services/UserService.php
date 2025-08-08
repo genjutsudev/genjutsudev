@@ -9,6 +9,7 @@ use App\Enums\UserTypeEnum;
 use App\Exceptions\ProtectedAttributeException;
 use App\Exceptions\UserEmailTakenException;
 use App\Exceptions\UserProfilenameMonthlyLimitException;
+use App\Exceptions\UserProfilelinkTakenException;
 use App\Models\HistoryEntityField;
 use App\Models\UserUser as User;
 use App\Models\UserUserPreference as Preferences;
@@ -164,11 +165,29 @@ class UserService
         return $user;
     }
 
+    public function updateUserProfilelink(
+        User $user,
+        string $profilelink
+    ) : User
+    {
+        // @todo param "limit" move to .env file or in database in table "users"
+        if ($this->userRepository->hasProfilelinkMonthlyLimit($user, $limit = 1)) {
+            throw new UserProfilelinkMonthlyLimitException($limit);
+        }
+
+        if ($this->userRepository->findOneByProfilelink($profilelink)) {
+            throw new UserProfilelinkTakenException();
+        }
+
+        return self::updateUser($user, ['profilelink' => $profilelink]);
+    }
+
     public function updateUserProfilename(
         User $user,
         string $profilename
     ) : User
     {
+        // @todo param "limit" move to .env file or in database in table "users"
         if ($this->userRepository->hasProfilenameMonthlyLimit($user, $limit = 3)) {
             throw new UserProfilenameMonthlyLimitException($limit);
         }
