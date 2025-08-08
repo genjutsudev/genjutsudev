@@ -170,6 +170,7 @@ class UserService
         string $profilelink
     ) : User
     {
+        // @todo param "limit" move to .env file or in database in table "users"
         if ($this->userRepository->hasProfilelinkMonthlyLimit($user, $limit = 1)) {
             throw new UserProfilelinkMonthlyLimitException($limit);
         }
