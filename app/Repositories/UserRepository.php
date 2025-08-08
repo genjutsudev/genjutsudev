@@ -18,7 +18,7 @@ class UserRepository extends Repository
         return User::query()->firstWhere('profilelink', $profilelink);
     }
 
-    public function hasProfilelinkMonthlyLimit(User $user, int $limit = 3): bool
+    public function hasProfilelinkMonthlyLimit(User $user, int $limit = 1): bool
     {
         return $user
                 ->historyFields('profilelink')
