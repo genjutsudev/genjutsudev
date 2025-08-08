@@ -8,6 +8,7 @@ use App\Enums\UserCreatedViaEnum;
 use App\Enums\UserTypeEnum;
 use App\Exceptions\ProtectedAttributeException;
 use App\Exceptions\UserEmailTakenException;
+use App\Exceptions\UserProfilenameMonthlyLimitException;
 use App\Models\HistoryEntityField;
 use App\Models\UserUser as User;
 use App\Models\UserUserPreference as Preferences;
@@ -23,7 +24,7 @@ class UserService
     use HasherTrait;
 
     public function __construct(
-        private readonly UserRepository $repository,
+        private readonly UserRepository $userRepository,
     )
     {
     }
@@ -64,7 +65,7 @@ class UserService
         ?bool $is_admin = false,
     ) : User
     {
-        throw_if($this->repository->findOneByEmail($email), new UserEmailTakenException());
+        throw_if($this->userRepository->findOneByEmail($email), new UserEmailTakenException());
 
         $user = self::createUser(
             type: $type = Type::make($is_admin ? UserTypeEnum::ADMIN : UserTypeEnum::REGULAR),
@@ -154,13 +155,25 @@ class UserService
 
         if (array_key_exists('email', $attributes)) {
             /** @var ?User $found */
-            $found = $this->repository->findOneByEmail($attributes['email']);
+            $found = $this->userRepository->findOneByEmail($attributes['email']);
             throw_if($found && ! $user->equals($found, 'email'), new UserEmailTakenException());
         }
 
         $user->update($attributes, $options);
 
         return $user;
+    }
+
+    public function updateUserProfilename(
+        User $user,
+        string $profilename
+    ) : User
+    {
+        if ($this->userRepository->hasProfilelinkMonthlyLimit($user, $limit = 3)) {
+            throw new UserProfilenameMonthlyLimitException($limit);
+        }
+
+        return self::updateUser($user, ['profilename' => $profilename]);
     }
 
     // @todo

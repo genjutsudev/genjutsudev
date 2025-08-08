@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\UserProfilenameMonthlyLimitException;
 use App\Http\Requests\UserUpdateProfilenameRequest as ProfilenameRequest;
 use App\Models\UserUser as User;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Throwable;
 
 class UserEditProfilenameController extends Controller
 {
@@ -25,15 +27,21 @@ class UserEditProfilenameController extends Controller
 
     public function update(ProfilenameRequest $request, User $user): RedirectResponse
     {
-        $user_profilename = $request->validated('user_profilename');
-
         $level = 'success';
         $message = 'Имя профиля успешно обновлено.';
         $routeName = 'users.edit.account';
 
         try {
-            $this->userService->updateUser($user, ['profilename' => $user_profilename]);
-        } catch (\Throwable $th) {
+            $this->userService->updateUserProfilename($user, $request->validated('user_profilename'));
+        } catch (
+            UserProfilenameMonthlyLimitException $e
+        ) {
+            list($level, $routeName) = match (true) {
+                $e instanceof UserProfilenameMonthlyLimitException => ['info', 'users.edit.profilelink'],
+            };
+
+            $message = $e->getMessage();
+        } catch (Throwable $th) {
             $level = 'danger';
             $message = 'Произошла внутренняя ошибка, повторите попытку позже.';
             $routeName = 'users.edit.profilename';

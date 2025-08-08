@@ -17,4 +17,12 @@ class UserRepository extends Repository
     {
         return User::query()->firstWhere('profilelink', $profilelink);
     }
+
+    public function hasProfilenameMonthlyLimit(User $user, int $limit = 3): bool
+    {
+        return $user
+                ->historyFields('profilename')
+                ->whereMonth('created_at', now()->month)
+                ->count() >= $limit;
+    }
 }
