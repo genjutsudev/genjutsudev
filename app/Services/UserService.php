@@ -169,7 +169,7 @@ class UserService
         string $profilename
     ) : User
     {
-        if ($this->userRepository->hasProfilelinkMonthlyLimit($user, $limit = 3)) {
+        if ($this->userRepository->hasProfilenameMonthlyLimit($user, $limit = 3)) {
             throw new UserProfilenameMonthlyLimitException($limit);
         }
 
