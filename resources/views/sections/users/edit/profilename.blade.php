@@ -8,6 +8,9 @@
         <div class="mb-3">
             <x-ui.form.label for="user_profilename" required>
                 Имя профиля
+                <x-slot:slotDesc>
+                    В этом месяце вы можете поменять имя профиля ещё <b>{{ $count }}</b> раз(а).
+                </x-slot:slotDesc>
             </x-ui.form.label>
             <x-ui.form.input.text
                 id="user_profilename"
