@@ -5,10 +5,10 @@
 <x-layouts::users-edit>
     <div @class(['alert', 'alert-warning' => $user->birthday, 'alert-info' => ! $user->birthday, 'd-block'])>
         @if($user->birthday)
-            Дату рождения можно установить только один раз. Текущая дата:
+            Дата рождения была установлена ранее и не может быть изменена. Текущая дата:
             <b>{{ $user->birthday->isoFormat('D MMMM YYYY') }}</b>
         @else
-            Вы можете установить дату рождения только один раз. Пожалуйста, проверьте правильность вводимых данных.
+            Дата рождения может быть установлена единожды. Убедитесь, что выбрали верную дату.
         @endif
     </div>
     <x-ui.form.index method="put" class="w-50">
@@ -40,7 +40,8 @@
                             value="{{ $month }}"
                             @selected($user->birthday?->format('m') == $month)
                         >
-                            {{ str_pad($month, 2, '0', STR_PAD_LEFT) }}
+                            {{--{{ str_pad($month, 2, '0', STR_PAD_LEFT) }} ---}}
+                            {{ \Illuminate\Support\Str::title(now()->month($month)->translatedFormat('F')) }}
                         </option>
                     @endfor
                 </select>

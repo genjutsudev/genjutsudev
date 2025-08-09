@@ -83,12 +83,12 @@
                 <div class="mb-3">
                     <label for="user_birthday" class="form-label">Дата рождения</label>
                     <div class="input-group">
-                        <input
-                            id="user_birthday"
-                            class="form-control"
-                            value="{{ $user->birthday?->isoFormat('D MMMM YYYY') ?? 'Не указана' }}"
-                            disabled
-                        >
+                        @if($birthday = $user->birthday)
+                            @php($label = $birthday->isoFormat('D MMMM YYYY') . ' (' . user_age_title($user) . ')')
+                            <input id="user_birthday" class="form-control" value="{{ $label }}" disabled>
+                        @else
+                            <input id="user_birthday" class="form-control" value="{{ 'Не указана' }}" disabled>
+                        @endif
                         <a
                             href="{{ route('users.edit.birthday', [$user->nid, $user->profilelink]) }}"
                             class="btn"
