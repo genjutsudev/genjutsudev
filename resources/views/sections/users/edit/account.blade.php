@@ -228,22 +228,20 @@
                     class="card-cover d-flex rounded-0 text-start p-5"
                     style="background-image: url({{ asset('static/media/default-cover.jpg') }});"
                 >
-                    <div class="me-4 d-none d-sm-block">
-                        <div
-                            class="avatar avatar-xll rounded-circle align-items-end"
-                            style="background-image: url({{ gravatar($user->email) }})"
+                    <div
+                        class="avatar avatar-xll rounded-circle align-items-end"
+                        style="background-image: url({{ gravatar($user->email) }})"
+                    >
+                        <a
+                            href="/users/1/Noilty/edit/avatar"
+                            class="position-absolute btn btn-sm btn-primary rounded-circle border-0 p-2 m-1 disabled"
+                            style="right: 0;"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            data-bs-original-title="Сменить аватар"
                         >
-                            <a
-                                href="/users/1/Noilty/edit/avatar"
-                                class="position-absolute btn btn-sm btn-primary rounded-circle border-0 p-2 m-1 disabled"
-                                style="right: 0;"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="right"
-                                data-bs-original-title="Сменить аватар"
-                            >
-                                <i class="fa fa-pencil" style="font-size:16px;"></i>
-                            </a>
-                        </div>
+                            <i class="fa fa-pencil" style="font-size:16px;"></i>
+                        </a>
                     </div>
                 </div>
                 <a

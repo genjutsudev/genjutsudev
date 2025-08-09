@@ -110,25 +110,34 @@
                 </div>
                 <div class="card rounded-top-0">
                     <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs text-uppercase" style="flex-wrap: nowrap; overflow-y: hidden;">
+                        <ul class="nav nav-tabs card-header-tabs text-uppercase rounded-0 p-0" style="flex-wrap: nowrap; overflow-y: hidden;">
                             @foreach([
-                                'Главная' => ['routeName' => 'users.show', 'icon' => '<i class="fas fa-home text-green"></i>'],
-                                'Коллекции' => ['routeName' => 'users.show.collections', 'icon' => '<i class="fa-solid fa-layer-group text-azure"></i>'],
-                                'Избранное' => ['routeName' => 'users.show.featured', 'icon' => '<i class="fa-solid fa-star text-yellow"></i>'],
-                                'Следите' => ['routeName' => 'users.show.tracked', 'icon' => '<i class="fa-solid fa-heart" style="color: red;"></i>'],
+                                'Главная' => ['routeName' => 'users.show', 'activeClass' => 'bg-green-lt', 'icon' => '<i class="fas fa-home text-green"></i>'],
+                                'Коллекции' => ['routeName' => 'users.show.collections', 'activeClass' => 'bg-blue-lt', 'icon' => '<i class="fa-solid fa-layer-group text-azure"></i>'],
+                                'Избранное' => ['routeName' => 'users.show.featured', 'activeClass' => 'bg-yellow-lt', 'icon' => '<i class="fa-solid fa-star text-yellow"></i>'],
+                                'Следите' => ['routeName' => 'users.show.tracked', 'activeClass' => 'bg-red-lt', 'icon' => '<i class="fa-solid fa-heart" style="color: red;"></i>'],
                             ] as $title => $item)
                                 <li class="nav-item">
                                     <a
                                         href="{{ $item['routeName'] !== '#' ? route($item['routeName'], [$user->nid, $user->profilelink]) : '/' }}"
-                                        @class(['nav-link', 'active' => request()->routeIs($item['routeName']), 'disabled' => $item['routeName'] === '#'])
+                                        @class([
+                                            'nav-link',
+                                            'border-0',
+                                            'rounded-0',
+                                            'border-end',
+                                            $item['activeClass'] => request()->routeIs($item['routeName']),
+                                            'disabled' => $item['routeName'] === '#',
+                                        ])
                                     >
-                                        <span style="display: flex; align-items: center;">{!! $item['icon'] !!} <b style="margin-left: 8px;">{{ $title }}</b></span>
+                                        <span style="display: flex; align-items: center;">
+                                            {!! $item['icon'] !!} <b style="margin-left: 8px;">{{ $title }}</b>
+                                        </span>
                                     </a>
                                 </li>
                             @endforeach
                         </ul>
                     </div>
-                    <div class="card-body">
+                    <div @class(['card-body', 'p-0' => request()->routeIs('*collections*')])>
                         {{ $slot }}
                     </div>
                 </div>
