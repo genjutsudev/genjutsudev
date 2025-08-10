@@ -14,6 +14,7 @@ use App\Http\Controllers\UserPasswordConfirmController;
 use App\Http\Controllers\UserPasswordResetController;
 use App\Http\Controllers\UserPasswordForgotController;
 use App\Http\Controllers\UserRegistrationController;
+use App\Http\Controllers\UserShowCollectionController;
 use App\Http\Controllers\UserShowController;
 use App\Http\Controllers\UserVerificationEmailController;
 use App\Http\Controllers\UserVerifyEmailController;
@@ -66,7 +67,9 @@ Route::group(['prefix' => 'users', 'as' => 'users'], function () {
         Route::group(['prefix' => '/{profilelink}', 'middleware' => ['redirect.profilelink']], function () {
             Route::group(['as' => '.show'], function () {
                 Route::get('/', [UserShowController::class, 'show']);
-                Route::get('/collections', [UserShowController::class, 'collections'])->name('.collections');
+                Route::group(['prefix' => 'collections', 'as' => '.collections'], function () {
+                    Route::get('/anime', [UserShowCollectionController::class, 'anime'])->name('.anime');
+                });
                 Route::get('/featured', [UserShowController::class, 'featured'])->name('.featured');
                 Route::get('/tracked', [UserShowController::class, 'tracked'])->name('.tracked');
             }); # show

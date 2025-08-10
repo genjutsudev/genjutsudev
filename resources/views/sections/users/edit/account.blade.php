@@ -3,9 +3,9 @@
 @section('title', $user->profilename)
 
 <x-layouts::users-edit>
-    <div class="row">
+    <div class="row flex-lg-row flex-column-reverse">
         {{-- left --}}
-        <div class="col">
+        <div class="col-12 col-lg-6">
             {{-- profilename --}}
             <div class="mb-3">
                 <label for="user_profilename" class="form-label">Имя профиля</label>
@@ -166,7 +166,7 @@
             {{-- security account --}}
             <x-ui.subheadline :label="__('Безопасность аккаунта')">
                 {{-- email --}}
-                <div class="mb-3 w-50">
+                <div class="mb-3">
                     <div class="form-label">
                         <label for="user_email">Эл. почта</label>
                         <div
@@ -199,7 +199,7 @@
                     </div>
                 </div>
                 {{-- password --}}
-                <div class="w-50">
+                <div>
                     <div class="form-label">
                         <label for="user_password">Пароль</label>
                         <div
@@ -221,29 +221,27 @@
             </x-ui.subheadline>
         </div>
         {{-- right --}}
-        <div class="col">
+        <div class="col-12 col-lg-6 mb-3">
             {{-- avatar, frame & cover --}}
             <div class="card mb-3">
                 <div
                     class="card-cover d-flex rounded-0 text-start p-5"
                     style="background-image: url({{ asset('static/media/default-cover.jpg') }});"
                 >
-                    <div class="me-4 d-none d-sm-block">
-                        <div
-                            class="avatar avatar-xll rounded-circle align-items-end"
-                            style="background-image: url({{ gravatar($user->email) }})"
+                    <div
+                        class="avatar avatar-xll rounded-circle align-items-end"
+                        style="background-image: url({{ gravatar($user->email) }})"
+                    >
+                        <a
+                            href="/users/1/Noilty/edit/avatar"
+                            class="position-absolute btn btn-sm btn-primary rounded-circle border-0 p-2 m-1 disabled"
+                            style="right: 0;"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            data-bs-original-title="Сменить аватар"
                         >
-                            <a
-                                href="/users/1/Noilty/edit/avatar"
-                                class="position-absolute btn btn-sm btn-primary rounded-circle border-0 p-2 m-1 disabled"
-                                style="right: 0;"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="right"
-                                data-bs-original-title="Сменить аватар"
-                            >
-                                <i class="fa fa-pencil" style="font-size:16px;"></i>
-                            </a>
-                        </div>
+                            <i class="fa fa-pencil" style="font-size:16px;"></i>
+                        </a>
                     </div>
                 </div>
                 <a
