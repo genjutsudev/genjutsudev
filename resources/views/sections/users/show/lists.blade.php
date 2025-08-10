@@ -4,7 +4,7 @@
 
 <x-layouts::users-show>
     <div class="row">
-        <div class="col-3">
+        <div class="col-3" style="width: 24%;">
             <div class="border-end h-100">
                 <div class="list-group rounded-0">
                     @foreach($lists = [
@@ -35,7 +35,7 @@
                                     <div>{{ $list['title'] }}</div>
                                 </b>
                             </div>
-                            <span class="badge text-bg-primary rounded-pill">0</span>
+                            <span class="badge text-bg-primary rounded-pill">99+</span>
                         </a>
                     @endforeach
                 </div>

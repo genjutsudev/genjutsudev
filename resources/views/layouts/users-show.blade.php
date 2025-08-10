@@ -126,6 +126,7 @@
                                             'border-0',
                                             'rounded-0',
                                             'border-end',
+                                            'p-3',
                                             "{$item['activeClass']}" => request()->routeIs($item['routeName']),
                                             'disabled' => $item['routeName'] === '#',
                                         ])
