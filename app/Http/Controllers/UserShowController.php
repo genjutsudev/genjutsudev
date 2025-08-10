@@ -16,10 +16,10 @@ class UserShowController extends Controller
         return view('sections.users.show.index', compact(['user']));
     }
 
-    public function collections(User $user): View
-    {
-        return view('sections.users.show.collections', compact(['user']));
-    }
+//    public function collections(User $user): View
+//    {
+//        return view('sections.users.show.collections', compact(['user']));
+//    }
 
     public function featured(User $user): View
     {

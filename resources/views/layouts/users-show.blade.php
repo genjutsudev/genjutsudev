@@ -20,10 +20,10 @@
                         <div class="h1 m-0">
                         <span>
                             {{ $user->profilename }}
-                        </span>{{-- TODO: components/ui --}}
-                            <small style="font-size: 14px;" class="text-lowercase">
-                                {{ user_last_activity($user) }}
-                            </small>
+                        </span>
+                        <small style="font-size: 14px;" class="text-lowercase">
+                            {{ user_last_activity($user) }}
+                        </small>
                         </div>
                         <div class="h4 m-0">
                             <ol class="breadcrumb text-lowercase">
@@ -113,7 +113,7 @@
                         <ul class="nav nav-tabs card-header-tabs text-uppercase rounded-0 p-0" style="flex-wrap: nowrap; overflow-y: hidden;">
                             @foreach([
                                 'Главная' => ['routeName' => 'users.show', 'activeClass' => 'bg-green-lt', 'icon' => '<i class="fas fa-home text-green"></i>'],
-                                'Коллекции' => ['routeName' => 'users.show.collections', 'activeClass' => 'bg-blue-lt', 'icon' => '<i class="fa-solid fa-layer-group text-azure"></i>'],
+                                'Коллекции' => ['routeName' => 'users.show.collections.anime', 'activeClass' => 'bg-blue-lt', 'icon' => '<i class="fa-solid fa-layer-group text-azure"></i>'],
                                 'Избранное' => ['routeName' => 'users.show.featured', 'activeClass' => 'bg-yellow-lt', 'icon' => '<i class="fa-solid fa-star text-yellow"></i>'],
                                 'Следите' => ['routeName' => 'users.show.tracked', 'activeClass' => 'bg-red-lt', 'icon' => '<i class="fa-solid fa-heart" style="color: red;"></i>'],
                             ] as $title => $item)
@@ -125,7 +125,7 @@
                                             'border-0',
                                             'rounded-0',
                                             'border-end',
-                                            $item['activeClass'] => request()->routeIs($item['routeName']),
+                                            "{$item['activeClass']}" => request()->routeIs($item['routeName']),
                                             'disabled' => $item['routeName'] === '#',
                                         ])
                                     >
