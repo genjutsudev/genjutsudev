@@ -11,7 +11,7 @@ use App\Exceptions\UserEmailTakenException;
 use App\Exceptions\UserProfilelinkMonthlyLimitException;
 use App\Exceptions\UserProfilenameMonthlyLimitException;
 use App\Exceptions\UserProfilelinkTakenException;
-use App\Models\HistoryEntityField;
+use App\Models\HistoryModelProp;
 use App\Models\UserUser as User;
 use App\Models\UserUserPreference as Preferences;
 use App\Repositories\UserRepository;
@@ -233,7 +233,7 @@ class UserService
         User $user,
         string $fieldName,
         string $changedId
-    ) : HistoryEntityField
+    ) : HistoryModelProp
     {
         return $user->historyFields()->create([
             'field' => $fieldName,
