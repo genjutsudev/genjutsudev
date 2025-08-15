@@ -7,11 +7,9 @@
     <x-navbar.navbar-component />
     <div class="page-wrapper">
          <div class="page-header">
-             <div class="container">
-                 <h1 class="text-uppercase m-0">
-                     {{ $user->profilename }}
-                     <small class="text-muted">{{ $user->profilelink }}</small>
-                 </h1>
+             <div class="container d-flex align-items-end">
+                 <h1 class="text-uppercase">{{ $user->profilename }}</h1>
+                 <h2 class="text-muted ms-2">{{ $user->profilelink }}</h2>
              </div>
          </div>
         <div class="page-body mt-2">

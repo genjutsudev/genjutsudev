@@ -9,7 +9,7 @@
             <div class="mb-4 text-sm text-gray-600">
                 Это защищенная область приложения. Пожалуйста, подтвердите свой пароль, прежде чем продолжить.
             </div>
-            <x-ui.form.index action="{{ route('password.confirm') }}">
+            <x-ui.form.index action="{{ route('password.confirm.store') }}">
                 <x-widgets.form.password required/>
                 <div class="form-group text-end">
                     <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}" class="me-3">Отмена</a>

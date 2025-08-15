@@ -7,6 +7,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property bool $is_show_age
+ * @property bool $is_view_censored
+ * @property bool $comments_in_profile
+ * @property bool $achievements_in_profile
+ */
 class UserUserPreference extends Model
 {
     use HasUuids;
