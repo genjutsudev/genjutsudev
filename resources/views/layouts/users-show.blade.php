@@ -94,8 +94,8 @@
                                     @else
                                         <a
                                             href="/"
-                                            @class(['nav-link', 'justify-content-center', 'p-1'])
-                                            style="font-size: 16px"
+                                            @class(['nav-link', 'justify-content-center', 'p-1', 'disabled'])
+                                            style="font-size: 16px;"
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="left"
                                             data-bs-original-title="Заблокировать"

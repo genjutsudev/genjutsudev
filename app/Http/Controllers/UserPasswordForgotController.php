@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\UserUser as User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -16,7 +17,10 @@ class UserPasswordForgotController extends Controller
      */
     public function create(Request $request): View
     {
-        return view('sections.users.password.forgot');
+        /** @var User $user */
+        $user = $request->user();
+
+        return view('sections.users.password.forgot', compact(['user']));
     }
 
     /**

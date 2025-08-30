@@ -160,7 +160,7 @@
                     </div>
                 @endif
                 <div class="form-group text-end">
-                    <input type="submit" value="Сохранить" class="btn btn-sm btn-secondary px-2 py-1">
+                    <input type="submit" value="Сохранить" class="btn btn-primary">
                 </div>
             </x-ui.form.index>
             {{-- security account --}}

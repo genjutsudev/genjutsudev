@@ -16,8 +16,8 @@
         {{-- confirm new password --}}
         <x-widgets.form.password id="password_confirmation" name="password_confirmation" label="Повторите новый пороль"/>
         <div class="form-group text-end">
-            <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}" class="me-3">Отмена</a>
-            <input type="submit" value="Сохранить" class="btn btn-sm btn-secondary px-2 py-1">
+            <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}" class="me-2">Отмена</a>
+            <input type="submit" value="Сохранить" class="btn btn-primary">
         </div>
     </x-ui.form.index>
 </x-layouts::users-edit>
