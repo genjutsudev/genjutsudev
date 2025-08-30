@@ -4,12 +4,12 @@
             <div class="container">
                 <div class="d-flex justify-content-between flex-fill">
                     <x-navbar.navbar-nav />
-                    @if($boosty_url_donate = env('BOOSTY_URL_DONATE'))
+                    @if($boosty_url = config('boosty.url'))
                     <div class="d-none d-lg-block w-25">
                         <div class="d-flex align-items-center justify-content-end">
                             <div class="text-end fw-bold text-uppercase me-2">
                                 Поддержи нас<br/>
-                                на <a href="{{ $boosty_url_donate }}" class="link-azure" target="_blank">Бусти</a>
+                                на <a href="{{ $boosty_url }}/donate" class="link-azure" target="_blank">Бусти</a>
                             </div>
                             {{--<div>
                                 <img

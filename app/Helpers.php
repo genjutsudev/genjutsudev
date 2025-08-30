@@ -38,3 +38,24 @@ function gravatar(string $email, int $size = 192): string
 {
     return sprintf("https://www.gravatar.com/avatar/%s?s=$size&d=robohash&r=g", md5(Str::lower($email)));
 }
+
+function app_host(bool $include_subdomain = false): string
+{
+    $app_url = config('app.url');
+
+    if (! Str::isUrl($app_url)) {
+        throw new InvalidArgumentException('application url is not valid');
+    }
+
+    $parsed_url = parse_url($app_url);
+    $full_domain = $parsed_url['host'];
+
+    if (! $include_subdomain) {
+        return $full_domain;
+    }
+
+    $parts = explode('.', $full_domain);
+    $parts_root = array_slice($parts, -2);
+
+    return implode('.', $parts_root);
+}

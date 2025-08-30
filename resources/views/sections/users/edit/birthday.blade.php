@@ -2,6 +2,8 @@
 
 @section('title', $user->profilename)
 
+@use(\Illuminate\Support\Str)
+
 <x-layouts::users-edit>
     <div @class(['alert', 'alert-warning' => $user->birthday, 'alert-info' => ! $user->birthday, 'd-block'])>
         @if($user->birthday)
@@ -41,7 +43,7 @@
                             @selected($user->birthday?->format('m') == $month)
                         >
                             {{--{{ str_pad($month, 2, '0', STR_PAD_LEFT) }} ---}}
-                            {{ \Illuminate\Support\Str::title(now()->month($month)->translatedFormat('F')) }}
+                            {{ Str::title(now()->month($month)->translatedFormat('F')) }}
                         </option>
                     @endfor
                 </select>
