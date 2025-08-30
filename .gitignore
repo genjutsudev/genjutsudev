@@ -17,6 +17,7 @@
 /public/hot
 /public/storage
 /public/static
+/public_html
 /storage/*.key
 /storage/pail
 /vendor
