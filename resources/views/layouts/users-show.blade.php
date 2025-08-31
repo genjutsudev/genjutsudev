@@ -94,8 +94,8 @@
                                     @else
                                         <a
                                             href="/"
-                                            @class(['nav-link', 'justify-content-center', 'p-1'])
-                                            style="font-size: 16px"
+                                            @class(['nav-link', 'justify-content-center', 'p-1', 'disabled'])
+                                            style="font-size: 16px;"
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="left"
                                             data-bs-original-title="Заблокировать"
@@ -113,7 +113,8 @@
                         <ul class="nav nav-tabs card-header-tabs text-uppercase rounded-0 p-0" style="flex-wrap: nowrap; overflow-y: hidden;">
                             @foreach([
                                 'Главная' => ['routeName' => 'users.show', 'activeClass' => 'bg-green-lt', 'icon' => '<i class="fas fa-home text-green"></i>'],
-                                'Коллекции' => ['routeName' => 'users.show.collections.anime', 'activeClass' => 'bg-blue-lt', 'icon' => '<i class="fa-solid fa-layer-group text-azure"></i>'],
+                                'Списки' => ['routeName' => 'users.show.lists.anime', 'activeClass' => 'bg-blue-lt', 'icon' => '<i class="fa fa-list text-azure" aria-hidden="true"></i>'],
+                                'Коллекции' => ['routeName' => 'users.show.collections', 'activeClass' => 'bg-blue-lt', 'icon' => '<i class="fa-solid fa-layer-group text-azure"></i>'],
                                 'Избранное' => ['routeName' => 'users.show.featured', 'activeClass' => 'bg-yellow-lt', 'icon' => '<i class="fa-solid fa-star text-yellow"></i>'],
                                 'Следите' => ['routeName' => 'users.show.tracked', 'activeClass' => 'bg-red-lt', 'icon' => '<i class="fa-solid fa-heart" style="color: red;"></i>'],
                             ] as $title => $item)
@@ -125,6 +126,7 @@
                                             'border-0',
                                             'rounded-0',
                                             'border-end',
+                                            'p-3',
                                             "{$item['activeClass']}" => request()->routeIs($item['routeName']),
                                             'disabled' => $item['routeName'] === '#',
                                         ])
@@ -137,7 +139,7 @@
                             @endforeach
                         </ul>
                     </div>
-                    <div @class(['card-body', 'p-0' => request()->routeIs('*collections*')])>
+                    <div @class(['card-body', 'p-0' => request()->routeIs('*lists*')])>
                         {{ $slot }}
                     </div>
                 </div>

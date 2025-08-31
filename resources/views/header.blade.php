@@ -25,7 +25,7 @@
                 </div>
             </a>
         </div>
-        @if($boosty_url = env('BOOSTY_URL'))
+        @if($boosty_url = config('boosty.url'))
             <div class="d-none d-md-block pe-2">
                 <a
                     href="{{ $boosty_url }}"

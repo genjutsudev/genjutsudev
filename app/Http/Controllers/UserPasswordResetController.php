@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\UserUser as User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,7 +21,10 @@ class UserPasswordResetController extends Controller
      */
     public function create(Request $request): View
     {
-        return view('sections.users.password.reset');
+        /** @var User $user */
+        $user = $request->user();
+
+        return view('sections.users.password.reset', compact(['user']));
     }
 
     /**

@@ -18,6 +18,7 @@ class UserPasswordConfirmController extends Controller
      */
     public function show(Request $request): View
     {
+        /** @var User $user */
         $user = $request->user();
 
         return view('sections.users.password.confirm', compact(['user']));

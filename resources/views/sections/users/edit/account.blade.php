@@ -77,43 +77,43 @@
                     </a>
                 </div>
             </div>
+            {{-- birthday --}}
+            <div class="mb-3">
+                <label for="user_birthday" class="form-label">Дата рождения</label>
+                <div class="input-group">
+                    @if($birthday = $user->birthday)
+                        @php($label = $birthday->isoFormat('D MMMM YYYY') . ' (' . user_age_title($user) . ')')
+                        <input id="user_birthday" class="form-control" value="{{ $label }}" disabled>
+                    @else
+                        <input id="user_birthday" class="form-control" value="{{ 'Не указана' }}" disabled>
+                    @endif
+                    <a
+                        href="{{ route('users.edit.birthday', [$user->nid, $user->profilelink]) }}"
+                        class="btn"
+                        type="button"
+                        title="Изменить"
+                        style="width: 36px;"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="icon icon-tabler icon-tabler-pencil m-0"
+                            width="24" height="24"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
+                            <path d="M13.5 6.5l4 4"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
             {{-- others --}}
             <x-ui.form.index method="put" class="mb-3">
-                {{-- birthday --}}
-                <div class="mb-3">
-                    <label for="user_birthday" class="form-label">Дата рождения</label>
-                    <div class="input-group">
-                        @if($birthday = $user->birthday)
-                            @php($label = $birthday->isoFormat('D MMMM YYYY') . ' (' . user_age_title($user) . ')')
-                            <input id="user_birthday" class="form-control" value="{{ $label }}" disabled>
-                        @else
-                            <input id="user_birthday" class="form-control" value="{{ 'Не указана' }}" disabled>
-                        @endif
-                        <a
-                            href="{{ route('users.edit.birthday', [$user->nid, $user->profilelink]) }}"
-                            class="btn"
-                            type="button"
-                            title="Изменить"
-                            style="width: 36px;"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="icon icon-tabler icon-tabler-pencil m-0"
-                                width="24" height="24"
-                                viewBox="0 0 24 24"
-                                stroke-width="2"
-                                stroke="currentColor"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
-                                <path d="M13.5 6.5l4 4"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
                 {{-- gender --}}
                 <div class="mb-3">
                     <label for="user_gender" class="form-label">Пол</label>
@@ -160,7 +160,7 @@
                     </div>
                 @endif
                 <div class="form-group text-end">
-                    <input type="submit" value="Сохранить" class="btn btn-sm btn-secondary px-2 py-1">
+                    <input type="submit" value="Сохранить" class="btn btn-primary">
                 </div>
             </x-ui.form.index>
             {{-- security account --}}

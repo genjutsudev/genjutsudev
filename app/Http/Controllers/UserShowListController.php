@@ -9,16 +9,17 @@ use Illuminate\Http\RedirectResponse as Redirect;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class UserShowCollectionController extends Controller
+class UserShowListController extends Controller
 {
     public function anime(Request $request, User $user): Redirect | View
     {
+        // @todo
         if (! $request->has('list')) {
-            return redirect()->route('users.show.collections.anime', [
+            return redirect()->route('users.show.lists.anime', [
                 $user->nid, $user->profilelink, 'list' => 'watching'
             ]);
         }
 
-        return view('sections.users.show.collections', compact(['user']));
+        return view('sections.users.show.lists', compact(['user']));
     }
 }

@@ -2,6 +2,8 @@
 
 @section('title', $user->profilename)
 
+@use(\Illuminate\Support\Str)
+
 <x-layouts::users-edit>
     <div @class(['alert', 'alert-warning' => $user->birthday, 'alert-info' => ! $user->birthday, 'd-block'])>
         @if($user->birthday)
@@ -41,7 +43,7 @@
                             @selected($user->birthday?->format('m') == $month)
                         >
                             {{--{{ str_pad($month, 2, '0', STR_PAD_LEFT) }} ---}}
-                            {{ \Illuminate\Support\Str::title(now()->month($month)->translatedFormat('F')) }}
+                            {{ Str::title(now()->month($month)->translatedFormat('F')) }}
                         </option>
                     @endfor
                 </select>
@@ -65,8 +67,8 @@
             </div>
         </div>
         <div class="form-group text-end">
-            <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}" class="me-3">Отмена</a>
-            <input type="submit" value="Сохранить" class="btn btn-sm btn-secondary px-2 py-1">
+            <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}" class="me-2">Отмена</a>
+            <input type="submit" value="Сохранить" class="btn btn-primary">
         </div>
     </x-ui.form.index>
 </x-layouts::users-edit>

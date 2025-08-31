@@ -18,7 +18,8 @@
             <x-ui.form.index action="{{ route('password.email') }}">
                 <!-- email -->
                 <x-widgets.form.email label="Эл. почта" :value="request()->input('email')" required/>
-                <div class="flex items-center justify-end mt-4">
+                <div class="flex items-center justify-end mt-4 text-end">
+                    <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}" class="me-2">Отмена</a>
                     <button type="submit" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              width="24"
