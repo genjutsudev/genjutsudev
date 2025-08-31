@@ -9,7 +9,7 @@ use App\Services\UserService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-readonly class UserUserObserver
+readonly class UserObserver
 {
     public function __construct(
         private UserService $userService
@@ -23,7 +23,7 @@ readonly class UserUserObserver
     public function updating(User $user): void
     {
         $now = Carbon::now();
-        $userId = Auth::id();
+        $changed_id = Auth::id();
 
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
@@ -36,7 +36,7 @@ readonly class UserUserObserver
 
         foreach (['profilename', 'profilelink', 'email', 'password'] as $field) {
             if ($user->isDirty($field)) {
-                $this->userService->createHistoryField($user, $field, $userId);
+                $this->userService->createHistoryField($user, $field, $changed_id);
             }
         }
     }
