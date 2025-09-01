@@ -200,6 +200,7 @@
                 </div>
                 {{-- password --}}
                 <div>
+                    @php($changed_at = $user->password_changed_at ?? $user->created_at)
                     <div class="form-label">
                         <label for="user_password">Пароль</label>
                         <div
@@ -215,8 +216,9 @@
                         id="user_password"
                         class="form-control"
                         type="password"
-                        placeholder="обновлён {{ $user->password_changed_at?->diffForHumans() ?? 'нет данных' }}"
-                        disabled>
+                        placeholder="обновлён {{ $changed_at->diffForHumans() }}"
+                        disabled
+                    >
                 </div>
             </x-ui.subheadline>
         </div>

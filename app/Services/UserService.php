@@ -16,8 +16,8 @@ use App\Models\UserUser as User;
 use App\Models\UserUserPreference as Preferences;
 use App\Repositories\UserRepository;
 use App\Traits\HasherTrait;
-use App\Values\UserCreatedViaValue as CreatedVia;
-use App\Values\UserTypeValue as Type;
+use App\Values\UserCreatedViaValue;
+use App\Values\UserTypeValue;
 use DateTime;
 use Illuminate\Support\Str;
 
@@ -32,8 +32,8 @@ class UserService
     }
 
     private function createUser(
-        Type $type,
-        CreatedVia $created_via,
+        UserTypeValue $type,
+        UserCreatedViaValue $created_via,
         ?int $referrer_nid = null,
         ?string $email = null,
         ?string $password = null,
@@ -62,25 +62,39 @@ class UserService
     private function createUserRegularOrAdmin(
         string $email,
         string $password,
-        string $created_via = 'web',
+        string $created_via,
+        bool $is_admin,
         ?int $referrer_nid = null,
-        ?bool $is_admin = false,
     ) : User
     {
         throw_if($this->userRepository->findOneByEmail($email), new UserEmailTakenException());
 
+        $userType = UserTypeValue::make($is_admin ? UserTypeEnum::ADMIN : UserTypeEnum::REGULAR);
+        $userCreatedVia = UserCreatedViaValue::make(UserCreatedViaEnum::from($created_via));
+
         $user = self::createUser(
-            type: $type = Type::make($is_admin ? UserTypeEnum::ADMIN : UserTypeEnum::REGULAR),
-            created_via: CreatedVia::make(UserCreatedViaEnum::from($created_via)),
+            type: $userType,
+            created_via: $userCreatedVia,
             referrer_nid: $referrer_nid,
             email: $email,
             password: $password,
-            token: hash('md5', $type . time()),
+            token: hash('md5', $userType . time()),
         );
 
         $user->preferences()->create();
 
+        self::createHistoryField($user, 'password', $user->id);
+
         return $user->load('preferences');
+    }
+
+    /** @todo */
+    public function createOrUpdateUserFromSso(
+        string $network,
+        string $identity,
+    )
+    {
+        //
     }
 
     public function createUserRegular(
@@ -94,6 +108,7 @@ class UserService
             email: $email,
             password: $password,
             created_via: $created_via,
+            is_admin: false,
             referrer_nid: $referrer_nid,
         );
     }
@@ -117,12 +132,13 @@ class UserService
         string $created_via = 'web',
     ) : User
     {
-        $type = Type::make(UserTypeEnum::API);
-        $created_via = CreatedVia::make(UserCreatedViaEnum::from($created_via));
+        $userType = UserTypeValue::make(UserTypeEnum::API);
+        $userCreatedVia = UserCreatedViaValue::make(UserCreatedViaEnum::from($created_via));
+
         return self::createUser(
-            type: $type,
-            created_via: $created_via,
-            api_key: hash('sha256', $type . time())
+            type: $userType,
+            created_via: $userCreatedVia,
+            api_key: hash('sha256', $userType . time())
         );
     }
 
@@ -231,14 +247,14 @@ class UserService
 
     public function createHistoryField(
         User $user,
-        string $fieldName,
-        string $changedId
+        string $field_name,
+        string $changed_id
     ) : HistoryEntityField
     {
         return $user->historyFields()->create([
-            'field' => $fieldName,
-            'value' => $user->getOriginal($fieldName),
-            'changed_id' => $changedId,
+            'field' => $field_name,
+            'value' => $user->getOriginal($field_name),
+            'changed_id' => $changed_id,
         ]);
     }
 }
