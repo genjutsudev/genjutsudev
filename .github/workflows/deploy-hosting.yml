@@ -38,4 +38,4 @@ jobs:
         run: |
           sshpass -p "${{ secrets.FTP_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
           ${{ secrets.FTP_USERNAME }}@${{ secrets.FTP_SERVER }} \
-          "cd ${{ secrets.SERVER_DIR_DEV }} && git pull origin ${{ github.event.inputs.branch }}"
+          "cd ${{ secrets.SERVER_DIR }} && git pull origin ${{ github.event.inputs.branch }}"
