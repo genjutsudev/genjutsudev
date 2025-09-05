@@ -6,6 +6,12 @@ on:
     branches: [ "main" ]
 
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Enter branch name to deploy'
+        required: true
+        default: 'main'
+        type: string
 
 jobs:
   deploy-prod:
@@ -15,13 +21,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Deploy to Production
-        uses: SamKirkland/FTP-Deploy-Action@4.3.2
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ${{ secrets.SERVER_DIR }}
+      - name: Execute git pull on hosting
+        run: |
+          sshpass -p "${{ secrets.FTP_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
+          ${{ secrets.FTP_USERNAME }}@${{ secrets.FTP_SERVER }} \
+          "cd ${{ secrets.SERVER_DIR }} && git pull origin main"
 
   deploy-dev:
     environment: dev
@@ -30,10 +34,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Deploy to Development
-        uses: SamKirkland/FTP-Deploy-Action@4.3.2
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ${{ secrets.SERVER_DIR }}
+      - name: Execute git pull on development
+        run: |
+          sshpass -p "${{ secrets.FTP_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
+          ${{ secrets.FTP_USERNAME }}@${{ secrets.FTP_SERVER }} \
+          "cd ${{ secrets.SERVER_DIR_DEV }} && git pull origin ${{ github.event.inputs.branch }}"
