@@ -21,16 +21,25 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Test SSH connection
+        run: |
+          echo "Testing SSH connection to ${{ vars.SSH_HOST }}"
+          sshpass -p "${{ vars.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
+            -o ConnectTimeout=10 \
+            -o BatchMode=yes \
+            ${{ vars.SSH_USERNAME }}@${{ vars.SSH_HOST }} \
+            "echo '✅ SSH connection successful'"
         
       - name: Deploy via SSH (prod)
         run: |
-          PATH_TO_PROJECT="${{ secrets.PATH_TO_PROJECT }}"
+          PATH_TO_PROJECT="${{ vars.PATH_TO_PROJECT }}"
           BRANCH="main"
 
           echo "🚀 Deploying branch $BRANCH to $PATH_TO_PROJECT"
 
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
-            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
+          sshpass -p "${{ vars.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
+            ${{ vars.SSH_USERNAME }}@${{ vars.SSH_HOST }} \
             "if [ -d \"$PATH_TO_PROJECT/.git\" ]; then
                 cd $PATH_TO_PROJECT
                 git fetch origin
@@ -48,6 +57,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Test SSH connection
+        run: |
+          echo "Testing SSH connection to ${{ secrets.SSH_HOST }}"
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
+            -o ConnectTimeout=10 \
+            -o BatchMode=yes \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
+            "echo '✅ SSH connection successful'"
         
       - name: Deploy via SSH (dev)
         run: |
