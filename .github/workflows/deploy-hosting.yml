@@ -14,22 +14,12 @@ on:
         type: string
 
 jobs:
-  deploy:
+  deploy-prod:
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-
+    environment: prod
     steps:
-      - name: Decide branch and environment
-        id: vars
-        run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "env=prod" >> $GITHUB_OUTPUT
-            echo "branch=main" >> $GITHUB_OUTPUT
-          else
-            echo "env=dev" >> $GITHUB_OUTPUT
-            echo "branch=${{ github.event.inputs.branch }}" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Deploy via SSH
+      - name: Deploy via SSH (prod)
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.FTP_SERVER }}
@@ -37,13 +27,41 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           script: |
             SERVER_DIR="${{ secrets.SERVER_DIR }}"
+            BRANCH="main"
 
-            echo "🚀 Deploying branch ${{ steps.vars.outputs.branch }} to $SERVER_DIR"
+            echo "🚀 Deploying branch $BRANCH to $SERVER_DIR"
 
             if [ -d "$SERVER_DIR/.git" ]; then
               cd $SERVER_DIR
               git fetch origin
-              git reset --hard origin/${{ steps.vars.outputs.branch }}
+              git reset --hard origin/$BRANCH
+              echo "✅ Successfully deployed"
+            else
+              echo "❌ ERROR: No git repository in $SERVER_DIR"
+              exit 1
+            fi
+
+  deploy-dev:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Deploy via SSH (dev)
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          script: |
+            SERVER_DIR="${{ secrets.SERVER_DIR }}"
+            BRANCH="${{ github.event.inputs.branch }}"
+
+            echo "🚀 Deploying branch $BRANCH to $SERVER_DIR"
+
+            if [ -d "$SERVER_DIR/.git" ]; then
+              cd $SERVER_DIR
+              git fetch origin
+              git reset --hard origin/$BRANCH
               echo "✅ Successfully deployed"
             else
               echo "❌ ERROR: No git repository in $SERVER_DIR"
