@@ -22,13 +22,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Test SSH connection
         run: |
-          echo "Testing SSH connection to ${{ vars.SSH_HOST }}"
-          sshpass -p "${{ vars.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
+          ssh -o StrictHostKeyChecking=no \
             -o ConnectTimeout=10 \
-            -o BatchMode=yes \
-            ${{ vars.SSH_USERNAME }}@${{ vars.SSH_HOST }} \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
             "echo '✅ SSH connection successful'"
         
       - name: Deploy via SSH (prod)
@@ -38,8 +41,8 @@ jobs:
 
           echo "🚀 Deploying branch $BRANCH to $PATH_TO_PROJECT"
 
-          sshpass -p "${{ vars.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
-            ${{ vars.SSH_USERNAME }}@${{ vars.SSH_HOST }} \
+          ssh -o StrictHostKeyChecking=no \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
             "if [ -d \"$PATH_TO_PROJECT/.git\" ]; then
                 cd $PATH_TO_PROJECT
                 git fetch origin
