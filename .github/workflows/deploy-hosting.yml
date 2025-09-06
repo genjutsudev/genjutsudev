@@ -3,7 +3,7 @@ name: Deploy to Hosting
 on:
   pull_request:
     types: [closed]
-    branches: [ "main" ]
+    branches: ["main"]
 
   workflow_dispatch:
     inputs:
@@ -22,15 +22,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.8.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
+      - name: Create SSH key file
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+      
       - name: Test SSH connection
         run: |
-          ssh -o StrictHostKeyChecking=no \
-            -o ConnectTimeout=10 \
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa \
             ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
             "echo '✅ SSH connection successful'"
         
@@ -41,7 +41,7 @@ jobs:
 
           echo "🚀 Deploying branch $BRANCH to $PATH_TO_PROJECT"
 
-          ssh -o StrictHostKeyChecking=no \
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa \
             ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
             "if [ -d \"$PATH_TO_PROJECT/.git\" ]; then
                 cd $PATH_TO_PROJECT
@@ -52,39 +52,7 @@ jobs:
                 echo '❌ ERROR: No git repository in $PATH_TO_PROJECT'
                 exit 1
              fi"
-
-  deploy-dev:
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    environment: dev
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Test SSH connection
-        run: |
-          echo "Testing SSH connection to ${{ secrets.SSH_HOST }}"
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
-            -o ConnectTimeout=10 \
-            -o BatchMode=yes \
-            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
-            "echo '✅ SSH connection successful'"
-        
-      - name: Deploy via SSH (dev)
-        run: |
-          PATH_TO_PROJECT="${{ secrets.PATH_TO_PROJECT }}"
-          BRANCH="${{ github.event.inputs.branch }}"
-
-          echo "🚀 Deploying branch $BRANCH to $PATH_TO_PROJECT"
-
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
-            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
-            "if [ -d \"$PATH_TO_PROJECT/.git\" ]; then
-                cd $PATH_TO_PROJECT
-                git fetch origin
-                git reset --hard origin/$BRANCH
-                echo '✅ Successfully deployed'
-             else
-                echo '❌ ERROR: No git repository in $PATH_TO_PROJECT'
-                exit 1
-             fi"
+      
+      - name: Cleanup SSH key
+        if: always()
+        run: rm -f ~/.ssh/id_rsa
