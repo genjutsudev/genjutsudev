@@ -20,26 +20,23 @@ jobs:
     environment: prod
     steps:
       - name: Deploy via SSH (prod)
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          script: |
-            SERVER_DIR="${{ secrets.SERVER_DIR }}"
-            BRANCH="main"
+        run: |
+          SERVER_DIR="${{ secrets.SERVER_DIR }}"
+          BRANCH="main"
 
-            echo "🚀 Deploying branch $BRANCH to $SERVER_DIR"
+          echo "🚀 Deploying branch $BRANCH to $SERVER_DIR"
 
-            if [ -d "$SERVER_DIR/.git" ]; then
-              cd $SERVER_DIR
-              git fetch origin
-              git reset --hard origin/$BRANCH
-              echo "✅ Successfully deployed"
-            else
-              echo "❌ ERROR: No git repository in $SERVER_DIR"
-              exit 1
-            fi
+          sshpass -p "${{ secrets.FTP_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
+            ${{ secrets.FTP_USERNAME }}@${{ secrets.FTP_SERVER }} \
+            "if [ -d \"$SERVER_DIR/.git\" ]; then
+                cd $SERVER_DIR
+                git fetch origin
+                git reset --hard origin/$BRANCH
+                echo '✅ Successfully deployed'
+             else
+                echo '❌ ERROR: No git repository in $SERVER_DIR'
+                exit 1
+             fi"
 
   deploy-dev:
     if: github.event_name == 'workflow_dispatch'
@@ -47,23 +44,20 @@ jobs:
     environment: dev
     steps:
       - name: Deploy via SSH (dev)
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          script: |
-            SERVER_DIR="${{ secrets.SERVER_DIR }}"
-            BRANCH="${{ github.event.inputs.branch }}"
+        run: |
+          SERVER_DIR="${{ secrets.SERVER_DIR }}"
+          BRANCH="${{ github.event.inputs.branch }}"
 
-            echo "🚀 Deploying branch $BRANCH to $SERVER_DIR"
+          echo "🚀 Deploying branch $BRANCH to $SERVER_DIR"
 
-            if [ -d "$SERVER_DIR/.git" ]; then
-              cd $SERVER_DIR
-              git fetch origin
-              git reset --hard origin/$BRANCH
-              echo "✅ Successfully deployed"
-            else
-              echo "❌ ERROR: No git repository in $SERVER_DIR"
-              exit 1
-            fi
+          sshpass -p "${{ secrets.FTP_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
+            ${{ secrets.FTP_USERNAME }}@${{ secrets.FTP_SERVER }} \
+            "if [ -d \"$SERVER_DIR/.git\" ]; then
+                cd $SERVER_DIR
+                git fetch origin
+                git reset --hard origin/$BRANCH
+                echo '✅ Successfully deployed'
+             else
+                echo '❌ ERROR: No git repository in $SERVER_DIR'
+                exit 1
+             fi"
