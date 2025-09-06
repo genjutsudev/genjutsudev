@@ -19,22 +19,25 @@ jobs:
     runs-on: ubuntu-latest
     environment: prod
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
       - name: Deploy via SSH (prod)
         run: |
-          SERVER_DIR="${{ secrets.SERVER_DIR }}"
+          PATH_TO_PROJECT="${{ secrets.PATH_TO_PROJECT }}"
           BRANCH="main"
 
-          echo "🚀 Deploying branch $BRANCH to $SERVER_DIR"
+          echo "🚀 Deploying branch $BRANCH to $PATH_TO_PROJECT"
 
-          sshpass -p "${{ secrets.FTP_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
-            ${{ secrets.FTP_USERNAME }}@${{ secrets.FTP_SERVER }} \
-            "if [ -d \"$SERVER_DIR/.git\" ]; then
-                cd $SERVER_DIR
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
+            "if [ -d \"$PATH_TO_PROJECT/.git\" ]; then
+                cd $PATH_TO_PROJECT
                 git fetch origin
                 git reset --hard origin/$BRANCH
                 echo '✅ Successfully deployed'
              else
-                echo '❌ ERROR: No git repository in $SERVER_DIR'
+                echo '❌ ERROR: No git repository in $PATH_TO_PROJECT'
                 exit 1
              fi"
 
@@ -43,21 +46,24 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
       - name: Deploy via SSH (dev)
         run: |
-          SERVER_DIR="${{ secrets.SERVER_DIR }}"
+          PATH_TO_PROJECT="${{ secrets.PATH_TO_PROJECT }}"
           BRANCH="${{ github.event.inputs.branch }}"
 
-          echo "🚀 Deploying branch $BRANCH to $SERVER_DIR"
+          echo "🚀 Deploying branch $BRANCH to $PATH_TO_PROJECT"
 
-          sshpass -p "${{ secrets.FTP_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
-            ${{ secrets.FTP_USERNAME }}@${{ secrets.FTP_SERVER }} \
-            "if [ -d \"$SERVER_DIR/.git\" ]; then
-                cd $SERVER_DIR
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
+            "if [ -d \"$PATH_TO_PROJECT/.git\" ]; then
+                cd $PATH_TO_PROJECT
                 git fetch origin
                 git reset --hard origin/$BRANCH
                 echo '✅ Successfully deployed'
              else
-                echo '❌ ERROR: No git repository in $SERVER_DIR'
+                echo '❌ ERROR: No git repository in $PATH_TO_PROJECT'
                 exit 1
              fi"
