@@ -1,0 +1,82 @@
+name: Deploy to Hosting
+
+on:
+  pull_request:
+    types: [closed]
+    branches: ["main"]
+
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to deploy'
+        required: true
+        default: 'main'
+        type: string
+
+jobs:
+  deploy-prod:
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Create SSH key file
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          
+          if [ -f ~/.ssh/id_rsa ]; then
+            chmod 600 ~/.ssh/id_rsa
+            ls -l ~/.ssh/id_rsa
+            ssh-keygen -lf ~/.ssh/id_rsa
+            echo "✅ SSH key file created successfully"
+          else
+            echo "❌ ERROR: SSH key file was not created"
+            exit 1
+          fi
+      
+      - name: Test SSH connection
+        run: |
+          echo "🔍 Testing SSH connection..."
+          
+          if ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
+            "echo '✅ SSH connection successful'"; then
+              :
+          else
+              echo "❌ ERROR: SSH connection failed"
+              exit 1
+          fi
+        
+      - name: Deploy via SSH
+        run: |
+          PATH_TO_PROJECT="${{ vars.PATH_TO_PROJECT }}"
+          BRANCH="main"
+
+          echo "🚀 Deploying branch $BRANCH to $PATH_TO_PROJECT"
+
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
+            "if [ -d \"$PATH_TO_PROJECT/.git\" ]; then
+                cd $PATH_TO_PROJECT
+                git fetch origin
+                git reset --hard origin/$BRANCH
+                echo '✅ Successfully deployed'
+             else
+                echo '❌ ERROR: No git repository in $PATH_TO_PROJECT'
+                exit 1
+             fi"
+      
+      - name: Cleanup SSH key
+        if: always()
+        run: |
+          rm -f ~/.ssh/id_rsa
+          
+          if [ ! -f ~/.ssh/id_rsa ]; then
+            echo "✅ SSH key file removed successfully"
+          else
+            echo "❌ ERROR: SSH key file was not removed"
+            exit 1
+          fi
