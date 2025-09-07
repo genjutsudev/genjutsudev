@@ -27,6 +27,17 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          
+          if [ -f ~/.ssh/id_rsa ]; then
+            echo "✅ SSH key file created successfully"
+          else
+            echo "❌ ERROR: SSH key file was not created"
+            exit 1
+          fi
+          
+          ls -l ~/.ssh/id_rsa
+          
+          ssh-keygen -lf ~/.ssh/id_rsa
       
       - name: Test SSH connection
         run: |
@@ -34,7 +45,7 @@ jobs:
             ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
             "echo '✅ SSH connection successful'"
         
-      - name: Deploy via SSH (prod)
+      - name: Deploy via SSH
         run: |
           PATH_TO_PROJECT="${{ vars.PATH_TO_PROJECT }}"
           BRANCH="main"
