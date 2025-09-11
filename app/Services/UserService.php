@@ -26,7 +26,7 @@ class UserService
     use HasherTrait;
 
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private readonly UserRepository $userRepository
     )
     {
     }
@@ -38,7 +38,7 @@ class UserService
         ?string $email = null,
         ?string $password = null,
         ?string $token = null,
-        ?string $api_key = null,
+        ?string $api_key = null
     ) : User
     {
         /** @var User $user */
@@ -60,21 +60,20 @@ class UserService
     }
 
     private function createUserRegularOrAdmin(
+        UserCreatedViaValue $created_via,
         string $email,
         string $password,
-        string $created_via,
         bool $is_admin,
-        ?int $referrer_nid = null,
+        ?int $referrer_nid = null
     ) : User
     {
         throw_if($this->userRepository->findOneByEmail($email), new UserEmailTakenException());
 
         $userType = UserTypeValue::make($is_admin ? UserTypeEnum::ADMIN : UserTypeEnum::REGULAR);
-        $userCreatedVia = UserCreatedViaValue::make(UserCreatedViaEnum::from($created_via));
 
         $user = self::createUser(
             type: $userType,
-            created_via: $userCreatedVia,
+            created_via: $created_via,
             referrer_nid: $referrer_nid,
             email: $email,
             password: $password,
@@ -91,23 +90,23 @@ class UserService
     /** @todo */
     public function createOrUpdateUserFromSso(
         string $network,
-        string $identity,
+        string $identity
     )
     {
-        //
     }
 
     public function createUserRegular(
         string $email,
         string $password,
         string $created_via = 'web',
-        ?int $referrer_nid = null,
+        ?int $referrer_nid = null
     ) : User
     {
+        $userCreatedVia = UserCreatedViaValue::make(UserCreatedViaEnum::from($created_via));
         return self::createUserRegularOrAdmin(
+            created_via: $userCreatedVia,
             email: $email,
             password: $password,
-            created_via: $created_via,
             is_admin: false,
             referrer_nid: $referrer_nid,
         );
@@ -116,25 +115,24 @@ class UserService
     public function createUserAdmin(
         string $email,
         string $password,
-        string $created_via = 'web',
+        string $created_via = 'web'
     ) : User
     {
+        $userCreatedVia = UserCreatedViaValue::make(UserCreatedViaEnum::from($created_via));
         return self::createUserRegularOrAdmin(
+            created_via: $userCreatedVia,
             email: $email,
             password: $password,
-            created_via: $created_via,
             is_admin: true,
         );
     }
 
-    // @todo
     public function createUserApi(
-        string $created_via = 'web',
+        string $created_via = 'web'
     ) : User
     {
         $userType = UserTypeValue::make(UserTypeEnum::API);
         $userCreatedVia = UserCreatedViaValue::make(UserCreatedViaEnum::from($created_via));
-
         return self::createUser(
             type: $userType,
             created_via: $userCreatedVia,
@@ -142,6 +140,9 @@ class UserService
         );
     }
 
+    /*
+     * @todo make private
+     */
     public function updateUser(
         User $user,
         array $attributes,
@@ -150,7 +151,6 @@ class UserService
     {
         foreach (array_keys($attributes) as $attributeName) {
             throw_if(! in_array($attributeName, [
-                // @todo move in DTO
                 'is_active',
                 'profilelink',
                 'email',
@@ -212,26 +212,9 @@ class UserService
         return self::updateUser($user, ['profilename' => $profilename]);
     }
 
-    // @todo
-    public function updateUserRegular(
-        User $user,
-        array $attrs = [],
-        bool $is_admin = false
-    ) : User
-    {
-        return self::updateUser($user, $attrs);
-    }
-
-    // @todo
-    public function updateUserApi(
-        User $user,
-        array $attrs = [],
-    ) : User
-    {
-        return self::updateUser($user, $attrs);
-    }
-
-    // @todo
+    /*
+     * @todo make private, refactored
+     */
     public function updatePreferences(
         User $user,
         array $attributes,
