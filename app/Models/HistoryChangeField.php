@@ -9,14 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class HistoryEntityField extends Model
+class HistoryChangeField extends Model
 {
     use HasUuids;
 
     /**
      * @var string
      */
-    public const string ENTITY_TYPE = 'history_entity_fields';
+    public const string ENTITY_TYPE = 'history_change_fields';
 
     /**
      * @var string

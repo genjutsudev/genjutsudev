@@ -11,7 +11,7 @@ use App\Exceptions\UserEmailTakenException;
 use App\Exceptions\UserProfilelinkMonthlyLimitException;
 use App\Exceptions\UserProfilenameMonthlyLimitException;
 use App\Exceptions\UserProfilelinkTakenException;
-use App\Models\HistoryEntityField;
+use App\Models\HistoryChangeField;
 use App\Models\UserUser as User;
 use App\Models\UserUserPreference as Preferences;
 use App\Repositories\UserRepository;
@@ -87,7 +87,9 @@ class UserService
         return $user->load('preferences');
     }
 
-    /** @todo */
+    /*
+     * @todo
+     */
     public function createOrUpdateUserFromSso(
         string $network,
         string $identity
@@ -228,11 +230,14 @@ class UserService
         return $preference;
     }
 
+    /*
+     * @todo createFieldChangeRecord
+     */
     public function createHistoryField(
         User $user,
         string $field_name,
         string $changed_id
-    ) : HistoryEntityField
+    ) : HistoryChangeField
     {
         return $user->historyFields()->create([
             'field' => $field_name,
