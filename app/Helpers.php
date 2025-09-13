@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\UserUser as User;
+use App\Services\GravatarService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -36,7 +37,7 @@ function user_is_online(User $user): bool
 
 function gravatar(string $email, int $size = 192): string
 {
-    return sprintf("https://www.gravatar.com/avatar/%s?s=$size&d=robohash&r=g", md5(Str::lower($email)));
+    return GravatarService::url($email, $size);
 }
 
 function app_host(bool $include_subdomain = false): string

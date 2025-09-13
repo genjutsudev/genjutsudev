@@ -166,11 +166,11 @@ class UserUser extends Authenticatable
 
     public function historyFields(string $fieldName = 'email'): MorphMany
     {
-        return $this->morphMany(HistoryEntityField::class, 'entity')->where('field', $fieldName);
+        return $this->morphMany(HistoryChangeField::class, 'entity')->where('field', $fieldName);
     }
 
     public function madeFields(): HasMany
     {
-        return $this->hasMany(HistoryEntityField::class, 'changed_id', 'id');
+        return $this->hasMany(HistoryChangeField::class, 'changed_id', 'id');
     }
 }
