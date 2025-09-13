@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserUpdateActivityAt
 {
-    private const INTERVAL = 1;
+    private const int INTERVAL = 15;
 
     /**
      * Handle an incoming request.

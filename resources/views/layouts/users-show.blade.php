@@ -139,7 +139,7 @@
                             @endforeach
                         </ul>
                     </div>
-                    <div @class(['card-body', 'p-0' => request()->routeIs('*lists*')])>
+                    <div @class(['card-body'])>
                         {{ $slot }}
                     </div>
                 </div>

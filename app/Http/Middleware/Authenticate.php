@@ -21,7 +21,8 @@ class Authenticate extends Middleware
     protected function redirectTo(Request $request)
     {
         if (! $request->expectsJson()) {
-            self::info('Available only to authorized users.'); // @todo i18n
+            // @todo i18n "Available only to authorized users."
+            self::info('Доступно только авторизованным пользователям.');
             return route('animes'); // @todo: changed route
         }
     }
