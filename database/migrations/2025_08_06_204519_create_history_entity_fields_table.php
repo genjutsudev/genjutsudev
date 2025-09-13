@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create(HistoryChangeField::ENTITY_TYPE, function (Blueprint $table) {
             $table->uuid('id');
             $table->id('nid');
-            $table->uuidMorphs('entity','idx_history_change_fields_on_entity_type_and_entity_id');
+            $table->uuidMorphs('entity', 'idx_history_change_fields_on_entity_type_and_entity_id');
             $table->string('field');
             $table->string('value');
             $table->timestamps();
