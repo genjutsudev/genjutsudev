@@ -15,18 +15,18 @@ use App\Models\HistoryChangeField;
 use App\Models\UserUser as User;
 use App\Models\UserUserPreference as Preferences;
 use App\Repositories\UserRepository;
-use App\Traits\HasherTrait;
 use App\Values\UserCreatedViaValue;
 use App\Values\UserTypeValue;
 use DateTime;
 use Illuminate\Support\Str;
 
-class UserService
+readonly class UserService
 {
-    use HasherTrait;
-
     public function __construct(
-        private readonly UserRepository $userRepository
+        private UserRepository $userRepository,
+        private HasherService $hasherService,
+        private TokenGeneratorService $tokenService,
+        private ApiKeyGeneratorService $apiKeyService
     )
     {
     }
@@ -41,6 +41,8 @@ class UserService
         ?string $api_key = null
     ) : User
     {
+        $password_hash = ! empty($password) ? $this->hasherService->hash($password) : null;
+
         /** @var User $user */
         $user = User::create([
             'type' => $type,
@@ -48,9 +50,13 @@ class UserService
             'referrer_nid' => $referrer_nid,
             'profilelink' => Str::ulid(new DateTime()),
             'email' => $email,
-            'password' => ! empty($password) ? self::hash($password) : null,
+            'password' => $password_hash,
             'profilename' => uniqid(),
-            'registration_ip_hash' => self::hash(request()->ip(), ['memory' => 1024, 'time' => 2, 'threads' => 2]),
+            'registration_ip_hash' => $this->hasherService->hash(request()->ip(), [
+                'memory' => 1024,
+                'time' => 2,
+                'threads' => 2
+            ]),
             'registration_country' => 'Russian', // @todo
             'token' => $token,
             'api_key' => $api_key,
@@ -77,7 +83,7 @@ class UserService
             referrer_nid: $referrer_nid,
             email: $email,
             password: $password,
-            token: hash('md5', $userType . time()),
+            token: $this->tokenService->generate(),
         );
 
         $user->preferences()->create();
@@ -138,7 +144,7 @@ class UserService
         return self::createUser(
             type: $userType,
             created_via: $userCreatedVia,
-            api_key: hash('sha256', $userType . time())
+            api_key: $this->apiKeyService->generate()
         );
     }
 
