@@ -17,7 +17,7 @@ class UserPasswordForgotController extends Controller
      */
     public function create(Request $request): View
     {
-        /** @var User $user */
+        /** @var ?User $user */
         $user = $request->user();
 
         return view('sections.users.password.forgot', compact(['user']));

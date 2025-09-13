@@ -11,7 +11,7 @@
             </div>
             <!-- status -->
             @if (session('status'))
-                <div class="font-medium text-sm text-green-600 dark:text-green-400 alert alert-success mb-4">
+                <div class="font-medium text-sm text-green-600 alert alert-success mb-4">
                     {{ session('status') }}
                 </div>
             @endif
@@ -19,7 +19,9 @@
                 <!-- email -->
                 <x-widgets.form.email label="Эл. почта" :value="request()->input('email')" required/>
                 <div class="flex items-center justify-end mt-4 text-end">
-                    <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}" class="me-2">Отмена</a>
+                    <a href="{{ $user ? route('users.edit.account', [$user->nid, $user->profilelink]) : '/' }}" class="me-2">
+                        Отмена
+                    </a>
                     <button type="submit" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              width="24"

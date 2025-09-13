@@ -11,36 +11,38 @@ use App\Exceptions\UserEmailTakenException;
 use App\Exceptions\UserProfilelinkMonthlyLimitException;
 use App\Exceptions\UserProfilenameMonthlyLimitException;
 use App\Exceptions\UserProfilelinkTakenException;
-use App\Models\HistoryEntityField;
+use App\Models\HistoryChangeField;
 use App\Models\UserUser as User;
 use App\Models\UserUserPreference as Preferences;
 use App\Repositories\UserRepository;
-use App\Traits\HasherTrait;
-use App\Values\UserCreatedViaValue as CreatedVia;
-use App\Values\UserTypeValue as Type;
+use App\Values\UserCreatedViaValue;
+use App\Values\UserTypeValue;
 use DateTime;
 use Illuminate\Support\Str;
 
-class UserService
+readonly class UserService
 {
-    use HasherTrait;
-
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private UserRepository $userRepository,
+        private HasherService $hasherService,
+        private TokenGeneratorService $tokenService,
+        private ApiKeyGeneratorService $apiKeyService
     )
     {
     }
 
     private function createUser(
-        Type $type,
-        CreatedVia $created_via,
+        UserTypeValue $type,
+        UserCreatedViaValue $created_via,
         ?int $referrer_nid = null,
         ?string $email = null,
         ?string $password = null,
         ?string $token = null,
-        ?string $api_key = null,
+        ?string $api_key = null
     ) : User
     {
+        $password_hash = ! empty($password) ? $this->hasherService->hash($password) : null;
+
         /** @var User $user */
         $user = User::create([
             'type' => $type,
@@ -48,9 +50,13 @@ class UserService
             'referrer_nid' => $referrer_nid,
             'profilelink' => Str::ulid(new DateTime()),
             'email' => $email,
-            'password' => ! empty($password) ? self::hash($password) : null,
+            'password' => $password_hash,
             'profilename' => uniqid(),
-            'registration_ip_hash' => self::hash(request()->ip(), ['memory' => 1024, 'time' => 2, 'threads' => 2]),
+            'registration_ip_hash' => $this->hasherService->hash(request()->ip(), [
+                'memory' => 1024,
+                'time' => 2,
+                'threads' => 2
+            ]),
             'registration_country' => 'Russian', // @todo
             'token' => $token,
             'api_key' => $api_key,
@@ -60,40 +66,56 @@ class UserService
     }
 
     private function createUserRegularOrAdmin(
+        UserCreatedViaValue $created_via,
         string $email,
         string $password,
-        string $created_via = 'web',
-        ?int $referrer_nid = null,
-        ?bool $is_admin = false,
+        bool $is_admin,
+        ?int $referrer_nid = null
     ) : User
     {
         throw_if($this->userRepository->findOneByEmail($email), new UserEmailTakenException());
 
+        $userType = UserTypeValue::make($is_admin ? UserTypeEnum::ADMIN : UserTypeEnum::REGULAR);
+
         $user = self::createUser(
-            type: $type = Type::make($is_admin ? UserTypeEnum::ADMIN : UserTypeEnum::REGULAR),
-            created_via: CreatedVia::make(UserCreatedViaEnum::from($created_via)),
+            type: $userType,
+            created_via: $created_via,
             referrer_nid: $referrer_nid,
             email: $email,
             password: $password,
-            token: hash('md5', $type . time()),
+            token: $this->tokenService->generate(),
         );
 
         $user->preferences()->create();
 
+        self::createHistoryField($user, 'password', $user->id);
+
         return $user->load('preferences');
+    }
+
+    /*
+     * @todo
+     */
+    public function createOrUpdateUserFromSso(
+        string $network,
+        string $identity
+    )
+    {
     }
 
     public function createUserRegular(
         string $email,
         string $password,
         string $created_via = 'web',
-        ?int $referrer_nid = null,
+        ?int $referrer_nid = null
     ) : User
     {
+        $userCreatedVia = UserCreatedViaValue::make(UserCreatedViaEnum::from($created_via));
         return self::createUserRegularOrAdmin(
+            created_via: $userCreatedVia,
             email: $email,
             password: $password,
-            created_via: $created_via,
+            is_admin: false,
             referrer_nid: $referrer_nid,
         );
     }
@@ -101,31 +123,34 @@ class UserService
     public function createUserAdmin(
         string $email,
         string $password,
-        string $created_via = 'web',
+        string $created_via = 'web'
     ) : User
     {
+        $userCreatedVia = UserCreatedViaValue::make(UserCreatedViaEnum::from($created_via));
         return self::createUserRegularOrAdmin(
+            created_via: $userCreatedVia,
             email: $email,
             password: $password,
-            created_via: $created_via,
             is_admin: true,
         );
     }
 
-    // @todo
     public function createUserApi(
-        string $created_via = 'web',
+        string $created_via = 'web'
     ) : User
     {
-        $type = Type::make(UserTypeEnum::API);
-        $created_via = CreatedVia::make(UserCreatedViaEnum::from($created_via));
+        $userType = UserTypeValue::make(UserTypeEnum::API);
+        $userCreatedVia = UserCreatedViaValue::make(UserCreatedViaEnum::from($created_via));
         return self::createUser(
-            type: $type,
-            created_via: $created_via,
-            api_key: hash('sha256', $type . time())
+            type: $userType,
+            created_via: $userCreatedVia,
+            api_key: $this->apiKeyService->generate()
         );
     }
 
+    /*
+     * @todo make private
+     */
     public function updateUser(
         User $user,
         array $attributes,
@@ -134,7 +159,6 @@ class UserService
     {
         foreach (array_keys($attributes) as $attributeName) {
             throw_if(! in_array($attributeName, [
-                // @todo move in DTO
                 'is_active',
                 'profilelink',
                 'email',
@@ -196,26 +220,9 @@ class UserService
         return self::updateUser($user, ['profilename' => $profilename]);
     }
 
-    // @todo
-    public function updateUserRegular(
-        User $user,
-        array $attrs = [],
-        bool $is_admin = false
-    ) : User
-    {
-        return self::updateUser($user, $attrs);
-    }
-
-    // @todo
-    public function updateUserApi(
-        User $user,
-        array $attrs = [],
-    ) : User
-    {
-        return self::updateUser($user, $attrs);
-    }
-
-    // @todo
+    /*
+     * @todo make private, refactored
+     */
     public function updatePreferences(
         User $user,
         array $attributes,
@@ -229,16 +236,19 @@ class UserService
         return $preference;
     }
 
+    /*
+     * @todo createFieldChangeRecord
+     */
     public function createHistoryField(
         User $user,
-        string $fieldName,
-        string $changedId
-    ) : HistoryEntityField
+        string $field_name,
+        string $changed_id
+    ) : HistoryChangeField
     {
         return $user->historyFields()->create([
-            'field' => $fieldName,
-            'value' => $user->getOriginal($fieldName),
-            'changed_id' => $changedId,
+            'field' => $field_name,
+            'value' => $user->getOriginal($field_name),
+            'changed_id' => $changed_id,
         ]);
     }
 }
