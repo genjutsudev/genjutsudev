@@ -3,7 +3,9 @@ name: Deploy
 on:
   pull_request:
     branches: ["main"]
-    types: [closed]
+
+  push:
+    branches: ["main"]
 
   workflow_dispatch:
     inputs:
@@ -20,12 +22,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Verify PR was merged
-        if: github.event_name == 'pull_request' && github.event.pull_request.merged != true
-        run: |
-          echo "⏭️ PR was closed without merging. Skipping deployment."
-          exit 1
 
       - name: Create SSH key file
         run: |
