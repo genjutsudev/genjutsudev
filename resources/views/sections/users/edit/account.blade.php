@@ -180,23 +180,28 @@
                     </div>
                     <div class="input-group">
                         <input id="user_email" type="email" value="{{ $user->email }}" class="form-control" disabled>
-                        <div
-                            class="input-group-text p-2"
+                        @php($is_verified = ! is_null($user->email_verified_at))
+                        @php($tag = $is_verified ? 'div' : 'a')
+                        <{{ $tag }}
+                        @unless($is_verified)
+                            href="{{ route('verification.notice') }}"
+                            @class(['input-group-text', 'p-2', 'text-decoration-none'])
+                        @else
+                            @class(['input-group-text', 'p-2'])
+                        @endunless
                             data-bs-toggle="tooltip"
                             data-bs-placement="left"
-                            data-bs-original-title="{{ $user->email_verified_at ? 'Подтверждено' : 'Подтвердить' }}"
+                            data-bs-original-title="{{ $is_verified ? 'Подтверждено' : 'Подтвердить' }}"
                         >
-                            @if($user->email_verified_at)
-                                <span class="d-flex text-green">
-                                    <i style="font-size: 17px" class="fa-solid fa-circle-check"></i>
-                                </span>
-                            @else
-                                <a href="{{ route('verification.notice') }}" class="d-flex link-warning text-decoration-none">
-                                    <i style="font-size: 17px" class="fa-solid fa-envelope"></i>
-                                </a>
-                            @endif
-                        </div>
-                    </div>
+                            <span @class(['d-flex', 'text-success' => $is_verified, 'text-primary' => ! $is_verified])>
+                                <i style="font-size: 17px" @class([
+                                    'fa-solid',
+                                    'fa-circle-check' => $is_verified,
+                                    'fa-envelope' => ! $is_verified
+                                ])></i>
+                            </span>
+                        </{{ $tag }}>
+                    </div>{{-- @todo move to component --}}
                 </div>
                 {{-- password --}}
                 <div>
