@@ -156,7 +156,7 @@
                             </div>
                         </div>
                         <div class="mt-3">
-                            <a href="#" class="disabled btn rounded w-100">
+                            <a href="{{ route('oauth.redirect', ['driver' => 'shikimori']) }}" class="btn rounded w-100">
                                 <img
                                     src="{{ asset('static/media/brands/shikimori.svg') }}"
                                     class="me-2" width="20"

@@ -179,7 +179,14 @@
                         </div>
                     </div>
                     <div class="input-group">
-                        <input id="user_email" type="email" value="{{ $user->email ?? 'Не задан' }}" class="form-control" disabled>
+                        <input
+                            id="user_email"
+                            type="email"
+                            value="{{ $user->email }}"
+                            class="form-control"
+                            placeholder="отсутствует"
+                            disabled
+                        >
                         @if($user->email)
                             @php($is_verified = ! is_null($user->email_verified_at))
                             @php($tag = $is_verified ? 'div' : 'a')

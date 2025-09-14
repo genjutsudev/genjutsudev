@@ -18,12 +18,14 @@ class ShikimoriCallbackController extends Controller
         $ssoUser = $socialite->user();
 
         try {
-            Auth::login($user = $userService->createOrUpdateUserFromSso($ssoUser, $provider));
+            $user = $userService->createOrUpdateUserFromSso($ssoUser, $provider);
         } catch (\Exception $e) {
             return redirect()->route('animes')->with('messages', [
                 ['level' => 'danger', 'message' => $e->getMessage()]
             ]);
         }
+
+        Auth::login($user, true);
 
         return redirect()->route('users.show', [$user->nid, $user->profilelink])->with('messages', [
             ['level' => 'success', 'message' => 'OAuth ' . ucfirst($provider) . ' successfully login.'] // @todo i18n

@@ -20,6 +20,7 @@ use App\Repositories\UserUserRepository as UserRepository;
 use App\Values\UserCreatedViaValue;
 use App\Values\UserTypeValue;
 use DateTime;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Contracts\User as SsoUser;
 
@@ -80,22 +81,27 @@ readonly class UserService
     {
         throw_if($this->userRepository->findOneByEmail($email), new UserEmailTakenException());
 
-        $userType = UserTypeValue::make($is_admin ? UserTypeEnum::ADMIN : UserTypeEnum::REGULAR);
-
-        $user = self::createUser(
-            type: $userType,
-            created_via: $created_via,
-            referrer_nid: $referrer_nid,
-            email: $email,
-            password: $password,
-            token: $this->tokenService->generate(),
+        $userType = UserTypeValue::make(
+            $is_admin ? UserTypeEnum::ADMIN : UserTypeEnum::REGULAR
         );
 
-        $user->preferences()->create();
+        return DB::transaction(function () use ($userType, $created_via, $referrer_nid, $email, $password) {
+            $user = self::createUser(
+                type: $userType,
+                created_via: $created_via,
+                referrer_nid: $referrer_nid,
+                email: $email,
+                password: $password,
+                token: $this->tokenService->generate(),
+            );
 
-        self::createHistoryField($user, 'password', $user->id);
+            $user->preferences()->create();
 
-        return $user;
+            // @todo move to service
+            self::createHistoryField($user, 'password', $user->id);
+
+            return $user;
+        });
     }
 
     public function createUserRegular(
@@ -143,31 +149,29 @@ readonly class UserService
         );
     }
 
-    /*
-     * @todo
-     */
     public function createOrUpdateUserFromSso(SsoUser $ssoUser, string $provider): User
     {
         $identity = $ssoUser->getId();
 
-        /** @var Network $network */
-        if ($network = $this->networkRepository->findFirstWhere($network_data = [
-            'identity' => $identity, 'network' => $provider
-        ])) {
+        $network_data = ['identity' => $identity, 'network' => $provider];
+
+        if ($network = $this->networkRepository->findFirstWhere($network_data)) {
             return $network->user;
         }
 
-        $user = self::createUser(
-            type: UserTypeValue::make(UserTypeEnum::REGULAR),
-            created_via: UserCreatedViaValue::make(UserCreatedViaEnum::from('oauth')),
-            token: $this->tokenService->generate()
-        );
+        return DB::transaction(function () use ($network_data) {
+            $user = self::createUser(
+                type: UserTypeValue::make(UserTypeEnum::REGULAR),
+                created_via: UserCreatedViaValue::make(UserCreatedViaEnum::from('oauth')),
+                token: $this->tokenService->generate()
+            );
 
-        $user->preferences()->create();
+            $user->preferences()->create();
 
-        $this->networkService->attachNetwork($user, Network::make($network_data));
+            $this->networkService->attachNetwork($user, Network::make($network_data));
 
-        return $user;
+            return $user;
+        });
     }
 
     /*
@@ -202,9 +206,9 @@ readonly class UserService
         }
 
         if (array_key_exists('email', $attributes)) {
-            /** @var ?User $found */
-            $found = $this->userRepository->findOneByEmail($attributes['email']);
-            throw_if($found && ! $user->equals($found, 'email'), new UserEmailTakenException());
+            /** @var ?User $existing */
+            $existing = $this->userRepository->findOneByEmail($attributes['email']);
+            throw_if($existing && ! $user->equals($existing, 'email'), new UserEmailTakenException());
         }
 
         $user->update($attributes, $options);

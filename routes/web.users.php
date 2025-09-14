@@ -33,12 +33,12 @@ Route::middleware('guest')->group(function () {
             Route::post('/', [UserAuthenticatedController::class, 'store'])->name('.store');
         }); # sign-in
         Route::group(['prefix' => 'oauth/{driver}', 'as' => 'oauth'], function () {
-            Route::get('/redirect', static fn (string $driver) => Socialite::driver($driver)->redirect());
+            Route::get('/redirect', static fn (string $driver) => Socialite::driver($driver)->redirect())->name('.redirect');
             Route::get('/callback', static fn (string $driver) => app()->call(match ($driver) {
                 'shikimori' => ShikimoriCallbackController::class,
                 // ... other drivers
                 default => throw new InvalidArgumentException("driver \"$driver\" is not exist")
-            }));
+            }))->name('.callback');
         }); # oauth
     }); # users
 }); # guest
