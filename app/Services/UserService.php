@@ -95,7 +95,7 @@ readonly class UserService
 
         self::createHistoryField($user, 'password', $user->id);
 
-        return $user->load('preferences');
+        return $user;
     }
 
     public function createUserRegular(
@@ -167,7 +167,7 @@ readonly class UserService
 
         $this->networkService->attachNetwork($user, Network::make($network_data));
 
-        return $user->load('preferences');
+        return $user;
     }
 
     /*

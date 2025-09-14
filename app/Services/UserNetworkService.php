@@ -18,7 +18,7 @@ class UserNetworkService
         $networks = $user->networks;
 
         /** @var Network $existing */
-        if (! $existing = $networks->first(fn (Network $n) => $n->equals($network))) {
+        if ($existing = $networks->first(fn (Network $n) => $n->equals($network))) {
             throw new \DomainException('Network is already attached.'); // @todo i18n
         }
 
