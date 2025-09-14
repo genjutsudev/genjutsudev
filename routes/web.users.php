@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\SSO\ShikimoriCallbackController;
 use App\Http\Controllers\UserAuthenticatedController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEditAccountController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\UserShowListController;
 use App\Http\Controllers\UserVerificationEmailController;
 use App\Http\Controllers\UserVerifyEmailController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 Route::middleware('guest')->group(function () {
     Route::group(['prefix' => 'users'], function () {
@@ -30,6 +32,10 @@ Route::middleware('guest')->group(function () {
             Route::get('/', [UserAuthenticatedController::class, 'create']);
             Route::post('/', [UserAuthenticatedController::class, 'store'])->name('.store');
         }); # sign-in
+        Route::group(['prefix' => 'oauth/{driver}', 'as' => 'oauth'], function () {
+            Route::get('/redirect', static fn (string $driver) => Socialite::driver($driver)->redirect());
+            Route::get('/callback', ShikimoriCallbackController::class);
+        }); # oauth
     }); # users
 }); # guest
 

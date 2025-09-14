@@ -4,7 +4,10 @@ namespace App\Providers;
 
 use App\Models\UserUser as User;
 use App\Observers\UserObserver;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Noilty\SocialiteProviders\Shikimori\Provider as ShikimoriProvider;
+use SocialiteProviders\Manager\SocialiteWasCalled;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,5 +25,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         User::observe(UserObserver::class);
+
+        Event::listen(function (SocialiteWasCalled $event) {
+            $event->extendSocialite('shikimori', ShikimoriProvider::class);
+        });
     }
 }
