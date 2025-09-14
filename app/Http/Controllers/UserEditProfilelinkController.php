@@ -8,7 +8,7 @@ use App\Exceptions\UserProfilelinkMonthlyLimitException;
 use App\Exceptions\UserProfilelinkTakenException;
 use App\Http\Requests\UserUpdateProfilelinkRequest as ProfilelinkRequest;
 use App\Models\UserUser as User;
-use App\Repositories\UserRepository;
+use App\Repositories\UserUserRepository as UserRepository;
 use App\Services\UserService;
 use Throwable;
 use Illuminate\Http\RedirectResponse;

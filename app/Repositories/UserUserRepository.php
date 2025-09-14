@@ -6,7 +6,7 @@ namespace App\Repositories;
 
 use App\Models\UserUser as User;
 
-class UserRepository extends Repository
+class UserUserRepository extends Repository
 {
     public function findOneByEmail(string $email): ?User
     {
