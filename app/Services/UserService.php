@@ -19,6 +19,7 @@ use App\Values\UserCreatedViaValue;
 use App\Values\UserTypeValue;
 use DateTime;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Contracts\User as SsoUser;
 
 readonly class UserService
 {
@@ -96,11 +97,13 @@ readonly class UserService
     /*
      * @todo
      */
-    public function createOrUpdateUserFromSso(
-        string $network,
-        string $identity
-    )
+    public function createOrUpdateUserFromSso(SsoUser $ssoUser): User
     {
+        return self::createUser(
+            type: UserTypeValue::make(UserTypeEnum::REGULAR),
+            created_via: UserCreatedViaValue::make(UserCreatedViaEnum::from('oauth')),
+            token: $this->tokenService->generate()
+        );
     }
 
     public function createUserRegular(

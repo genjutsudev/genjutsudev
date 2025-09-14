@@ -1,6 +1,6 @@
 <head>
-    {{-- TODO: для доступа ресурсов - ngrok --}}
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    {{-- @todo: для доступа ресурсов - ngrok --}}
+    {{--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">--}}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">

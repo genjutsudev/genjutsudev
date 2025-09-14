@@ -6,17 +6,19 @@ namespace App\Http\Controllers\SSO;
 
 use App\Http\Controllers\Controller;
 use App\Services\UserService;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
 class ShikimoriCallbackController extends Controller
 {
-    public function __invoke(Request $request, UserService $userService)
+    public function __invoke(UserService $userService)
     {
-        /** @var ?string $driver */
-        $driver = $request->driver;
-        $socialite = Socialite::driver($driver);
-        $user = $socialite->user();
-        dd($driver, $user);
+        $socialite = Socialite::driver($driver = 'shikimori');
+
+        Auth::login($user = $userService->createOrUpdateUserFromSso($socialite->user()));
+
+        return redirect()->route('users.show', [$user->nid, $user->profilelink])->with('messages', [
+            ['level' => 'success', 'message' => 'OAuth ' . ucfirst($driver) . ' successfully login.']
+        ]);
     }
 }
