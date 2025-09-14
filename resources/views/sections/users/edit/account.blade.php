@@ -179,28 +179,30 @@
                         </div>
                     </div>
                     <div class="input-group">
-                        <input id="user_email" type="email" value="{{ $user->email }}" class="form-control" disabled>
-                        @php($is_verified = ! is_null($user->email_verified_at))
-                        @php($tag = $is_verified ? 'div' : 'a')
-                        <{{ $tag }}
-                        @unless($is_verified)
-                            href="{{ route('verification.notice') }}"
-                            @class(['input-group-text', 'p-2', 'text-decoration-none'])
-                        @else
-                            @class(['input-group-text', 'p-2'])
-                        @endunless
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="left"
-                            data-bs-original-title="{{ $is_verified ? 'Подтверждено' : 'Подтвердить' }}"
-                        >
-                            <span @class(['d-flex', 'text-success' => $is_verified, 'text-primary' => ! $is_verified])>
-                                <i style="font-size: 17px" @class([
-                                    'fa-solid',
-                                    'fa-circle-check' => $is_verified,
-                                    'fa-envelope' => ! $is_verified
-                                ])></i>
-                            </span>
-                        </{{ $tag }}>
+                        <input id="user_email" type="email" value="{{ $user->email ?? 'Не задан' }}" class="form-control" disabled>
+                        @if($user->email)
+                            @php($is_verified = ! is_null($user->email_verified_at))
+                            @php($tag = $is_verified ? 'div' : 'a')
+                            <{{ $tag }}
+                            @unless($is_verified)
+                                href="{{ route('verification.notice') }}"
+                                @class(['input-group-text', 'p-2', 'text-decoration-none'])
+                            @else
+                                @class(['input-group-text', 'p-2'])
+                            @endunless
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="left"
+                                data-bs-original-title="{{ $is_verified ? 'Подтверждено' : 'Подтвердить' }}"
+                            >
+                                <span @class(['d-flex', 'text-success' => $is_verified, 'text-primary' => ! $is_verified])>
+                                    <i style="font-size: 17px" @class([
+                                        'fa-solid',
+                                        'fa-circle-check' => $is_verified,
+                                        'fa-envelope' => ! $is_verified
+                                    ])></i>
+                                </span>
+                            </{{ $tag }}>
+                        @endif
                     </div>{{-- @todo move to component --}}
                 </div>
                 {{-- password --}}

@@ -35,9 +35,9 @@ function user_is_online(User $user): bool
     return Cache::store('redis')->getStore()->get('user:' . $user->id . ':online') ?? false;
 }
 
-function gravatar(string $email, int $size = 192): string
+function gravatar(?string $email = null, int $size = 192): string
 {
-    return GravatarService::url($email, $size);
+    return GravatarService::url($email ?? 'sso@example.com', $size);
 }
 
 function app_host(bool $include_subdomain = false): string

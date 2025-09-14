@@ -13,12 +13,13 @@ class ShikimoriCallbackController extends Controller
 {
     public function __invoke(UserService $userService)
     {
-        $socialite = Socialite::driver($driver = 'shikimori');
+        $socialite = Socialite::driver($provider = 'shikimori');
+        $ssoUser = $socialite->user();
 
-        Auth::login($user = $userService->createOrUpdateUserFromSso($socialite->user()));
+        Auth::login($user = $userService->createOrUpdateUserFromSso($ssoUser, $provider));
 
         return redirect()->route('users.show', [$user->nid, $user->profilelink])->with('messages', [
-            ['level' => 'success', 'message' => 'OAuth ' . ucfirst($driver) . ' successfully login.']
+            ['level' => 'success', 'message' => 'OAuth ' . ucfirst($provider) . ' successfully login.']
         ]);
     }
 }

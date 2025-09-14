@@ -13,7 +13,9 @@ use App\Exceptions\UserProfilenameMonthlyLimitException;
 use App\Exceptions\UserProfilelinkTakenException;
 use App\Models\HistoryChangeField;
 use App\Models\UserUser as User;
+use App\Models\UserUserNetwork as Network;
 use App\Models\UserUserPreference as Preferences;
+use App\Repositories\UserNetworkRepository;
 use App\Repositories\UserRepository;
 use App\Values\UserCreatedViaValue;
 use App\Values\UserTypeValue;
@@ -25,7 +27,9 @@ readonly class UserService
 {
     public function __construct(
         private UserRepository $userRepository,
+        private UserNetworkRepository $networkRepository,
         private HasherService $hasherService,
+        private UserNetworkService $networkService,
         private TokenGeneratorService $tokenService,
         private ApiKeyGeneratorService $apiKeyService
     )
@@ -94,18 +98,6 @@ readonly class UserService
         return $user->load('preferences');
     }
 
-    /*
-     * @todo
-     */
-    public function createOrUpdateUserFromSso(SsoUser $ssoUser): User
-    {
-        return self::createUser(
-            type: UserTypeValue::make(UserTypeEnum::REGULAR),
-            created_via: UserCreatedViaValue::make(UserCreatedViaEnum::from('oauth')),
-            token: $this->tokenService->generate()
-        );
-    }
-
     public function createUserRegular(
         string $email,
         string $password,
@@ -149,6 +141,33 @@ readonly class UserService
             created_via: $userCreatedVia,
             api_key: $this->apiKeyService->generate()
         );
+    }
+
+    /*
+     * @todo
+     */
+    public function createOrUpdateUserFromSso(SsoUser $ssoUser, string $provider): User
+    {
+        $identity = $ssoUser->getId();
+
+        /** @var Network $network */
+        if ($network = $this->networkRepository->findFirstWhere($network_data = [
+            'identity' => $identity, 'network' => $provider
+        ])) {
+            return $network->user;
+        }
+
+        $user = self::createUser(
+            type: UserTypeValue::make(UserTypeEnum::REGULAR),
+            created_via: UserCreatedViaValue::make(UserCreatedViaEnum::from('oauth')),
+            token: $this->tokenService->generate()
+        );
+
+        $user->preferences()->create();
+
+        $this->networkService->attachNetwork($user, Network::make($network_data));
+
+        return $user->load('preferences');
     }
 
     /*

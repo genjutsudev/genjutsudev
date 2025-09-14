@@ -34,10 +34,11 @@ Route::middleware('guest')->group(function () {
         }); # sign-in
         Route::group(['prefix' => 'oauth/{driver}', 'as' => 'oauth'], function () {
             Route::get('/redirect', static fn (string $driver) => Socialite::driver($driver)->redirect());
-            Route::get('/callback', static fn (string $driver) => match ($driver) {
+            Route::get('/callback', static fn (string $driver) => app()->call(match ($driver) {
                 'shikimori' => ShikimoriCallbackController::class,
+                // ... other drivers
                 default => throw new InvalidArgumentException("driver \"$driver\" is not exist")
-            });
+            }));
         }); # oauth
     }); # users
 }); # guest
