@@ -55,7 +55,7 @@ readonly class UserService
             'referrer_nid' => $referrer_nid,
             'profilelink' => Str::ulid(new DateTime()),
             'email' => $email,
-            'profilename' => uniqid(),
+            'profilename' => $profilename = uniqid(),
             'registration_ip_hash' => $this->hasherService->hash(request()->ip(), [
                 'memory' => 1024,
                 'time' => 2,
@@ -66,7 +66,7 @@ readonly class UserService
             'api_key' => $api_key,
         ]);
 
-        $user->password = $this->hasherService->hash(! empty($password) ? $password : $user->id);
+        $user->password = $this->hasherService->hash(! empty($password) ? $password : $profilename);
         $user->password_changed_at = ! empty($password) ? now() : null;
 
         // @todo i18n
