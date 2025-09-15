@@ -48,16 +48,13 @@ readonly class UserService
         ?string $api_key = null
     ) : User
     {
-        $password_hash = ! empty($password) ? $this->hasherService->hash($password) : null;
-
         /** @var User $user */
-        $user = User::create([
+        $user = User::make([
             'type' => $type,
             'created_via' => $created_via,
             'referrer_nid' => $referrer_nid,
             'profilelink' => Str::ulid(new DateTime()),
             'email' => $email,
-            'password' => $password_hash,
             'profilename' => uniqid(),
             'registration_ip_hash' => $this->hasherService->hash(request()->ip(), [
                 'memory' => 1024,
@@ -69,7 +66,13 @@ readonly class UserService
             'api_key' => $api_key,
         ]);
 
-        return $user;
+        $user->password = $this->hasherService->hash(! empty($password) ? $password : $user->id);
+        $user->password_changed_at = ! empty($password) ? now() : null;
+
+        // @todo i18n
+        throw_if(! $user->save(), new \Exception('Что-то полшо не так, пользователь не создан.'));
+
+        return $user->refresh();
     }
 
     private function createUserRegularOrAdmin(
@@ -150,7 +153,7 @@ readonly class UserService
         );
     }
 
-    public function createOrUpdateUserFromSso(SsoUser $ssoUser, string $provider): User
+    public function createUserRegularFromSso(SsoUser $ssoUser, string $provider): User
     {
         $identity = $ssoUser->getId();
 

@@ -12,7 +12,7 @@
             <x-ui.form.index action="{{ route('password.confirm.store') }}">
                 <x-widgets.form.password required/>
                 <div class="form-group text-end">
-                    <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}" class="me-2">Отмена</a>
+                    <a href="{{ route('users.edit.account', [$user, $user->profilelink]) }}" class="me-2">Отмена</a>
                     <input type="submit" value="Продолжить" class="btn btn-primary">
                 </div>
             </x-ui.form.index>

@@ -22,7 +22,7 @@ abstract class AbstractCallbackController extends Controller
         $ssoUser = $socialite->user();
 
         try {
-            $user = $userService->createOrUpdateUserFromSso($ssoUser, $driver);
+            $user = $userService->createUserRegularFromSso($ssoUser, $driver);
         } catch (\Exception $e) {
             return redirect()->route('animes')->with('messages', [
                 ['level' => 'danger', 'message' => $e->getMessage()]
@@ -31,7 +31,7 @@ abstract class AbstractCallbackController extends Controller
 
         Auth::login($user, true);
 
-        return redirect()->route('users.show', [$user->nid, $user->profilelink])->with('messages', [
+        return redirect()->route('users.show', [$user, $user->profilelink])->with('messages', [
             // @todo i18n
             ['level' => 'success', 'message' => 'OAuth ' . ucfirst($driver) . ' successfully login.']
         ]);

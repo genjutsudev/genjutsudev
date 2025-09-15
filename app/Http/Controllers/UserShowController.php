@@ -42,6 +42,6 @@ class UserShowController extends Controller
             abort(404, 'The requested user does not exist.'); // @todo i18n
         }
 
-        return redirect()->route('users.show', [$user->nid, $user->profilelink]);
+        return redirect()->route('users.show', [$user, $user->profilelink]);
     }
 }

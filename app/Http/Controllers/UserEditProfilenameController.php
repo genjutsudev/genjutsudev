@@ -53,7 +53,7 @@ class UserEditProfilenameController extends Controller
         }
 
         return redirect()
-            ->route($routeName, [$user->nid, $user->profilelink])
+            ->route($routeName, [$user, $user->profilelink])
             ->with('messages', [['level' => $level, 'message' => $message]]);
     }
 }

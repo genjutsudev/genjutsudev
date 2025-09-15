@@ -99,7 +99,7 @@
                 </div>
                 <div class="nav-item me-3">
                     <a
-                        href="{{ route('users.show', [$user->nid, $user->profilelink]) }}"
+                        href="{{ route('users.show', [$user, $user->profilelink]) }}"
                         @class([
                             'nav-link',
                             'lh-1',

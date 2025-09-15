@@ -15,6 +15,6 @@ class UserEditController extends Controller
             abort(404, 'The requested user does not exist.'); // @todo i18n
         }
 
-        return redirect()->route('users.edit.account', [$user->nid, $user->profilelink]);
+        return redirect()->route('users.edit.account', [$user, $user->profilelink]);
     }
 }

@@ -59,7 +59,7 @@ class UserEditPasswordController extends Controller
         request()->session()->put('auth.password_confirmed_at', -1);
 
         return redirect()
-            ->route($routeName, [$user->nid, $user->profilelink])
+            ->route($routeName, [$user, $user->profilelink])
             ->with('messages', [['level' => $level, 'message' => $message]]);
     }
 }

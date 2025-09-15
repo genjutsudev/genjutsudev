@@ -29,7 +29,7 @@
                     <x-ui.input-errors :messages="$errors->get('password_confirmation')" class="mt-2" />
                 </div>
                 <div class="flex items-center justify-end mt-4 text-end">
-                    <a href="{{ route('users.edit.account', [$user->nid, $user->profilelink]) }}" class="me-2">Отмена</a>
+                    <a href="{{ route('users.edit.account', [$user, $user->profilelink]) }}" class="me-2">Отмена</a>
                     <input type="submit" value="Сохранить новый пароль" class="btn btn-primary"/>
                 </div>
             </x-ui.form.index>
