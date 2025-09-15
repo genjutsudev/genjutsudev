@@ -37,8 +37,8 @@ Route::middleware('guest')->group(function () {
             Route::get('/callback', static fn (string $driver) => app()->call(match ($driver) {
                 'shikimori' => ShikimoriCallbackController::class,
                 // ... other drivers
-                default => throw new InvalidArgumentException("driver \"$driver\" is not exist")
-            }))->name('.callback');
+                default => throw new InvalidArgumentException("network \"$driver\" is not supported")
+            }))->whereIn('driver', ['shikimori'])->name('.callback');
         }); # oauth
     }); # users
 }); # guest

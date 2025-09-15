@@ -107,7 +107,7 @@
                             'bg-azure-lt' => auth()->user()->equals(request()->user) && request()->routeIs('users.show')
                         ])
                     >
-                        <span class="avatar avatar-sm" style="background-image: url({{ gravatar($user->email) }});"></span>
+                        <span class="avatar avatar-sm" style="background-image: url({{ user_avatar_url($user) }});"></span>
                         <div class="d-none d-sm-block ps-2">
                             <div class="fw-bold">
                                 {{ $user->profilename }}

@@ -9,14 +9,15 @@ use App\Enums\UserTypeEnum;
 use App\Exceptions\ProtectedAttributeException;
 use App\Exceptions\UserEmailTakenException;
 use App\Exceptions\UserProfilelinkMonthlyLimitException;
-use App\Exceptions\UserProfilenameMonthlyLimitException;
 use App\Exceptions\UserProfilelinkTakenException;
+use App\Exceptions\UserProfilenameMonthlyLimitException;
 use App\Models\HistoryChangeField;
 use App\Models\UserUser as User;
 use App\Models\UserUserNetwork as Network;
 use App\Models\UserUserPreference as Preferences;
-use App\Repositories\UserUserNetworkRepository as UserNetworkRepository;
+use App\Repositories\UserUserNetworkRepository as NetworkRepository;
 use App\Repositories\UserUserRepository as UserRepository;
+use App\Services\UserNetworkService as NetworkService;
 use App\Values\UserCreatedViaValue;
 use App\Values\UserTypeValue;
 use DateTime;
@@ -28,9 +29,9 @@ readonly class UserService
 {
     public function __construct(
         private UserRepository $userRepository,
-        private UserNetworkRepository $networkRepository,
+        private NetworkRepository $networkRepository,
+        private NetworkService $networkService,
         private HasherService $hasherService,
-        private UserNetworkService $networkService,
         private TokenGeneratorService $tokenService,
         private ApiKeyGeneratorService $apiKeyService
     )

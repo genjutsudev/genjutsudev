@@ -246,7 +246,7 @@
                 >
                     <div
                         class="avatar avatar-xll rounded-circle align-items-end"
-                        style="background-image: url({{ gravatar($user->email) }})"
+                        style="background-image: url({{ user_avatar_url($user) }})"
                     >
                         <a
                             href="/users/1/Noilty/edit/avatar"

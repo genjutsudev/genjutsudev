@@ -12,7 +12,7 @@
                 <div class="card-cover text-start p-5 d-flex" style="background-image: url({{ asset('static/media/default-cover.jpg') }}); padding-bottom: 9.5rem !important;">
                     <div class="gjsu-avatar-frame d-none d-sm-block me-4">
                         <div class="gjsu-avatar avatar avatar-xll rounded-circle">
-                            <img class="rounded-circle" alt="{{ $user->profilename }}" src="{{ gravatar($user->email) }}">
+                            <img class="rounded-circle" alt="{{ $user->profilename }}" src="{{ user_avatar_url($user) }}">
                             <span class="gjsu-avatar-right-icon gjsu-avatar-icon-premium"></span>
                         </div>
                     </div>

@@ -8,6 +8,15 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
+function user_avatar_url(User $user): string
+{
+    return $user->email ? gravatar($user->email) : match ((string)$user->gender) {
+        'female' => asset('static/media/avatar/female.webp'),
+        'male' => asset('static/media/avatar/male.webp'),
+        default => asset('static/media/avatar/other.webp')
+    };
+}
+
 function user_age_title(User $user): string
 {
     $age = $user->birthday->age;
@@ -35,9 +44,9 @@ function user_is_online(User $user): bool
     return Cache::store('redis')->getStore()->get('user:' . $user->id . ':online') ?? false;
 }
 
-function gravatar(?string $email = null, int $size = 192): string
+function gravatar(string $email, int $size = 192): string
 {
-    return GravatarService::url($email ?? 'sso@example.com', $size);
+    return GravatarService::url($email, $size);
 }
 
 function app_host(bool $include_subdomain = false): string

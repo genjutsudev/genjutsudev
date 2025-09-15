@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(function (SocialiteWasCalled $event) {
             $event->extendSocialite('shikimori', ShikimoriProvider::class);
+            // ... other providers
         });
     }
 }
