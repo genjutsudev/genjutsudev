@@ -19,6 +19,7 @@ use App\Http\Controllers\UserShowController;
 use App\Http\Controllers\UserShowListController;
 use App\Http\Controllers\UserVerificationEmailController;
 use App\Http\Controllers\UserVerifyEmailController;
+use App\Http\Middleware\UserPasswordConfirm as RequirePassword;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -104,7 +105,7 @@ Route::group(['prefix' => 'users', 'as' => 'users'], function () {
                     Route::get('/', [UserEditBirthdayController::class, 'show']);
                     Route::put('/', [UserEditBirthdayController::class, 'update'])->name('.update');
                 }); # birthday
-                Route::group(['prefix' => 'password', 'as' => '.password', 'middleware' => ['password.confirm']], function () {
+                Route::group(['prefix' => 'password', 'as' => '.password', 'middleware' => RequirePassword::class], function () {
                     Route::get('/', [UserEditPasswordController::class, 'show']);
                     Route::put('/', [UserEditPasswordController::class, 'update'])->name('.update');
                 }); # password

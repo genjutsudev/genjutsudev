@@ -35,7 +35,7 @@ readonly class UserObserver
         }
 
         foreach (['profilename', 'profilelink', 'email', 'password'] as $field) {
-            if ($user->isDirty($field)) {
+            if ($user->isDirty($field) && $user->getOriginal($field)) {
                 $this->userService->createHistoryField($user, $field, $changed_id);
             }
         }
