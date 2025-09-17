@@ -299,7 +299,33 @@
                 </a>
             </div>
             <x-ui.subheadline :label="__('Привязанные социальные сети')">
-                Нет данных
+                <div class="row">
+                    @foreach($user->networks as $item)
+                        @php($driver = $item->network)
+                        <form
+                            action=""
+                            class="col-auto pe-0 mb-0"
+                            method="POST"
+                            onsubmit="return confirm('Вы уверены?')"
+                        >
+                            @csrf
+                            @method('DELETE')
+                            <button
+                                title="Открепить"
+                                type="submit"
+                                class="btn btn-outline-light btn-icon border p-2"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="right"
+                            >
+                                <img
+                                    src="{{ asset("static/media/brands/{$driver}.svg") }}"
+                                    alt="{{ $driver }}"
+                                    style="width: 32px"
+                                >
+                            </button>
+                        </form>
+                    @endforeach
+                </div>
             </x-ui.subheadline>
         </div>
     </div>

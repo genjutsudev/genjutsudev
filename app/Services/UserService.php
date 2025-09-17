@@ -153,11 +153,10 @@ readonly class UserService
         );
     }
 
-    public function createUserRegularFromSso(SsoUser $ssoUser, string $provider): User
+    public function createUserRegularFromSso(SsoUser $ssoUser, string $driver): User
     {
         $identity = $ssoUser->getId();
-
-        $network_data = ['identity' => $identity, 'network' => $provider];
+        $network_data = ['identity' => $identity, 'network' => $driver];
 
         if ($network = $this->networkRepository->findFirstWhere($network_data)) {
             return $network->user;
