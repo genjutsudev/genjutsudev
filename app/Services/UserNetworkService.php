@@ -13,52 +13,44 @@ class UserNetworkService
     {
     }
 
-    public function attachNetwork(User $user, Network $network): void
+    public function attachNetwork(User $user, Network $network): bool
     {
         $networks = $user->networks;
 
         /** @var Network $existing */
         if ($existing = $networks->first(fn (Network $n) => $n->equals($network))) {
-            throw new \DomainException('Network is already attached.'); // @todo i18n
+            // @todo i18n
+            throw new \DomainException('Network is already attached.');
         }
 
-//        /** @var Network $existing */
-//        foreach ($networks as $existing) {
-//            if ($existing->equals($network)) {
-//                throw new \DomainException('Network is already attached.');
-//            }
-//        }
+        if (! $user->networks()->save($network)) {
+            // @todo i18n
+            throw new \DomainException('Failed to attach network. Please try again.');
+        }
 
-        $user->networks()->save($network);
+        return true;
     }
 
-    public function detachNetwork(User $user, Network $network): void
+    public function detachNetwork(User $user, Network $network): bool
     {
         $networks = $user->networks;
 
         if ((! $user->email || ! $user->password_changed_at) && $networks->count() === 1) {
-            throw new \DomainException('Unable to detach the last identity.'); // @todo i18n
+            // @todo i18n
+            throw new \DomainException('Unable to detach the last identity.');
         }
 
         /** @var Network $existing */
         if (! $existing = $networks->first(fn (Network $n) => $n->equals($network))) {
-            throw new \DomainException('Network is not attached.'); // @todo i18n
+            // @todo i18n
+            throw new \DomainException('Network is not attached.');
         }
 
-        $existing->delete();
+        if (! $existing->delete()) {
+            // @todo i18n
+            throw new \DomainException('We encountered an issue while disconnecting your account. Please try again later.');
+        }
 
-//        /** @var Network $existing */
-//        foreach ($networks as $existing) {
-//            if ((! $user->email || ! $user->password_changed_at) && $networks->count() === 1) {
-//                throw new \DomainException('Unable to detach the last identity.');
-//            }
-//
-//            if (! $existing->equals($network)) {
-//                $existing->delete();
-//                return;
-//            }
-//        }
-//
-//        throw new \DomainException('Network is not attached.');
+        return true;
     }
 }

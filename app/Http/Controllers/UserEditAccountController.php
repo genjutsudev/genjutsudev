@@ -6,23 +6,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserUpdateAccountRequest as AccountRequest;
 use App\Models\UserUser as User;
+use App\Models\UserUserNetwork as Network;
+use App\Services\UserNetworkService as NetworkService;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class UserEditAccountController extends Controller
 {
     public function __construct(
-        private readonly UserService $userService
+        private readonly UserService $userService,
+        private readonly NetworkService $networkService
     )
     {
     }
 
-    public function show(Request $request, User $user): View
+    public function show(User $user): View
     {
         $preferences = $user->preferences;
-
         return view('sections.users.edit.account', compact(['user', 'preferences']));
     }
 
@@ -40,16 +43,42 @@ class UserEditAccountController extends Controller
         $routeName = 'users.edit.account';
 
         try {
-            $this->userService->updateUser($user, ['gender' => $user_gender]);
-            $this->userService->updatePreferences($user, $preferences_data);
-        } catch (\Throwable $th) {
+            DB::transaction(function () use ($user, $user_gender, $preferences_data) {
+                $this->userService->updateUser($user, ['gender' => $user_gender]);
+                $this->userService->updatePreferences($user, $preferences_data);
+            });
+        } catch (\Exception $e) {
             $level = 'danger';
             $message = 'Произошла внутренняя ошибка, повторите попытку позже.';
-            logger()->error(self::class, ['error' => $th->getMessage(), 'user_id' => $user->id]);
+            logger()->error(self::class, ['error' => $e->getMessage(), 'user_id' => $user->id]);
         }
 
-        return redirect()
-            ->route($routeName, [$user, $user->profilelink])
-            ->with('messages', [['level' => $level, 'message' => $message]]);
+        return redirect()->route($routeName, [$user, $user->profilelink])->with('messages', [
+            ['level' => $level, 'message' => $message]
+        ]);
+    }
+
+    public function attachNetwork()
+    {
+    }
+
+    public function detachNetwork(Request $request, User $user): RedirectResponse
+    {
+        $level = 'success';
+        $message = 'The social network has been successfully disabled.';
+
+        try {
+            $this->networkService->detachNetwork($user, Network::make([
+                'network' => $request->driver, 'identity' => $request->identity
+            ]));
+        } catch (\Exception $e) {
+            $level = 'danger';
+            $message = $e->getMessage();
+            logger()->error(self::class, ['error' => $e->getMessage(), 'user_id' => $user->id]);
+        }
+
+        return redirect()->route('users.edit.account', [$user, $user->profilelink])->with('messages', [
+            ['level' => $level, 'message' => $message]
+        ]);
     }
 }

@@ -302,8 +302,9 @@
                 <div class="row">
                     @foreach($user->networks as $item)
                         @php($driver = $item->network)
+                        @php($identity = $item->identity)
                         <form
-                            action=""
+                            action="{{ route('users.edit.network.detach', [$user, $user->profilelink, $driver, $identity]) }}"
                             class="col-auto pe-0 mb-0"
                             method="POST"
                             onsubmit="return confirm('Вы уверены?')"

@@ -23,7 +23,18 @@ use App\Http\Middleware\UserPasswordConfirm as RequirePassword;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
-Route::middleware('guest')->group(function () {
+Route::group(['prefix' => 'users'], function () {
+    Route::group(['prefix' => 'oauth/{driver}', 'as' => 'oauth'], function () {
+        Route::get('/', static fn (string $driver) => Socialite::driver($driver)->redirect());
+        Route::get('/callback', static fn (string $driver) => app()->call(match ($driver) {
+            'shikimori' => ShikimoriCallbackController::class,
+            // ... other drivers
+            default => throw new InvalidArgumentException("network \"$driver\" is not supported")
+        }))->whereIn('driver', ['shikimori'])->name('.callback');
+    }); # oauth
+});
+
+Route::middleware(['guest'])->group(function () {
     Route::group(['prefix' => 'users'], function () {
         Route::group(['prefix' => 'sign-up', 'as' => 'register'], function () {
             Route::get('/', [UserRegistrationController::class, 'create']);
@@ -33,14 +44,6 @@ Route::middleware('guest')->group(function () {
             Route::get('/', [UserAuthenticatedController::class, 'create']);
             Route::post('/', [UserAuthenticatedController::class, 'store'])->name('.store');
         }); # sign-in
-        Route::group(['prefix' => 'oauth/{driver}', 'as' => 'oauth'], function () {
-            Route::get('/redirect', static fn (string $driver) => Socialite::driver($driver)->redirect())->name('.redirect');
-            Route::get('/callback', static fn (string $driver) => app()->call(match ($driver) {
-                'shikimori' => ShikimoriCallbackController::class,
-                // ... other drivers
-                default => throw new InvalidArgumentException("network \"$driver\" is not supported")
-            }))->whereIn('driver', ['shikimori'])->name('.callback');
-        }); # oauth
     }); # users
 }); # guest
 
@@ -74,15 +77,15 @@ Route::group(['prefix' => 'users'], function () {
 }); # users
 
 Route::group(['prefix' => 'users', 'as' => 'users'], function () {
-    Route::get('/', action: [UserController::class, 'index']);
-    Route::group(['prefix' => '{user:nid}'], function () {
+    Route::get('/', [UserController::class, 'index']);
+    Route::group(['prefix' => '{user}'], function () {
         Route::get('/', [UserShowController::class, 'redirect'])->name('.redirect');
         Route::group(['prefix' => '/{profilelink}', 'middleware' => ['redirect.profilelink']], function () {
             Route::group(['as' => '.show'], function () {
                 Route::get('/', [UserShowController::class, 'show']);
                 Route::group(['prefix' => 'lists', 'as' => '.lists'], function () {
                     Route::get('/anime', [UserShowListController::class, 'anime'])->name('.anime');
-                });
+                }); # lists
                 Route::get('/collections', [UserShowController::class, 'collections'])->name('.collections');
                 Route::get('/featured', [UserShowController::class, 'featured'])->name('.featured');
                 Route::get('/tracked', [UserShowController::class, 'tracked'])->name('.tracked');
@@ -109,6 +112,7 @@ Route::group(['prefix' => 'users', 'as' => 'users'], function () {
                     Route::get('/', [UserEditPasswordController::class, 'show']);
                     Route::put('/', [UserEditPasswordController::class, 'update'])->name('.update');
                 }); # password
+                Route::delete('/{driver}/{identity}', [UserEditAccountController::class, 'detachNetwork'])->name('.network.detach');
             }); # edit
         });
     });
