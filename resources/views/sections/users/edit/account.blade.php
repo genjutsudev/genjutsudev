@@ -298,8 +298,25 @@
                     <i class="fa fa-pencil" style="font-size:16px;"></i>
                 </a>
             </div>
-            <x-ui.subheadline :label="__('Привязанные социальные сети')">
-                <div class="row">
+            @php($networks_count = $user->networks->count())
+            <x-ui.subheadline
+                :label="__('Привяжите аккаунт к профилю социальной сети')"
+                :disabled="$networks_count == count($networks = ['shikimori', 'yandex', 'donationalert', 'telegram', 'twitch', 'wargaming', 'google'])"
+            >
+                <div class="list-group rounded-0">
+                    @foreach($networks as $driver)
+                        @if(! $user->networks->doesntContain('network', $driver))
+                            @continue
+                        @endif
+                            <a href="" class="list-group-item list-group-item-action d-flex ps-3">
+                                <img src="{{ asset("static/media/brands/{$driver}.svg") }}" alt="{{ $driver }}" style="width: 20px;">
+                                <span class="ms-2">{{ ucfirst($driver) }}</span>
+                            </a>
+                    @endforeach
+                </div>
+            </x-ui.subheadline>
+            <x-ui.subheadline :label="__('Привязанные социальные сети')" :disabled="! $networks_count">
+                <div class="list-group rounded-0">
                     @foreach($user->networks as $item)
                         @php($driver = $item->network)
                         @php($identity = $item->identity)
@@ -311,18 +328,16 @@
                         >
                             @csrf
                             @method('DELETE')
-                            <button
-                                title="Открепить"
-                                type="submit"
-                                class="btn btn-outline-light btn-icon border p-2"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="right"
-                            >
-                                <img
-                                    src="{{ asset("static/media/brands/{$driver}.svg") }}"
-                                    alt="{{ $driver }}"
-                                    style="width: 32px"
-                                >
+                            <button type="submit" class="personal-social-info list-group-item list-group-item-action d-flex ps-3">
+                                <img src="{{ asset("static/media/brands/{$driver}.svg") }}" alt="{{ $driver }}" style="width: 32px;">
+                                <span class="ms-3">
+                                    <span class="personal-social-info-detach">Удалить привязку</span>
+                                    <span class="personal-social-info-text">
+                                        <span>{{ ucfirst($driver) }}</span>
+                                        <br>
+                                        <span>{{ $item->created_at->format('d.m.Y') }}</span>
+                                    </span>
+                                </span>
                             </button>
                         </form>
                     @endforeach
