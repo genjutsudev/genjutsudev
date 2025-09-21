@@ -112,6 +112,7 @@ Route::group(['prefix' => 'users', 'as' => 'users'], function () {
                     Route::get('/', [UserEditPasswordController::class, 'show']);
                     Route::put('/', [UserEditPasswordController::class, 'update'])->name('.update');
                 }); # password
+                Route::get('/{driver}', static fn (string $driver) => Socialite::driver($driver)->redirect())->name('.network.attach');
                 Route::delete('/{driver}/{identity}', [UserEditAccountController::class, 'detachNetwork'])->name('.network.detach');
             }); # edit
         });

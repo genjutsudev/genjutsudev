@@ -228,7 +228,7 @@
                                 data-bs-original-title="{{ $is_verified ? 'Подтверждено' : 'Подтвердить' }}"
                             >
                                 <span @class(['d-flex', 'text-success' => $is_verified, 'text-primary' => ! $is_verified])>
-                                    <i style="font-size: 17px" @class([
+                                    <i style="font-size: 17px;" @class([
                                         'fa-solid',
                                         'fa-circle-check' => $is_verified,
                                         'fa-envelope' => ! $is_verified
@@ -256,7 +256,7 @@
                         id="user_password"
                         class="form-control"
                         type="password"
-                        placeholder="обновлён {{ $user->password_changed_at?->diffForHumans() }}"
+                        placeholder="обновлён {{ $user->password_changed_at?->diffForHumans() ?? ':: данные отсутствуют' }}"
                         disabled
                     >
                 </div>
@@ -308,7 +308,10 @@
                         @if(! $user->networks->doesntContain('network', $driver))
                             @continue
                         @endif
-                            <a href="" class="disabled list-group-item list-group-item-action d-flex ps-3">
+                            <a
+                                href="{{ route('users.edit.network.attach', [$user->nid, $user->profilelink, $driver]) }}"
+                                class="list-group-item list-group-item-action d-flex ps-3"
+                            >
                                 <img src="{{ asset("static/media/brands/{$driver}.svg") }}" alt="{{ $driver }}" style="width: 20px;">
                                 <span class="ms-2">{{ ucfirst($driver) }}</span>
                             </a>
