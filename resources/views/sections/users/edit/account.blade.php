@@ -301,14 +301,14 @@
             @php($networks_count = $user->networks->count())
             <x-ui.subheadline
                 :label="__('Привяжите аккаунт к профилю социальной сети')"
-                :disabled="$networks_count == count($networks = ['shikimori', 'yandex', 'donationalert', 'telegram', 'twitch', 'wargaming', 'google'])"
+                :disabled="$networks_count == count($networks = ['shikimori', 'telegram'])"
             >
                 <div class="list-group rounded-0">
                     @foreach($networks as $driver)
                         @if(! $user->networks->doesntContain('network', $driver))
                             @continue
                         @endif
-                            <a href="" class="list-group-item list-group-item-action d-flex ps-3">
+                            <a href="" class="disabled list-group-item list-group-item-action d-flex ps-3">
                                 <img src="{{ asset("static/media/brands/{$driver}.svg") }}" alt="{{ $driver }}" style="width: 20px;">
                                 <span class="ms-2">{{ ucfirst($driver) }}</span>
                             </a>
@@ -320,14 +320,12 @@
                     @foreach($user->networks as $item)
                         @php($driver = $item->network)
                         @php($identity = $item->identity)
-                        <form
+                        <x-ui.form
                             action="{{ route('users.edit.network.detach', [$user, $user->profilelink, $driver, $identity]) }}"
+                            method="delete"
                             class="col-auto pe-0 mb-0"
-                            method="POST"
                             onsubmit="return confirm('Вы уверены?')"
                         >
-                            @csrf
-                            @method('DELETE')
                             <button type="submit" class="personal-social-info list-group-item list-group-item-action d-flex ps-3">
                                 <img src="{{ asset("static/media/brands/{$driver}.svg") }}" alt="{{ $driver }}" style="width: 32px;">
                                 <span class="ms-3">
@@ -339,7 +337,7 @@
                                     </span>
                                 </span>
                             </button>
-                        </form>
+                        </x-ui.form>
                     @endforeach
                 </div>
             </x-ui.subheadline>
