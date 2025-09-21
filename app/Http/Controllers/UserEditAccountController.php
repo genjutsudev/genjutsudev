@@ -13,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Laravel\Socialite\Facades\Socialite;
 
 class UserEditAccountController extends Controller
 {
@@ -58,8 +59,9 @@ class UserEditAccountController extends Controller
         ]);
     }
 
-    public function attachNetwork()
+    public function attachNetwork(Request $request, User $user): RedirectResponse
     {
+        return Socialite::driver($request->driver)->redirect();
     }
 
     public function detachNetwork(Request $request, User $user): RedirectResponse
@@ -69,7 +71,8 @@ class UserEditAccountController extends Controller
 
         try {
             $this->networkService->detachNetwork($user, Network::make([
-                'network' => $request->driver, 'identity' => $request->identity
+                'network' => $request->driver,
+                'identity' => $request->identity
             ]));
         } catch (\Exception $e) {
             $level = 'danger';
