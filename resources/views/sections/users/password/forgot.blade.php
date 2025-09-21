@@ -19,7 +19,7 @@
                 <!-- email -->
                 <x-widgets.form.email label="Эл. почта" :value="request()->input('email')" required/>
                 <div class="flex items-center justify-end mt-4 text-end">
-                    <a href="{{ $user ? route('users.edit.account', [$user, $user->profilelink]) : '/' }}" class="me-2">
+                    <a href="{{ $user ? route('users.edit.account', [$user->nid, $user->profilelink]) : '/' }}" class="me-2">
                         Отмена
                     </a>
                     <button type="submit" class="btn btn-primary">

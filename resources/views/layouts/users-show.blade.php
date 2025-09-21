@@ -81,7 +81,7 @@
                                             'Настройки' => ['routeName' => 'users.edit.account', 'icon' => '<i class="fas fa-user-cog"></i>'],
                                         ] as $title => $item)
                                             <a
-                                                href="{{ $item['routeName'] !== '#' ? route($item['routeName'], [$user, $user->profilelink]) : '/' }}"
+                                                href="{{ $item['routeName'] !== '#' ? route($item['routeName'], [$user->nid, $user->profilelink]) : '/' }}"
                                                 @class(['nav-link', 'justify-content-center', 'p-1', 'disabled' => $item['routeName'] === '#'])
                                                 style="font-size: 16px"
                                                 data-bs-toggle="tooltip"
@@ -120,7 +120,7 @@
                             ] as $title => $item)
                                 <li class="nav-item">
                                     <a
-                                        href="{{ $item['routeName'] !== '#' ? route($item['routeName'], [$user, $user->profilelink]) : '/' }}"
+                                        href="{{ $item['routeName'] !== '#' ? route($item['routeName'], [$user->nid, $user->profilelink]) : '/' }}"
                                         @class([
                                             'nav-link',
                                             'border-0',

@@ -55,8 +55,8 @@ class UserEditProfilelinkController extends Controller
             logger()->error(self::class, ['error' => $th->getMessage(), 'user_id' => $user->id]);
         }
 
-        return redirect()
-            ->route($routeName, [$user, $user->profilelink])
-            ->with('messages', [['level' => $level, 'message' => $message]]);
+        return redirect()->route($routeName, [$user->nid, $user->profilelink])->with('messages', [
+            ['level' => $level, 'message' => $message]
+        ]);
     }
 }

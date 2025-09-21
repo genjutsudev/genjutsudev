@@ -58,7 +58,7 @@ class UserEditPasswordController extends Controller
         // обнуляем доступ к защищенной части приложения
         request()->session()->put('auth.password_confirmed_at', -1);
 
-        return redirect()->route($routeName, [$user, $user->profilelink])->with('messages', [
+        return redirect()->route($routeName, [$user->nid, $user->profilelink])->with('messages', [
             ['level' => $level, 'message' => $message]
         ]);
     }

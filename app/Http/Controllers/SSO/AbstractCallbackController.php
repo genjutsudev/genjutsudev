@@ -30,7 +30,7 @@ abstract class AbstractCallbackController extends Controller
 
         Auth::login($user, true);
 
-        return redirect()->route('users.show', [$user, $user->profilelink])->with('messages', [
+        return redirect()->route('users.show', [$user->nid, $user->profilelink])->with('messages', [
             ['level' => 'success', 'message' => 'OAuth ' . ucfirst($this->driver()) . ' successfully login.']
         ]);
     }

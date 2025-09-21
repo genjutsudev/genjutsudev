@@ -17,7 +17,7 @@
                         disabled
                     >
                     <a
-                        href="{{ route('users.edit.profilename', [$user, $user->profilelink]) }}"
+                        href="{{ route('users.edit.profilename', [$user->nid, $user->profilelink]) }}"
                         class="btn"
                         type="button"
                         title="Изменить"
@@ -53,7 +53,7 @@
                         disabled
                     >
                     <a
-                        href="{{ route('users.edit.profilelink', [$user, $user->profilelink]) }}"
+                        href="{{ route('users.edit.profilelink', [$user->nid, $user->profilelink]) }}"
                         class="btn"
                         type="button"
                         title="Изменить"
@@ -88,7 +88,7 @@
                         <input id="user_birthday" class="form-control" value="{{ 'Не указана' }}" disabled>
                     @endif
                     <a
-                        href="{{ route('users.edit.birthday', [$user, $user->profilelink]) }}"
+                        href="{{ route('users.edit.birthday', [$user->nid, $user->profilelink]) }}"
                         class="btn"
                         type="button"
                         title="Изменить"
@@ -186,7 +186,7 @@
                     </div>
                     <div>
                         <h4 class="alert-heading text-uppercase">Временный пароль: <strong>{{ $user->profilename }}</strong></h4>
-                        <div class="alert-description">Временный пароль представляет угрозу безопасности вашей учётной записи. <a href="{{ route('users.edit.password', [$user, $user->profilelink]) }}">Обновите</a> пароль как можно скорее.</div>
+                        <div class="alert-description">Временный пароль представляет угрозу безопасности вашей учётной записи. <a href="{{ route('users.edit.password', [$user->nid, $user->profilelink]) }}">Обновите</a> пароль как можно скорее.</div>
                     </div>
                     <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                 </div>
@@ -201,7 +201,7 @@
                             data-bs-placement="left"
                             data-bs-original-title="Эл. почту и пароль"
                         >
-                            <a href="{{ route('users.edit.password', [$user, $user->profilelink]) }}">Изменить</a>
+                            <a href="{{ route('users.edit.password', [$user->nid, $user->profilelink]) }}">Изменить</a>
                         </div>
                     </div>
                     <div class="input-group">
@@ -321,7 +321,7 @@
                         @php($driver = $item->network)
                         @php($identity = $item->identity)
                         <x-ui.form
-                            action="{{ route('users.edit.network.detach', [$user, $user->profilelink, $driver, $identity]) }}"
+                            action="{{ route('users.edit.network.detach', [$user->nid, $user->profilelink, $driver, $identity]) }}"
                             method="delete"
                             class="col-auto pe-0 mb-0"
                             onsubmit="return confirm('Вы уверены?')"

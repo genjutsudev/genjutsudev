@@ -23,7 +23,7 @@
                                 ] as $bcItem)
                                     @if(! request()->routeIs($bcItem['routeName']))
                                         <li class="breadcrumb-item">
-                                            <a href="{{ route($bcItem['routeName'], [$user, $user->profilelink]) }}">
+                                            <a href="{{ route($bcItem['routeName'], [$user->nid, $user->profilelink]) }}">
                                                 {{ $bcItem['title'] }}
                                             </a>
                                         </li>

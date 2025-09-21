@@ -53,7 +53,7 @@ class UserEditAccountController extends Controller
             logger()->error(self::class, ['error' => $e->getMessage(), 'user_id' => $user->id]);
         }
 
-        return redirect()->route($routeName, [$user, $user->profilelink])->with('messages', [
+        return redirect()->route($routeName, [$user->nid, $user->profilelink])->with('messages', [
             ['level' => $level, 'message' => $message]
         ]);
     }
@@ -77,7 +77,7 @@ class UserEditAccountController extends Controller
             logger()->error(self::class, ['error' => $e->getMessage(), 'user_id' => $user->id]);
         }
 
-        return redirect()->route('users.edit.account', [$user, $user->profilelink])->with('messages', [
+        return redirect()->route('users.edit.account', [$user->nid, $user->profilelink])->with('messages', [
             ['level' => $level, 'message' => $message]
         ]);
     }

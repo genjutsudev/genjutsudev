@@ -36,7 +36,7 @@ class UserAuthenticatedController extends Controller
         $user = Auth::user();
 
         self::success('С возвращением, <b>' . $user->profilename . '</b>!'); // @todo i18n
-        return redirect()->intended(route('users.show', [$user, $user->profilelink]));
+        return redirect()->intended(route('users.show', [$user->nid, $user->profilelink]));
     }
 
     /**
