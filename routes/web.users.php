@@ -52,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
         Route::group(['as' => 'verification'], function () {
             Route::group(['prefix' => 'email'], function () {
                 Route::get('verify', [UserVerificationEmailController::class, 'show'])->name('.notice');
-                Route::post('verify', [UserVerificationEmailController::class, 'store'])->middleware('throttle:6,1')->name('.send');
+                Route::post('verify', [UserVerificationEmailController::class, 'store'])->middleware(['throttle:6,1'])->name('.send');
                 Route::get('verify/{id}/{hash}', [UserVerifyEmailController::class, 'store'])->middleware(['signed', 'throttle:6,1'])->name('.verify');
             }); # email
         }); # verification
@@ -112,9 +112,11 @@ Route::group(['prefix' => 'users', 'as' => 'users'], function () {
                     Route::get('/', [UserEditPasswordController::class, 'show']);
                     Route::put('/', [UserEditPasswordController::class, 'update'])->name('.update');
                 }); # password
-                Route::get('/network/{driver}', [UserEditAccountController::class, 'attachNetwork'])->name('.network.attach');
-                Route::delete('/network/{driver}/{identity}', [UserEditAccountController::class, 'detachNetwork'])->name('.network.detach');
+                Route::group(['prefix' => 'network', 'as' => '.network'], function () {
+                    Route::get('/{driver}/attach', [UserEditAccountController::class, 'attachNetwork'])->name('.attach');
+                    Route::delete('/{driver}/detach/{identity}', [UserEditAccountController::class, 'detachNetwork'])->name('.detach');
+                }); # network
             }); # edit
-        });
-    });
+        }); # {profilelink}
+    }); # {user:nid}
 }); # users
