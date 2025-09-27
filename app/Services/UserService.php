@@ -15,7 +15,7 @@ use App\Models\HistoryChangeField;
 use App\Models\UserUser as User;
 use App\Models\UserUserNetwork as Network;
 use App\Models\UserUserPreference as Preferences;
-use App\Repositories\UserUserNetworkRepository as NetworkRepository;
+use App\Repositories\UserNetworkRepository as NetworkRepository;
 use App\Repositories\UserUserRepository as UserRepository;
 use App\Services\UserNetworkService as NetworkService;
 use App\Values\UserCreatedViaValue;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Repositories\Contracts\RepositoryInterface;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,12 +12,9 @@ abstract class Repository implements RepositoryInterface
 {
     public string $modelClass;
 
-    protected Guard $auth;
-
     public function __construct(?string $modelClass = null)
     {
         $this->modelClass = $modelClass ?: self::guessModelClass();
-        rescue(fn () => $this->auth = app(Guard::class));
     }
 
     private static function guessModelClass(): string

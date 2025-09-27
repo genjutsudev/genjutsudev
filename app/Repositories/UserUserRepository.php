@@ -8,6 +8,11 @@ use App\Models\UserUser as User;
 
 class UserUserRepository extends Repository
 {
+    public function __construct()
+    {
+        parent::__construct(User::class);
+    }
+
     public function findOneByEmail(string $email): ?User
     {
         return User::query()->firstWhere('email', $email);
