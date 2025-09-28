@@ -9,9 +9,9 @@
     </div>
     <x-ui.form.index method="put" class="w-50">
         {{-- email --}}
-        <x-widgets.form.email :value="$user->email" :placeholder="$user->email" required/>
+        <x-widgets.form.email :value="$user->email" :placeholder="$user->email" :required="true"/>
         {{-- new password --}}
-        <x-widgets.form.password label="Новый пароль"/>
+        <x-widgets.form.password label="Новый пароль" :required="! $user->password"/>
         <small class="d-none">Чувствителен к регистру</small>
         {{-- confirm new password --}}
         <x-widgets.form.password id="password_confirmation" name="password_confirmation" label="Повторите новый пороль"/>

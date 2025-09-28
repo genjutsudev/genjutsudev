@@ -165,32 +165,6 @@
             </x-ui.form.index>
             {{-- security account --}}
             <x-ui.subheadline :label="__('Безопасность аккаунта')">
-                @if(! $user->password_changed_at)
-                <div class="alert alert-warning alert-dismissible" role="alert">
-                    <div class="alert-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             width="24"
-                             height="24"
-                             viewBox="0 0 24 24"
-                             fill="none"
-                             stroke="currentColor"
-                             stroke-width="2"
-                             stroke-linecap="round"
-                             stroke-linejoin="round"
-                             class="icon alert-icon icon-2"
-                        >
-                            <path d="M12 9v4"></path>
-                            <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z"></path>
-                            <path d="M12 16h.01"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 class="alert-heading text-uppercase">Временный пароль: <strong>{{ $user->profilename }}</strong></h4>
-                        <div class="alert-description">Временный пароль представляет угрозу безопасности вашей учётной записи. <a href="{{ route('users.edit.password', [$user->nid, $user->profilelink]) }}">Обновите</a> пароль как можно скорее.</div>
-                    </div>
-                    <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                </div>
-                @endif
                 {{-- email --}}
                 <div class="mb-3">
                     <div class="form-label">
