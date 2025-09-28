@@ -75,7 +75,7 @@ abstract class AbstractCallbackController extends Controller
 
         return redirect(route('users.show', [$user->nid, $user->profilelink]))->with('messages', [
             // @todo i18n "OAuth :driver successfully login."
-            ['level' => 'success', 'message' => 'Добро пожаловать! Вы вошли через <b>' . ucfirst($this->driver()) . '!</b>']
+            ['level' => 'success', 'message' => 'Добро пожаловать! Вы вошли через <b>' . ucfirst($this->driver()) . '</b>!']
         ]);
     }
 }

@@ -55,7 +55,7 @@ readonly class UserService
             'referrer_nid' => $referrer_nid,
             'profilelink' => Str::ulid(new DateTime()),
             'email' => $email,
-            'profilename' => $profilename = uniqid(),
+            'profilename' => uniqid(),
             'registration_ip_hash' => $this->hasherService->hash(request()->ip(), [
                 'memory' => 1024,
                 'time' => 2,
@@ -64,11 +64,9 @@ readonly class UserService
             'registration_country' => 'Russian', // @todo
             'token' => $token,
             'api_key' => $api_key,
-            'password_changed_at' => ! empty($password) ? now() : null,
+            'password' => $password,
+            'password_changed_at' => $password ? now() : null,
         ]);
-
-//        $user->password = $this->hasherService->hash(! empty($password) ? $password : $profilename);
-//        $user->password_changed_at = ! empty($password) ? now() : null;
 
         // @todo i18n
         throw_if(! $user->save(), new \Exception('Что-то полшо не так, пользователь не создан.'));

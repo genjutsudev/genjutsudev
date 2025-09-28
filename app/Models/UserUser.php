@@ -110,6 +110,7 @@ class UserUser extends Authenticatable
         'profilelink',
         'email',
         'password',
+        'password_changed_at',
         'profilename',
         'birthday',
         'gender',

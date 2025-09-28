@@ -39,7 +39,7 @@ readonly class UserPasswordConfirm
     {
         /** @var User $user */
         $user = Auth::user();
-        return ! $this->isAuth() || (! $this->hasEmail($user) && ! $this->hasPassword($user));
+        return ! $this->isAuth() || ! $this->hasEmail($user) || ! $this->hasPassword($user);
     }
 
     private function isAuth(): bool
