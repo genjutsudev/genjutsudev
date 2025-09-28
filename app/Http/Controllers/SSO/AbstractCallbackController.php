@@ -32,11 +32,7 @@ abstract class AbstractCallbackController extends Controller
         $ssoUser = $socialite->user();
 
         try {
-            if (Auth::check()) {
-                return self::handleNetworkAttach($ssoUser);
-            }
-
-            return self::handleLoginOrRegister($ssoUser);
+            return self::handle($ssoUser);
         } catch (\Exception $e) {
             logger()->error(self::class, ['message' => $e->getMessage()]);
             return redirect()->route('animes')->with('messages', [
@@ -50,34 +46,36 @@ abstract class AbstractCallbackController extends Controller
         return Socialite::driver($this->driver());
     }
 
-    private function handleNetworkAttach(SsoUser $ssoUser): RedirectResponse
+    private function handle(SsoUser $ssoUser): RedirectResponse
+    {
+        return Auth::check() ? self::userNetworkAttach($ssoUser) : self::userLoginOrRegister($ssoUser);
+    }
+
+    private function userNetworkAttach(SsoUser $ssoUser): RedirectResponse
     {
         /** @var User $user */
         $user = Auth::user();
 
         /** @var Network $network */
-        $network = Network::make([
-            'identity' => $ssoUser->getId(),
-            'network'  => $this->driver(),
-        ]);
+        $network = Network::make(['identity' => $ssoUser->getId(), 'network'  => $this->driver()]);
 
         $this->networkService->attachNetwork($user, $network);
 
-        return redirect()->route('users.edit.account', [$user->nid, $user->profilelink])->with('messages', [
+        return redirect(route('users.edit.account', [$user->nid, $user->profilelink]))->with('messages', [
             // @todo i18n "Attach :driver successfully."
             ['level' => 'success', 'message' => '<b>' . ucfirst($this->driver()) . '</b> успешно привязан к вашему аккаунту.']
         ]);
     }
 
-    private function handleLoginOrRegister(SsoUser $ssoUser): RedirectResponse
+    private function userLoginOrRegister(SsoUser $ssoUser): RedirectResponse
     {
         $user = $this->userService->createUserRegularFromSso($ssoUser, $this->driver());
 
         Auth::login($user, true);
 
-        return redirect()->route('users.show', [$user->nid, $user->profilelink])->with('messages', [
+        return redirect(route('users.show', [$user->nid, $user->profilelink]))->with('messages', [
             // @todo i18n "OAuth :driver successfully login."
-            ['level' => 'success', 'message' => 'Добро пожаловать! Вы вошли через <b>' . ucfirst($this->driver()) . '</b>']
+            ['level' => 'success', 'message' => 'Добро пожаловать! Вы вошли через <b>' . ucfirst($this->driver()) . '!</b>']
         ]);
     }
 }

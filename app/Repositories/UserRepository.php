@@ -6,7 +6,7 @@ namespace App\Repositories;
 
 use App\Models\UserUser as User;
 
-class UserUserRepository extends Repository
+class UserRepository extends Repository
 {
     public function __construct()
     {

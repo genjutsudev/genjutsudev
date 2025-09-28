@@ -37,7 +37,9 @@ readonly class UserPasswordConfirm
 
     private function shouldSkipRequirePassword(): bool
     {
-        return ! $this->isAuth() || ! $this->hasEmail();
+        /** @var User $user */
+        $user = Auth::user();
+        return ! $this->isAuth() || (! $this->hasEmail($user) && ! $this->hasPassword($user));
     }
 
     private function isAuth(): bool
@@ -45,9 +47,13 @@ readonly class UserPasswordConfirm
         return Auth::check();
     }
 
-    private function hasEmail(): bool
+    private function hasEmail(User $user): bool
     {
-        $user = Auth::user();
-        return $user instanceof User && ! empty($user->email);
+        return ! empty($user->email);
+    }
+
+    private function hasPassword(User $user): bool
+    {
+        return ! empty($user->password);
     }
 }

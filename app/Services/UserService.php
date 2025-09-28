@@ -16,7 +16,7 @@ use App\Models\UserUser as User;
 use App\Models\UserUserNetwork as Network;
 use App\Models\UserUserPreference as Preferences;
 use App\Repositories\UserNetworkRepository as NetworkRepository;
-use App\Repositories\UserUserRepository as UserRepository;
+use App\Repositories\UserRepository as UserRepository;
 use App\Services\UserNetworkService as NetworkService;
 use App\Values\UserCreatedViaValue;
 use App\Values\UserTypeValue;
@@ -64,10 +64,11 @@ readonly class UserService
             'registration_country' => 'Russian', // @todo
             'token' => $token,
             'api_key' => $api_key,
+            'password_changed_at' => ! empty($password) ? now() : null,
         ]);
 
-        $user->password = $this->hasherService->hash(! empty($password) ? $password : $profilename);
-        $user->password_changed_at = ! empty($password) ? now() : null;
+//        $user->password = $this->hasherService->hash(! empty($password) ? $password : $profilename);
+//        $user->password_changed_at = ! empty($password) ? now() : null;
 
         // @todo i18n
         throw_if(! $user->save(), new \Exception('Что-то полшо не так, пользователь не создан.'));

@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->dateTime('email_changed_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->dateTime('password_changed_at')->nullable();
             // Статистика
             $table->decimal('karma', 5)->default(0.0)->comment('репутация пользователя');

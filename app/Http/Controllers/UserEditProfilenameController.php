@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\UserProfilenameMonthlyLimitException;
 use App\Http\Requests\UserUpdateProfilenameRequest as ProfilenameRequest;
 use App\Models\UserUser as User;
-use App\Repositories\UserUserRepository as UserRepository;
+use App\Repositories\UserRepository as UserRepository;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
