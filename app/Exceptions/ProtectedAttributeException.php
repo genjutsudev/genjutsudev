@@ -10,6 +10,6 @@ class ProtectedAttributeException extends Exception
 {
     public function __construct(string $attributeName)
     {
-        parent::__construct("Значение атрибута \"$attributeName\" защищено от изменений.");  // @todo i18n
+        parent::__construct("Значение атрибута \"$attributeName\" защищено от изменений."); // @todo i18n
     }
 }

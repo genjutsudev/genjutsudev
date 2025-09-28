@@ -10,6 +10,6 @@ class UserProfilelinkTakenException extends Exception
 {
     public function __construct()
     {
-        parent::__construct('Ссылка профиля занята.');  // @todo i18n
+        parent::__construct('Ссылка профиля занята.'); // @todo i18n
     }
 }

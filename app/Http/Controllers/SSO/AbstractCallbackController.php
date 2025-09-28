@@ -64,8 +64,8 @@ abstract class AbstractCallbackController extends Controller
         $this->networkService->attachNetwork($user, $network);
 
         return redirect()->route('users.edit.account', [$user->nid, $user->profilelink])->with('messages', [
-            // @todo i18n
-            ['level' => 'success', 'message' => 'Attach ' . ucfirst($this->driver()) . ' successfully.']
+            // @todo i18n "Attach :driver successfully."
+            ['level' => 'success', 'message' => '<b>' . ucfirst($this->driver()) . '</b> успешно привязан к вашему аккаунту.']
         ]);
     }
 
@@ -76,8 +76,8 @@ abstract class AbstractCallbackController extends Controller
         Auth::login($user, true);
 
         return redirect()->route('users.show', [$user->nid, $user->profilelink])->with('messages', [
-            // @todo i18n
-            ['level' => 'success', 'message' => 'OAuth ' . ucfirst($this->driver()) . ' successfully login.']
+            // @todo i18n "OAuth :driver successfully login."
+            ['level' => 'success', 'message' => 'Добро пожаловать! Вы вошли через <b>' . ucfirst($this->driver()) . '</b>']
         ]);
     }
 }

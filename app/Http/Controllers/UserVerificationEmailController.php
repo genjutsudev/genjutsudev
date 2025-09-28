@@ -37,6 +37,7 @@ class UserVerificationEmailController extends Controller
         $user->sendEmailVerificationNotification();
 
         return redirect()->route('users.edit.account', [$user->nid, $user->profilelink])->with('messages', [
+            // @todo i18n
             ['level' => 'info', 'message' => 'На эл. почту, указанную при регистрации, была отправлена ссылка для подтверждения.']
         ]);
     }

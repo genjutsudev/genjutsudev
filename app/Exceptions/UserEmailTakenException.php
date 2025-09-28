@@ -10,6 +10,6 @@ class UserEmailTakenException extends Exception
 {
     public function __construct()
     {
-        parent::__construct('Эл. почта занята.');  // @todo i18n
+        parent::__construct('Эл. почта занята.'); // @todo i18n
     }
 }
