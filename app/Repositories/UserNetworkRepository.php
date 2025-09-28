@@ -12,4 +12,9 @@ class UserNetworkRepository extends Repository
     {
         parent::__construct(UserNetwork::class);
     }
+
+    public function hasNetwork(UserNetwork $network): bool
+    {
+        return ! empty($this->findFirstWhere(['identity' => $network->identity, 'network' => $network->network]));
+    }
 }

@@ -6,12 +6,24 @@ namespace App\Services;
 
 use App\Models\UserUser as User;
 use App\Models\UserUserNetwork as Network;
+use App\Repositories\UserNetworkRepository as NetworkRepository;
 
 class UserNetworkService
 {
+    public function __construct(
+        readonly NetworkRepository $networkRepository
+    )
+    {
+    }
+
     public function attachNetwork(User $user, Network $network): bool
     {
         $networks = $user->networks;
+
+        if ($this->networkRepository->hasNetwork($network)) {
+            // @todo i18n
+            throw new \DomainException('Сеть уже используется.');
+        }
 
         /** @var Network $existing */
         if ($existing = $networks->first(fn (Network $n) => $n->equals($network))) {
