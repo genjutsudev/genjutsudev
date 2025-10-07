@@ -275,10 +275,10 @@
             @php($networks_count = $user->networks->count())
             <x-ui.subheadline
                 :label="__('Привяжите аккаунт к профилю социальной сети')"
-                :disabled="$networks_count == count($networks = ['shikimori', 'telegram'])"
+                :disabled="$networks_count == count($providers = config('socialite.providers'))"
             >
                 <div class="list-group rounded-0">
-                    @foreach($networks as $driver)
+                    @foreach($providers as $driver)
                         @if(! $user->networks->doesntContain('network', $driver))
                             @continue
                         @endif
