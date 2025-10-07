@@ -10,7 +10,14 @@ use Illuminate\Support\Str;
 
 function user_avatar_url(User $user): string
 {
-    return $user->email ? gravatar($user->email) : match ((string)$user->gender) {
+    $preferences = $user->preferences;
+    /** @var ?string $email */
+    $email = $user->email;
+    /** @var string $gender */
+    $gender = (string)$user->gender;
+    /** @var bool $is_gravatar */
+    $is_gravatar = $email && $preferences->is_show_gravatar;
+    return $is_gravatar ? gravatar($email) : match ($gender) {
         'female' => asset('static/media/avatar/female.webp'),
         'male' => asset('static/media/avatar/male.webp'),
         default => asset('static/media/avatar/other.webp')

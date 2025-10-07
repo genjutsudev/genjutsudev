@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property bool $is_show_age
+ * @property bool $is_show_gravatar
  * @property bool $is_view_censored
  * @property bool $comments_in_profile
  * @property bool $achievements_in_profile
@@ -56,6 +57,7 @@ class UserUserPreference extends Model
     protected $fillable = [
         'is_view_censored',
         'is_show_age',
+        'is_show_gravatar',
         'comments_in_profile',
         'achievements_in_profile'
     ];

@@ -159,6 +159,24 @@
                         </label>
                     </div>
                 @endif
+                <div class="mb-3">
+                    <label class="form-check form-switch form-switch-3">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="user_preferences[is_show_gravatar]"
+                            value="1"
+                            @checked($preferences->is_show_gravatar)
+                        >
+                        <span class="form-check-label">
+                            Отображать
+                            <a href="https://en.wikipedia.org/wiki/Gravatar" target="_blank">
+                                <i class="fa fa-external-link" aria-hidden="true"></i>
+                                Gravatar
+                            </a>
+                        </span>
+                    </label>
+                </div>
                 <div class="form-group text-end">
                     <input type="submit" value="Сохранить" class="btn btn-primary">
                 </div>

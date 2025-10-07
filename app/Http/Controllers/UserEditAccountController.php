@@ -35,9 +35,11 @@ class UserEditAccountController extends Controller
         $user_gender = $request->validated('user_gender');
         $user_preferences = $request->validated('user_preferences');
 
-        $is_show_age = isset($user_preferences['is_show_age']);
-        $is_view_censored = isset($user_preferences['is_view_censored']) && $user->birthday->age >= 18;
-        $preferences_data = ['is_show_age' => $is_show_age, 'is_view_censored' => $is_view_censored];
+        $preferences_data = [
+            'is_show_age' => isset($user_preferences['is_show_age']),
+            'is_view_censored' => isset($user_preferences['is_view_censored']) && $user->birthday->age >= 18,
+            'is_show_gravatar' => isset($user_preferences['is_show_gravatar'])
+        ];
 
         $level = 'success';
         $message = 'Изменения успешно сохранены.';
