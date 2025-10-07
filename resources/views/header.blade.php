@@ -107,7 +107,7 @@
                             'bg-azure-lt' => auth()->user()->equals(request()->user) && request()->routeIs('users.show')
                         ])
                     >
-                        <span class="avatar avatar-sm" style="background-image: url({{ gravatar($user->email) }});"></span>
+                        <span class="avatar avatar-sm" style="background-image: url({{ user_avatar_url($user) }});"></span>
                         <div class="d-none d-sm-block ps-2">
                             <div class="fw-bold">
                                 {{ $user->profilename }}
@@ -156,7 +156,7 @@
                             </div>
                         </div>
                         <div class="mt-3">
-                            <a href="#" class="disabled btn rounded w-100">
+                            <a href="{{ route('oauth', ['driver' => 'shikimori']) }}" class="btn rounded w-100">
                                 <img
                                     src="{{ asset('static/media/brands/shikimori.svg') }}"
                                     class="me-2" width="20"

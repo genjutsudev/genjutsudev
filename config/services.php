@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'shikimori' => [
+        'client_id' => env('SHIKIMORI_CLIENT_ID'),
+        'client_secret' => env('SHIKIMORI_CLIENT_SECRET'),
+        'redirect' => env('SHIKIMORI_REDIRECT_URI')
+    ],
+
 ];

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\SSO\ShikimoriCallbackController;
 use App\Http\Controllers\UserAuthenticatedController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEditAccountController;
@@ -18,9 +19,22 @@ use App\Http\Controllers\UserShowController;
 use App\Http\Controllers\UserShowListController;
 use App\Http\Controllers\UserVerificationEmailController;
 use App\Http\Controllers\UserVerifyEmailController;
+use App\Http\Middleware\UserPasswordConfirm as RequirePassword;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
-Route::middleware('guest')->group(function () {
+Route::group(['prefix' => 'users'], function () {
+    Route::group(['prefix' => 'oauth/{driver}', 'as' => 'oauth'], function () {
+        Route::get('/', static fn (string $driver) => Socialite::driver($driver)->redirect());
+        Route::get('/callback', static fn (string $driver) => app()->call(match ($driver) {
+            'shikimori' => ShikimoriCallbackController::class,
+            // ... other drivers
+            default => throw new InvalidArgumentException("network \"$driver\" is not supported")
+        }))->whereIn('driver', ['shikimori'])->name('.callback');
+    }); # oauth
+});
+
+Route::middleware(['guest'])->group(function () {
     Route::group(['prefix' => 'users'], function () {
         Route::group(['prefix' => 'sign-up', 'as' => 'register'], function () {
             Route::get('/', [UserRegistrationController::class, 'create']);
@@ -38,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
         Route::group(['as' => 'verification'], function () {
             Route::group(['prefix' => 'email'], function () {
                 Route::get('verify', [UserVerificationEmailController::class, 'show'])->name('.notice');
-                Route::post('verify', [UserVerificationEmailController::class, 'store'])->middleware('throttle:6,1')->name('.send');
+                Route::post('verify', [UserVerificationEmailController::class, 'store'])->middleware(['throttle:6,1'])->name('.send');
                 Route::get('verify/{id}/{hash}', [UserVerifyEmailController::class, 'store'])->middleware(['signed', 'throttle:6,1'])->name('.verify');
             }); # email
         }); # verification
@@ -63,7 +77,7 @@ Route::group(['prefix' => 'users'], function () {
 }); # users
 
 Route::group(['prefix' => 'users', 'as' => 'users'], function () {
-    Route::get('/', action: [UserController::class, 'index']);
+    Route::get('/', [UserController::class, 'index']);
     Route::group(['prefix' => '{user:nid}'], function () {
         Route::get('/', [UserShowController::class, 'redirect'])->name('.redirect');
         Route::group(['prefix' => '/{profilelink}', 'middleware' => ['redirect.profilelink']], function () {
@@ -71,7 +85,7 @@ Route::group(['prefix' => 'users', 'as' => 'users'], function () {
                 Route::get('/', [UserShowController::class, 'show']);
                 Route::group(['prefix' => 'lists', 'as' => '.lists'], function () {
                     Route::get('/anime', [UserShowListController::class, 'anime'])->name('.anime');
-                });
+                }); # lists
                 Route::get('/collections', [UserShowController::class, 'collections'])->name('.collections');
                 Route::get('/featured', [UserShowController::class, 'featured'])->name('.featured');
                 Route::get('/tracked', [UserShowController::class, 'tracked'])->name('.tracked');
@@ -94,11 +108,15 @@ Route::group(['prefix' => 'users', 'as' => 'users'], function () {
                     Route::get('/', [UserEditBirthdayController::class, 'show']);
                     Route::put('/', [UserEditBirthdayController::class, 'update'])->name('.update');
                 }); # birthday
-                Route::group(['prefix' => 'password', 'as' => '.password', 'middleware' => ['password.confirm']], function () {
+                Route::group(['prefix' => 'password', 'as' => '.password', 'middleware' => RequirePassword::class], function () {
                     Route::get('/', [UserEditPasswordController::class, 'show']);
                     Route::put('/', [UserEditPasswordController::class, 'update'])->name('.update');
                 }); # password
+                Route::group(['prefix' => 'network', 'as' => '.network'], function () {
+                    Route::get('/{driver}/attach', [UserEditAccountController::class, 'attachNetwork'])->name('.attach');
+                    Route::delete('/{driver}/detach/{identity}', [UserEditAccountController::class, 'detachNetwork'])->name('.detach');
+                }); # network
             }); # edit
-        });
-    });
+        }); # {profilelink}
+    }); # {user:nid}
 }); # users

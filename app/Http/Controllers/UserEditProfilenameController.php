@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\UserProfilenameMonthlyLimitException;
 use App\Http\Requests\UserUpdateProfilenameRequest as ProfilenameRequest;
 use App\Models\UserUser as User;
-use App\Repositories\UserRepository;
+use App\Repositories\UserRepository as UserRepository;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -52,8 +52,8 @@ class UserEditProfilenameController extends Controller
             logger()->error(self::class, ['error' => $th->getMessage(), 'user_id' => $user->id]);
         }
 
-        return redirect()
-            ->route($routeName, [$user->nid, $user->profilelink])
-            ->with('messages', [['level' => $level, 'message' => $message]]);
+        return redirect()->route($routeName, [$user->nid, $user->profilelink])->with('messages', [
+            ['level' => $level, 'message' => $message]
+        ]);
     }
 }

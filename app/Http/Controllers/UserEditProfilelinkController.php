@@ -8,7 +8,7 @@ use App\Exceptions\UserProfilelinkMonthlyLimitException;
 use App\Exceptions\UserProfilelinkTakenException;
 use App\Http\Requests\UserUpdateProfilelinkRequest as ProfilelinkRequest;
 use App\Models\UserUser as User;
-use App\Repositories\UserRepository;
+use App\Repositories\UserRepository as UserRepository;
 use App\Services\UserService;
 use Throwable;
 use Illuminate\Http\RedirectResponse;
@@ -55,8 +55,8 @@ class UserEditProfilelinkController extends Controller
             logger()->error(self::class, ['error' => $th->getMessage(), 'user_id' => $user->id]);
         }
 
-        return redirect()
-            ->route($routeName, [$user->nid, $user->profilelink])
-            ->with('messages', [['level' => $level, 'message' => $message]]);
+        return redirect()->route($routeName, [$user->nid, $user->profilelink])->with('messages', [
+            ['level' => $level, 'message' => $message]
+        ]);
     }
 }

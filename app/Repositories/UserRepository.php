@@ -8,29 +8,38 @@ use App\Models\UserUser as User;
 
 class UserRepository extends Repository
 {
+    public function __construct()
+    {
+        parent::__construct(User::class);
+    }
+
     public function findOneByEmail(string $email): ?User
     {
-        return User::query()->firstWhere('email', $email);
+        /** @var ?User $user */
+        $user = $this->findFirstWhere(['email' => $email]);
+        return $user;
     }
 
     public function findOneByProfilelink(string $profilelink): ?User
     {
-        return User::query()->firstWhere('profilelink', $profilelink);
+        /** @var ?User $user */
+        $user = $this->findFirstWhere(['profilelink' => $profilelink]);
+        return $user;
     }
 
     private function hasMonthlyLimit(User $user, string $fieldName, int $limit): bool
     {
-        return self::getCountMonthlyLimit($user, $fieldName) >= $limit;
+        return $this->getCountMonthlyLimit($user, $fieldName) >= $limit;
     }
 
     public function hasProfilelinkMonthlyLimit(User $user, int $limit): bool
     {
-        return self::hasMonthlyLimit($user, 'profilelink', $limit);
+        return $this->hasMonthlyLimit($user, 'profilelink', $limit);
     }
 
     public function hasProfilenameMonthlyLimit(User $user, int $limit): bool
     {
-        return self::hasMonthlyLimit($user, 'profilename', $limit);
+        return $this->hasMonthlyLimit($user, 'profilename', $limit);
     }
 
     private function getCountMonthlyLimit(User $user, string $fieldName): int
@@ -40,11 +49,11 @@ class UserRepository extends Repository
 
     public function getCountProfilelinkMonthlyLimit(User $user): int
     {
-        return self::getCountMonthlyLimit($user, 'profilelink');
+        return $this->getCountMonthlyLimit($user, 'profilelink');
     }
 
     public function getCountProfilenameMonthlyLimit(User $user): int
     {
-        return self::getCountMonthlyLimit($user, 'profilename');
+        return $this->getCountMonthlyLimit($user, 'profilename');
     }
 }

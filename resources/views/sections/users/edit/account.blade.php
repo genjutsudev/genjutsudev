@@ -179,33 +179,42 @@
                         </div>
                     </div>
                     <div class="input-group">
-                        <input id="user_email" type="email" value="{{ $user->email }}" class="form-control" disabled>
-                        @php($is_verified = ! is_null($user->email_verified_at))
-                        @php($tag = $is_verified ? 'div' : 'a')
-                        <{{ $tag }}
-                        @unless($is_verified)
-                            href="{{ route('verification.notice') }}"
-                            @class(['input-group-text', 'p-2', 'text-decoration-none'])
-                        @else
-                            @class(['input-group-text', 'p-2'])
-                        @endunless
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="left"
-                            data-bs-original-title="{{ $is_verified ? 'Подтверждено' : 'Подтвердить' }}"
+                        <input
+                            id="user_email"
+                            type="email"
+                            value="{{ $user->email }}"
+                            class="form-control"
+                            placeholder="отсутствует"
+                            disabled
                         >
-                            <span @class(['d-flex', 'text-success' => $is_verified, 'text-primary' => ! $is_verified])>
-                                <i style="font-size: 17px" @class([
-                                    'fa-solid',
-                                    'fa-circle-check' => $is_verified,
-                                    'fa-envelope' => ! $is_verified
-                                ])></i>
-                            </span>
-                        </{{ $tag }}>
+                        @if($user->email)
+                            @php($is_verified = ! is_null($user->email_verified_at))
+                            @php($tag = $is_verified ? 'div' : 'a')
+                            <{{ $tag }}
+                            @unless($is_verified)
+                                href="{{ route('verification.notice') }}"
+                                @class(['input-group-text', 'p-2', 'text-decoration-none'])
+                            @else
+                                @class(['input-group-text', 'p-2'])
+                            @endunless
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="left"
+                                data-bs-original-title="{{ $is_verified ? 'Подтверждено' : 'Подтвердить' }}"
+                            >
+                                <span @class(['d-flex', 'text-success' => $is_verified, 'text-primary' => ! $is_verified])>
+                                    <i style="font-size: 17px;" @class([
+                                        'fa-solid',
+                                        'fa-circle-check' => $is_verified,
+                                        'fa-envelope' => ! $is_verified
+                                    ])></i>
+                                </span>
+                            </{{ $tag }}>
+                        @endif
                     </div>{{-- @todo move to component --}}
                 </div>
                 {{-- password --}}
+                @if($user->email)
                 <div>
-                    @php($changed_at = $user->password_changed_at ?? $user->created_at)
                     <div class="form-label">
                         <label for="user_password">Пароль</label>
                         <div
@@ -221,10 +230,11 @@
                         id="user_password"
                         class="form-control"
                         type="password"
-                        placeholder="обновлён {{ $changed_at->diffForHumans() }}"
+                        placeholder="обновлён {{ $user->password_changed_at?->diffForHumans() ?? ':: данные отсутствуют' }}"
                         disabled
                     >
                 </div>
+               @endif
             </x-ui.subheadline>
         </div>
         {{-- right --}}
@@ -237,7 +247,7 @@
                 >
                     <div
                         class="avatar avatar-xll rounded-circle align-items-end"
-                        style="background-image: url({{ gravatar($user->email) }})"
+                        style="background-image: url({{ user_avatar_url($user) }})"
                     >
                         <a
                             href="/users/1/Noilty/edit/avatar"
@@ -262,8 +272,51 @@
                     <i class="fa fa-pencil" style="font-size:16px;"></i>
                 </a>
             </div>
-            <x-ui.subheadline :label="__('Привязанные социальные сети')">
-                Нет данных
+            @php($networks_count = $user->networks->count())
+            <x-ui.subheadline
+                :label="__('Привяжите аккаунт к профилю социальной сети')"
+                :disabled="$networks_count == count($providers = config('socialite.providers'))"
+            >
+                <div class="list-group rounded-0">
+                    @foreach($providers as $driver)
+                        @if(! $user->networks->doesntContain('network', $driver))
+                            @continue
+                        @endif
+                            <a
+                                href="{{ route('users.edit.network.attach', [$user->nid, $user->profilelink, $driver]) }}"
+                                class="list-group-item list-group-item-action d-flex ps-3"
+                            >
+                                <img src="{{ asset("static/media/brands/{$driver}.svg") }}" alt="{{ $driver }}" style="width: 20px;">
+                                <span class="ms-2">{{ ucfirst($driver) }}</span>
+                            </a>
+                    @endforeach
+                </div>
+            </x-ui.subheadline>
+            <x-ui.subheadline :label="__('Привязанные социальные сети')" :disabled="! $networks_count">
+                <div class="list-group rounded-0">
+                    @foreach($user->networks as $item)
+                        @php($driver = $item->network)
+                        @php($identity = $item->identity)
+                        <x-ui.form
+                            action="{{ route('users.edit.network.detach', [$user->nid, $user->profilelink, $driver, $identity]) }}"
+                            method="delete"
+                            class="col-auto pe-0 mb-0"
+                            onsubmit="return confirm('Вы уверены?')"
+                        >
+                            <button type="submit" class="personal-social-info list-group-item list-group-item-action d-flex ps-3">
+                                <img src="{{ asset("static/media/brands/{$driver}.svg") }}" alt="{{ $driver }}" style="width: 32px;">
+                                <span class="ms-3">
+                                    <span class="personal-social-info-detach">Удалить привязку</span>
+                                    <span class="personal-social-info-text">
+                                        <span>{{ ucfirst($driver) }}</span>
+                                        <br>
+                                        <span>{{ $item->created_at->format('d.m.Y') }}</span>
+                                    </span>
+                                </span>
+                            </button>
+                        </x-ui.form>
+                    @endforeach
+                </div>
             </x-ui.subheadline>
         </div>
     </div>

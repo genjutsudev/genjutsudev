@@ -35,8 +35,10 @@ class UserAuthenticatedController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        self::success('С возвращением, <b>' . $user->profilename . '</b>!'); // @todo i18n
-        return redirect()->intended(route('users.show', [$user->nid, $user->profilelink]));
+        // @todo i18n
+        return redirect()->intended(route('users.show', [$user->nid, $user->profilelink]))->with('messages', [
+            ['level' => 'success', 'message' => "С возвращением, <b>{$user->profilename}</b>!"]
+        ]);
     }
 
     /**
@@ -52,7 +54,9 @@ class UserAuthenticatedController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        self::info('До скорой встречи, <b>' . $user->profilename . '</b>!'); // @todo i18n
-        return redirect(route('animes'));
+        // @todo i18n
+        return redirect(route('animes'))->with('messages', [
+            ['level' => 'info', 'message' => "До скорой встречи, <b>{$user->profilename}</b>!"]
+        ]);
     }
 }

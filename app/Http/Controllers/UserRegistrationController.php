@@ -37,17 +37,23 @@ class UserRegistrationController extends Controller
         try {
             $user = $this->userService->createUserRegular(...$data);
         } catch (UserEmailTakenException $e) {
-            self::info($e->getMessage());
-            return redirect(route('register', false));
+            return redirect(route('register', false))->with('messages', [
+                // @todo i18n
+                ['level' => 'info', 'message' => $e->getMessage()]
+            ]);
         } catch (\Throwable $th) {
             logger()->error(self::class, ['error' => $th->getMessage()]);
-            self::danger('Произошла внутренняя ошибка, повторите попытку позже.'); // @todo i18n
-            return redirect(route('register', false));
+            return redirect(route('register', false))->with('messages', [
+                // @todo i18n
+                ['level' => 'danger', 'message' => 'Произошла внутренняя ошибка, повторите попытку позже.']
+            ]);
         }
 
         Auth::login($user, true);
 
-        self::success('Успешная регистрация — открыт доступ к лучшим аниме-тайтлам, обсуждениям и манге.'); // @todo i18n
-        return redirect(route('animes', false));
+        return redirect(route('animes', false))->with('messages', [
+            // @todo i18n
+            ['level' => 'success', 'message' => 'Успешная регистрация — открыт доступ к лучшим аниме-тайтлам, обсуждениям и манге.']
+        ]);
     }
 }

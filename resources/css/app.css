@@ -42,6 +42,11 @@
 /**
  * @todo move to other .css file
  */
+.gjsu-avatar * {
+    margin: 8px;
+    padding: 0;
+}
+
 .gjsu-avatar-right-icon {
     width: 24px;
     height: 24px;
@@ -50,11 +55,6 @@
     bottom: -1px;
     background-size: cover;
     image-rendering: -webkit-optimize-contrast;
-}
-
-.gjsu-avatar * {
-    margin: 8px;
-    padding: 0;
 }
 
 .gjsu-avatar-icon-premium {
@@ -69,4 +69,44 @@
 
 .gjsu-avatar-frame-red {
     border-color: red;
+}
+
+/**
+ * @todo move to other .css file
+ */
+.personal-social-info {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.personal-social-info > span {
+    position: relative;
+    display: inline-block;
+}
+
+.personal-social-info-text,
+.personal-social-info-detach {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    transition: opacity .15s 0s ease-in, max-height 0s .15s ease-in;
+    white-space: nowrap;
+}
+
+.personal-social-info-text {
+    opacity: 1;
+}
+
+.personal-social-info-detach {
+    opacity: 0;
+}
+
+.personal-social-info:hover .personal-social-info-text {
+    opacity: 0;
+}
+
+.personal-social-info:hover .personal-social-info-detach {
+    opacity: 1;
 }

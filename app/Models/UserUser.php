@@ -57,6 +57,7 @@ use Illuminate\Support\Collection;
  * @property-read ?string $registration_country
  * Связи
  * @property UserUserPreference $preferences
+ * @property Collection $networks
  * @property Collection $historyFields
  * @property Collection $madeFields
  */
@@ -109,6 +110,7 @@ class UserUser extends Authenticatable
         'profilelink',
         'email',
         'password',
+        'password_changed_at',
         'profilename',
         'birthday',
         'gender',
@@ -157,6 +159,11 @@ class UserUser extends Authenticatable
     public function equals(?self $other, string $attribute = 'id'): bool
     {
         return $this->$attribute === $other?->$attribute;
+    }
+
+    public function networks(): HasMany
+    {
+        return $this->hasMany(UserUserNetwork::class, 'user_id', 'id')->orderByDesc('created_at');
     }
 
     public function preferences(): HasOne
