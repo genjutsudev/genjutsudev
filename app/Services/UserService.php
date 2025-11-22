@@ -248,6 +248,12 @@ readonly class UserService
         return self::updateUser($user, ['profilename' => $profilename]);
     }
 
+    public function updateUserSignInCount(User $user): User
+    {
+        $user->timestamps = false;
+        return $this->updateUser($user, ['sign_in_count' => $user->sign_in_count + 1]);
+    }
+
     /*
      * @todo make private, refactored
      */
@@ -276,7 +282,7 @@ readonly class UserService
         return $user->historyFields()->create([
             'field' => $field_name,
             'value' => $user->getOriginal($field_name),
-            'changed_id' => $changed_id,
+            'user_id' => $changed_id,
         ]);
     }
 }

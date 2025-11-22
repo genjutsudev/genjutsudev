@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Models\UserUser as User;
+use App\Services\UserService;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +15,13 @@ use Illuminate\Validation\ValidationException;
 
 class UserLoginRequest extends FormRequest
 {
+    public function __construct(
+        private readonly UserService $userService
+    )
+    {
+        parent::__construct();
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -50,6 +59,11 @@ class UserLoginRequest extends FormRequest
                 'email' => trans('auth.failed'),
             ]);
         }
+
+        /** @var User $user */
+        $user = Auth::user();
+
+        $this->userService->updateUserSignInCount($user);
 
         RateLimiter::clear($this->throttleKey());
     }

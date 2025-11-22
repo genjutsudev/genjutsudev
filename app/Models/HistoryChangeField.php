@@ -49,14 +49,14 @@ class HistoryChangeField extends Model
      *
      * @var list<string>
      */
-    protected $fillable = ['entity_type', 'entity_id', 'field', 'value', 'changed_id'];
+    protected $fillable = ['entity_type', 'entity_id', 'field', 'value', 'user_id'];
 
     /**
      * The attributes that cannot be mass assigned.
      *
      * @var array
      */
-    protected $guarded = ['id', 'nid', 'created_at', 'changed_id'];
+    protected $guarded = ['id', 'nid', 'created_at', 'user_id'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -82,6 +82,6 @@ class HistoryChangeField extends Model
 
     public function changedBy(): BelongsTo
     {
-        return $this->belongsTo(UserUser::class, 'changed_id', 'id');
+        return $this->belongsTo(UserUser::class, 'user_id', 'id');
     }
 }
