@@ -19,6 +19,7 @@ return new class extends Migration
             $table->id('nid');
             $table->uuid('user_id');
             $table->unsignedTinyInteger('is_show_age')->default(false);
+            $table->unsignedTinyInteger('is_show_gravatar')->default(true);
             $table->unsignedTinyInteger('is_view_censored')->default(false);
             $table->unsignedTinyInteger('comments_in_profile')->default(true);
             $table->unsignedTinyInteger('achievements_in_profile')->default(true);
