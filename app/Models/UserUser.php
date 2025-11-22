@@ -111,6 +111,7 @@ class UserUser extends Authenticatable
         'email',
         'password',
         'password_changed_at',
+        'sign_in_count',
         'profilename',
         'birthday',
         'gender',
@@ -178,6 +179,6 @@ class UserUser extends Authenticatable
 
     public function madeFields(): HasMany
     {
-        return $this->hasMany(HistoryChangeField::class, 'changed_id', 'id');
+        return $this->hasMany(HistoryChangeField::class, 'user_id', 'id');
     }
 }

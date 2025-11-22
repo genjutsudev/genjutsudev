@@ -21,12 +21,12 @@ return new class extends Migration
             $table->string('field');
             $table->string('value');
             $table->timestamps();
-            $table->uuid('changed_id');
+            $table->uuid('user_id');
         });
 
         Schema::table(HistoryChangeField::ENTITY_TYPE, function (Blueprint $table) {
             $table->unique('id', 'unq_history_change_fields_on_id');
-            $table->index('changed_id', 'idx_history_change_fields_on_changed_id');
+            $table->index('user_id', 'idx_history_change_fields_on_user_id');
         });
     }
 
