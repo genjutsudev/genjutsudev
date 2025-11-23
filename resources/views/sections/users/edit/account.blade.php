@@ -1,5 +1,7 @@
 @props(['user'])
 
+@use(App\Enums\User\UserGenderEnum)
+
 @section('title', $user->profilename)
 
 <x-layouts::users-edit>
@@ -118,7 +120,7 @@
                 <div class="mb-3">
                     <label for="user_gender" class="form-label">Пол</label>
                     <select id="user_gender" name="user_gender" class="form-select">
-                        @foreach(\App\Enums\UserGenderEnum::cases() as $gender)
+                        @foreach(UserGenderEnum::cases() as $gender)
                             <option
                                 value="{{ $gender }}"
                                 @selected($gender->equals($user->gender->getGender()))

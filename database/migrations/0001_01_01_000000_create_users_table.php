@@ -1,6 +1,7 @@
 <?php
 
-use App\Enums\UserGenderEnum;
+use App\Enums\User\UserGenderEnum;
+use App\Models\UserUser;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_users', function (Blueprint $table) {
+        Schema::create(UserUser::ENTITY_TYPE, function (Blueprint $table) {
             // Основная
             $table->uuid('id')->comment('user_uuid');
             $table->id('nid')->comment('user_id');
@@ -47,7 +48,7 @@ return new class extends Migration
             $table->string('registration_country')->nullable()->comment('географическое местоположение (страна/город)');
         });
 
-        Schema::table('user_users', function (Blueprint $table) {
+        Schema::table(UserUser::ENTITY_TYPE, function (Blueprint $table) {
             $table->unique('id', 'unq_user_users_on_id');
             $table->index('type', 'idx_user_users_on_type');
             $table->index(['type', 'is_active'], 'idx_user_users_on_type_and_is_active');
@@ -77,7 +78,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_users');
+        Schema::dropIfExists(UserUser::ENTITY_TYPE);
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }

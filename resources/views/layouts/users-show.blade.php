@@ -83,7 +83,7 @@
                                             <a
                                                 href="{{ $item['routeName'] !== '#' ? route($item['routeName'], [$user->nid, $user->profilelink]) : '/' }}"
                                                 @class(['nav-link', 'justify-content-center', 'p-1', 'disabled' => $item['routeName'] === '#'])
-                                                style="font-size: 16px"
+                                                style="font-size: 16px;"
                                                 data-bs-toggle="tooltip"
                                                 data-bs-placement="left"
                                                 data-bs-original-title="{{ $title }}"
@@ -137,6 +137,16 @@
                                     </a>
                                 </li>
                             @endforeach
+                            {{--<li class="nav-item w-100 text-end m-3 d-none d-lg-block">
+                                <div class="row text-lowercase">
+                                    <div title="количество пользователей, на которых подписан текущий пользователь" class="col">
+                                        <b>0</b> Отслеживает
+                                    </div>
+                                    <div title="количество пользователей, которые подписаны на текущего пользователя" class="col-auto">
+                                        <b>0</b> Отслеживают
+                                    </div>
+                                </div>
+                            </li>--}}
                         </ul>
                     </div>
                     <div @class(['card-body'])>

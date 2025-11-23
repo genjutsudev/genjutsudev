@@ -2,7 +2,7 @@
 
 namespace Tests\Integration;
 
-use App\Enums\UserTypeEnum;
+use App\Enums\User\UserTypeEnum;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase

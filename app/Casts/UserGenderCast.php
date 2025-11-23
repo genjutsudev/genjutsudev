@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Casts;
 
-use App\Enums\UserGenderEnum;
+use App\Enums\User\UserGenderEnum;
 use App\Values\UserGenderValue;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;

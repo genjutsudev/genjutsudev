@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Enums\UserCreatedViaEnum;
-use App\Enums\UserTypeEnum;
+use App\Enums\User\UserCreatedViaEnum;
+use App\Enums\User\UserTypeEnum;
 use App\Exceptions\ProtectedAttributeException;
 use App\Exceptions\UserEmailTakenException;
 use App\Exceptions\UserProfilelinkMonthlyLimitException;

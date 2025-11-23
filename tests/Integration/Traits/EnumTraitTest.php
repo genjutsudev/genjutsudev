@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Integration\Traits;
 
-use App\Enums\UserCreatedViaEnum;
+use App\Enums\User\UserCreatedViaEnum;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
