@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Values;
 
-use App\Enums\UserGenderEnum;
+use App\Enums\User\UserGenderEnum;
 
 final readonly class UserGenderValue
 {

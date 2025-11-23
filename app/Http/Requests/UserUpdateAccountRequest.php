@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\Enums\UserGenderEnum;
+use App\Enums\User\UserGenderEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Casts;
 
-use App\Enums\UserCreatedViaEnum;
+use App\Enums\User\UserCreatedViaEnum;
 use App\Values\UserCreatedViaValue;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;

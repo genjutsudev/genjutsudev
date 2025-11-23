@@ -2,7 +2,7 @@
 
 namespace App\Values;
 
-use App\Enums\UserCreatedViaEnum;
+use App\Enums\User\UserCreatedViaEnum;
 
 final readonly class UserCreatedViaValue
 {
