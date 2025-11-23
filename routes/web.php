@@ -13,6 +13,7 @@ Route::get('/terms', fn() => response()->view('sections.terms'))->name('terms');
 Route::get('/privacy', fn() => response()->view('sections.privacy'))->name('privacy');
 Route::get('/copyright', fn() => response()->view('sections.copyright'))->name('copyright');
 Route::get('/rules', fn() => response()->view('sections.rules'))->name('rules');
+Route::get('/development', fn() => response()->view('sections.development'))->name('development');
 
 Route::get('/animes', function () {
     /*$user = \Illuminate\Support\Facades\Auth::user();
